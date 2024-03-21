@@ -5,19 +5,19 @@ AIO_FEED_ID = "led"
 AIO_USERNAME = "DADN_CNPM_3"
 AIO_KEY = "aio_lCaK60OFwRJhKMC1laoTjfIk5OGJ"
 
-def connected(client):
-    print ("Ket noi thanh cong ...")
-    client.subscribe(AIO_FEED_ID)
+# def connected(client):
+#     print ("Ket noi thanh cong ...")
+#     client.subscribe(AIO_FEED_ID)
 
-def subscribe(client, userdata, mid, granted_qos) :
-    print("Subcribe thanh cong ...")
+# def subscribe(client, userdata, mid, granted_qos) :
+#     print("Subcribe thanh cong ...")
 
-def disconnected(client):
-    print("Ngat ket noi ...")
-    sys.exit(1)
+# def disconnected(client):
+#     print("Ngat ket noi ...")
+#     sys.exit(1)
 
-def message(client, feed_id, payload):
-    print("Nhan du lieu : " + payload)
+# def message(client, feed_id, payload):
+#     print("Nhan du lieu : " + payload)
 
 # client = MQTTClient(AIO_USERNAME, AIO_KEY)
 # client.on_connect = connected
