@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,22 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName={homeName}
-          screenOptions={({route}) => ({
+          screenOptions={({ route }) => (
+          {
+            tabBarStyle: {
+              backgroundColor: '#EFF9F1',
+              height: 90,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              position: 'absolute',
+              elevation: 5,
+              shadowColor: 'black',
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 1,
+            },
             tabBarIcon: ({focused, color, size}) => {
               let iconName;
               let rn = route.name
@@ -46,15 +61,15 @@ export default function App() {
                 iconName = focused ? 'person-circle' : 'person-circle-outline';
               }
 
-              return <Ionicons name={iconName} size={size} color={color} />;
+              return <Ionicons name={iconName} size={39} color={color} />
             },
           })}
           tabBarOptions={{
-              activeTintColor: '#3CAF58',
-              inactiveTintColor: 'grey',
-              labelStyle: { paddingBottom: 5, fontSize: 10 },
-            }}
-          >
+            activeTintColor: '#3CAF58',
+            inactiveTintColor: 'grey',
+            labelStyle: { paddingBottom: 15, fontSize: 17 },
+          }}
+        >
 
             <Tab.Screen name={homeName} component={HomeScreen} />
             <Tab.Screen name={manageName} component={ManageScreen} />
@@ -66,10 +81,3 @@ export default function App() {
       </NavigationContainer>
   );
 }
-
-// const contStyles = StyleSheet.create({
-//   baseCont: {
-//     backgroundColor: 'blue',
-//     padding: 30,
-//   },
-// });
