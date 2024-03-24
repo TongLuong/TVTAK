@@ -4,8 +4,8 @@ import styles from '../styles/styles';
 export default function App() {
     return (
       <View style={styles.container}>
-        
-        <Text style={styles.baseText}>Welcome to SignUpScreen</Text>
+
+        <Text style={styles.baseText}>Welcome to Calendar Screen</Text>
   
       </View>
     );

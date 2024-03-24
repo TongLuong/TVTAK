@@ -5,9 +5,8 @@ export default function App() {
     return (
       <View style={styles.container}>
         
-        <Text>Welcome to LoginScreen</Text>
+        <Text style={styles.baseText}>Welcome to Login Screen</Text>
   
-        <StatusBar style="auto" />
       </View>
     );
   }
