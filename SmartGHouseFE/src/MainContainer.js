@@ -1,11 +1,10 @@
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-import * as React from 'react';
-import MainContainer from './src/MainContainer'
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+
 // import { NavigationContainer } from "@react-navigation/native"
 // import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
-// import styles from './src/styles/styles';
+import styles from './styles/styles';
 // import HomeScreen from "./src/screens/HomeScreen"
 // import ManageScreen from "./src/screens/ManageScreen"
 
@@ -13,6 +12,12 @@ import MainContainer from './src/MainContainer'
 
 export default function App() {
   return (
-    <MainContainer />
+    <View style={styles.container}>
+      
+      <Text>Eureka</Text>
+
+      <StatusBar style="auto" />
+      
+    </View>
   );
 }
