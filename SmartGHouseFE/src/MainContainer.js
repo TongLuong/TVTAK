@@ -33,17 +33,17 @@ export default function App() {
           {
             tabBarStyle: {
               backgroundColor: '#EFF9F1',
-              height: 90,
+              height: 60,
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
               position: 'absolute',
-              elevation: 5,
-              shadowColor: 'black',
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 1,
+              // elevation: 5,
+              // shadowColor: 'black',
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 10,
+              // },
+              // shadowOpacity: 1,
             },
             tabBarIcon: ({focused, color, size}) => {
               let iconName;
@@ -61,13 +61,13 @@ export default function App() {
                 iconName = focused ? 'person-circle' : 'person-circle-outline';
               }
 
-              return <Ionicons name={iconName} size={39} color={color} />
+              return <Ionicons name={iconName} size={20} color={color} />
             },
           })}
           tabBarOptions={{
             activeTintColor: '#3CAF58',
             inactiveTintColor: 'grey',
-            labelStyle: { paddingBottom: 15, fontSize: 17 },
+            labelStyle: { paddingBottom: 8, fontSize: 12 },
           }}
         >
 
