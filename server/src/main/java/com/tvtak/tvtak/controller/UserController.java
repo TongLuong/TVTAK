@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController
 {
-    @PostMapping("/api/user/create-new-user")
+    @PostMapping("/create-new-user")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name)
 	{
       	return String.format("Hello %s!", name);
     }
 
-    @GetMapping("/api/user/get-all-user")
+    @GetMapping("/get-all-user")
     public String hello()
 	{
-      	return "";
+      	return "get all user";
     }
 }
