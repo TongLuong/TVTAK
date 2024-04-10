@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
+@Table(name= "users")
 public class User
 {
     @Id
@@ -29,8 +30,6 @@ public class User
     @Column(name = "bio")
     private String bio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Device> devices;
 
     public User()
     {

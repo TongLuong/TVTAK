@@ -3,6 +3,7 @@ package com.tvtak.tvtak.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="notes")
 public class Note
 {
     @Id

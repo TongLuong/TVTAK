@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
+@Table (name="devices")
 public class Device
 {
     @Id
@@ -20,19 +21,15 @@ public class Device
     @Column(name = "password", nullable = false)
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
-    private List<Log> logs;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sensor")
-    private List<Record> sensor_records;
 
     public Device()
     {
