@@ -1,5 +1,7 @@
 {
     "python.analysis.extraPaths": [
         "./adafruit-io"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
