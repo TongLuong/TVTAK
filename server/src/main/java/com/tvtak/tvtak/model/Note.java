@@ -3,7 +3,6 @@ package com.tvtak.tvtak.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="notes")
 public class Note
 {
     @Id
@@ -11,17 +10,13 @@ public class Note
     @Column(name = "id")
     private long id;
 
-    @Id
-    @Column(name = "user_id")
-    private long user_id;
-
-    @Column(name = "content")
-    private String content;
-
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Column(name = "content")
+    private String content;
+    
     public long getId()
     {
         return this.id;

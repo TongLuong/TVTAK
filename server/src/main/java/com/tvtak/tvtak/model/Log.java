@@ -3,7 +3,6 @@ package com.tvtak.tvtak.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="logs")
 public class Log
 {
     @Id

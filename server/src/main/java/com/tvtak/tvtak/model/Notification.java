@@ -3,7 +3,6 @@ package com.tvtak.tvtak.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="notifications")
 public class Notification
 {
     @Id
@@ -11,19 +10,15 @@ public class Notification
     @Column(name = "id")
     private long id;
 
-    @Id
-    @Column(name = "user_id")
-    private long user_id;
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Column(name = "time")
     private String time;
 
     @Column(name = "content")
     private String content;
-
-    @ManyToOne
-    @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
 
     public long getId()
     {

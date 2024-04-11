@@ -15,6 +15,6 @@ public class UserController
     @GetMapping("/get-all-user")
     public String hello()
 	{
-      	return "get all user";
+      	return "tongkhangte123";
     }
 }

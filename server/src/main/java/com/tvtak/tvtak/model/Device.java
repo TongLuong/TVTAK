@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table (name="devices")
 public class Device
 {
     @Id
@@ -29,7 +28,11 @@ public class Device
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @OneToMany(mappedBy = "device")
+    private Set<Log> logs;
 
+    @OneToMany(mappedBy = "sensor")
+    private Set<Record> records;
 
     public Device()
     {

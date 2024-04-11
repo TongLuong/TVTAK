@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name= "users")
 public class User
 {
     @Id
@@ -30,6 +29,17 @@ public class User
     @Column(name = "bio")
     private String bio;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Note> notes;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Notification> notifications;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Schedule> schedules;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Schedule> devices;
 
     public User()
     {

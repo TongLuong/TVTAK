@@ -11,7 +11,6 @@ public class Schedule
     @Column(name = "id")
     private long id;
 
-
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -22,6 +21,9 @@ public class Schedule
     @Column(name = "date", nullable = false)
     private String date; // dd-MM-YYYY
 
+    @OneToMany(mappedBy = "schedule")
+    private Set<Device> devices;
+
     public long getId()
     {
         return this.id;
@@ -31,8 +33,6 @@ public class Schedule
     {
         this.id = id;
     }
-
-
 
     public String getType()
     {
