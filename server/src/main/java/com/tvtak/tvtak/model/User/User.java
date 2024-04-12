@@ -1,7 +1,11 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.User;
 
 import jakarta.persistence.*;
 import java.util.*;
+
+import com.tvtak.tvtak.model.Note.Note;
+import com.tvtak.tvtak.model.Notification.Notification;
+import com.tvtak.tvtak.model.Schedule.Schedule;
 
 @Entity
 public class User
@@ -51,11 +55,6 @@ public class User
         return this.id;
     }
 
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
     public String getNAttribute(int n)
     {
         switch (n) 
@@ -85,18 +84,25 @@ public class User
         {
             case 0:
                 this.id = Long.parseLong(newVal);
+                break;
             case 1:
                 this.email = newVal;
+                break;
             case 2:
                 this.username = newVal;
+                break;
             case 3:
                 this.password = newVal;
+                break;
             case 4:
                 this.phone = newVal;
+                break;
             case 5:
                 this.address = newVal;
+                break;
             case 6:
                 this.bio = newVal;
+                break;
             default:
                 throw new IllegalArgumentException();
         }

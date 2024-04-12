@@ -1,6 +1,8 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Record;
 
 import jakarta.persistence.*;
+
+import com.tvtak.tvtak.model.Device.Device;
 
 @Entity
 public class Record
@@ -16,18 +18,13 @@ public class Record
     @Column(name = "data")
     private String data;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "sensor_id")
     private Device sensor;
 
     public long getId()
     {
         return this.rid;
-    }
-
-    public void setId(long rid)
-    {
-        this.rid = rid;
     }
 
     public String getTime()

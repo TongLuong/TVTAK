@@ -1,6 +1,8 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Log;
 
 import jakarta.persistence.*;
+
+import com.tvtak.tvtak.model.Device.Device;
 
 @Entity
 public class Log
@@ -16,18 +18,13 @@ public class Log
     @Column(name = "message")
     private String message;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
 
     public long getId()
     {
         return this.id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
     }
 
     public String getTime()

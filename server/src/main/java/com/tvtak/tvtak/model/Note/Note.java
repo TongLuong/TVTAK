@@ -1,10 +1,12 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Note;
+
+import com.tvtak.tvtak.model.User.User;
 
 import jakarta.persistence.*;
 
 @Entity
-@IdClass(NotificationId.class)
-public class Notification
+@IdClass(NoteId.class)
+public class Note
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,30 +18,12 @@ public class Notification
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "time")
-    private String time;
-
     @Column(name = "content")
     private String content;
 
     public long getId()
     {
         return this.id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
-    public String getTime()
-    {
-        return this.time;
-    }
-
-    public void setId(String time)
-    {
-        this.time = time;
     }
 
     public String getContent()

@@ -1,7 +1,9 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Notification;
 
 import java.io.Serializable;
 import java.util.*;
+
+import com.tvtak.tvtak.model.User.User;
 
 public class NotificationId implements Serializable
 {

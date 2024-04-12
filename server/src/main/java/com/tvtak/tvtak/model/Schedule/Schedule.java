@@ -1,7 +1,12 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Schedule;
 
 import jakarta.persistence.*;
 import java.util.*;
+
+import org.hibernate.query.sqm.FetchClauseType;
+
+import com.tvtak.tvtak.model.User.User;
+import com.tvtak.tvtak.model.Device.Device;
 
 @Entity
 public class Schedule
@@ -27,11 +32,6 @@ public class Schedule
     public long getId()
     {
         return this.id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
     }
 
     public String getType()

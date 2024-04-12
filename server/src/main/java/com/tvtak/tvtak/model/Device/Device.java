@@ -1,7 +1,12 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Device;
 
 import jakarta.persistence.*;
 import java.util.*;
+
+import com.tvtak.tvtak.model.User.User;
+import com.tvtak.tvtak.model.Schedule.Schedule;
+import com.tvtak.tvtak.model.Log.Log;
+import com.tvtak.tvtak.model.Record.Record;
 
 @Entity
 public class Device
@@ -17,8 +22,8 @@ public class Device
     @Column(name = "status")
     private boolean status; // 0: off, 1: on
 
-    @Column(name = "password", nullable = false)
-    private String type;
+    @Column(name = "type", nullable = false)
+    private String type; // "sensor" or "mechanical"
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -44,11 +49,6 @@ public class Device
         return this.id;
     }
 
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
     public String getName()
     {
         return this.name;
@@ -64,8 +64,20 @@ public class Device
         return this.status;
     }
 
-    public void setName(boolean status)
+    public void setStatus(boolean status)
     {
         this.status = status;
+    }
+
+    public String getType()
+    {
+        return this.type;
+    }
+
+    public void setType(String type)
+    {
+        if (type != "sensor" && type != "mechanical")
+            throw new IllegalArgumentException();
+        this.type = type;
     }
 }
