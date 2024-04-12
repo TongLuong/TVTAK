@@ -3,8 +3,6 @@ package com.tvtak.tvtak.model.Schedule;
 import jakarta.persistence.*;
 import java.util.*;
 
-import org.hibernate.query.sqm.FetchClauseType;
-
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Device.Device;
 
