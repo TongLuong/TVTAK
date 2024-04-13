@@ -61,35 +61,43 @@ export default function App() {
         </DataTable.Cell>
       </DataTable.Row>
       <DataTable.Header style={styles.tableHeader}> 
-        <DataTable.Title>Name</DataTable.Title> 
-        <DataTable.Title>Favourite Food</DataTable.Title> 
-        <DataTable.Title>Age</DataTable.Title> 
+        <DataTable.Title style={{flex: 1.3}}>Tên thiết bị</DataTable.Title> 
+        <DataTable.Title>Chế độ</DataTable.Title> 
+        <DataTable.Title>Trạng thái</DataTable.Title>
       </DataTable.Header> 
       <DataTable.Row> 
-        <DataTable.Cell>Radhika</DataTable.Cell> 
-        <DataTable.Cell>Dosa</DataTable.Cell> 
-        <DataTable.Cell>23</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1.3}}>Hệ thống tưới</DataTable.Cell> 
+        <DataTable.Cell>Thủ công</DataTable.Cell> 
+        <DataTable.Cell>Không hoạt động</DataTable.Cell>
       </DataTable.Row> 
   
       <DataTable.Row> 
-        <DataTable.Cell>Krishna</DataTable.Cell> 
-        <DataTable.Cell>Uttapam</DataTable.Cell> 
-        <DataTable.Cell>26</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1.3}}>Hệ thống chiếu sáng</DataTable.Cell> 
+        <DataTable.Cell>Tự động</DataTable.Cell> 
+        <DataTable.Cell>Đang hoạt động</DataTable.Cell>
       </DataTable.Row> 
       <DataTable.Row> 
-        <DataTable.Cell>Vanshika</DataTable.Cell> 
-        <DataTable.Cell>Brownie</DataTable.Cell> 
-        <DataTable.Cell>20</DataTable.Cell> 
+      <DataTable.Cell style={{flex: 1.3}}>Cảm biến nhiệt độ</DataTable.Cell> 
+        <DataTable.Cell>Thủ công</DataTable.Cell> 
+        <DataTable.Cell>Không hoạt động</DataTable.Cell> 
       </DataTable.Row>
-      
       <DataTable.Row> 
-        <DataTable.Cell>Teena</DataTable.Cell> 
-        <DataTable.Cell>Pizza</DataTable.Cell> 
-        <DataTable.Cell>24</DataTable.Cell> 
-      </DataTable.Row> 
+      <DataTable.Cell style={{flex: 1.3}}>Cảm biến độ ẩm</DataTable.Cell> 
+        <DataTable.Cell>Tự động</DataTable.Cell> 
+        <DataTable.Cell>Đang hoạt động</DataTable.Cell>
+      </DataTable.Row>
 
       <DataTable.Row>
-        <DataTable.Cell>
+        <DataTable.Cell style={{flex: 1.4}}>
+        <Button
+        onPress={() => {
+        }}
+        title="Custom device here"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
+        </DataTable.Cell>
+        <DataTable.Cell style={{flex: 1.1}}>
         <Button
         onPress={() => {
           navigation.navigate('History')
