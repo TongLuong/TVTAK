@@ -22,8 +22,11 @@ public class UserService {
 
         this.userRepository.save(user);
     }
-    public UserNoPassword handleLoginService(String email, String password){
-        User user = this.userRepository.findByEmail(email);
+    public UserNoPassword handleLoginService(String account, String password){
+        User user = this.userRepository.findByEmail(account);
+        if (user == null){
+            user = this.userRepository.findByUsername(account);
+        }
         if (user != null ) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(password, user.getPassword())) {

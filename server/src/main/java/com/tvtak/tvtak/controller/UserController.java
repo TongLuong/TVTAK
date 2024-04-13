@@ -27,9 +27,9 @@ public class UserController
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Object> handleLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<Object> handleLogin(@RequestParam("account") String account, @RequestParam("password") String password) {
         try {
-            UserNoPassword infoUser = this.userService.handleLoginService(email, password);
+            UserNoPassword infoUser = this.userService.handleLoginService(account, password);
 
             if (infoUser != null) {
                 return new ResponseEntity<>(infoUser, HttpStatus.OK);
