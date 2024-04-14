@@ -58,8 +58,6 @@ const AppButton2 = ({ onPress, title }) => (
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30,
-      marginTop: 15,
-      marginBottom: 15
     }}
   >
     <Text style={{ fontSize: 14, fontVariant: 'roboto', color: '#3CAF58' }}>
@@ -80,8 +78,6 @@ const AppButton4 = ({ onPress, title }) => (
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30,
-      marginTop: 15,
-      marginBottom: 15
     }}
   >
     <Text style={{ fontSize: 14, fontVariant: 'roboto', color: '#3CAF58' }}>
@@ -171,7 +167,7 @@ export default function App( {navigation} ) {
         <DataTable.Cell textStyle={{color: '#3CAF58'}}  >Đang hoạt động</DataTable.Cell>
       </DataTable.Row>
 
-      <DataTable.Row>
+      <DataTable.Row style={{padding: 30}}>
         <DataTable.Cell style={{flex: 1.1}} textStyle={{color: '#3CAF58'}}>
         <AppButton2 title={"Cài đặt thiết bị"}/>
         </DataTable.Cell>
