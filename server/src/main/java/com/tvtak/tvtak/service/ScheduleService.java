@@ -1,12 +1,16 @@
-package com.tvtak.tvtak.model.Schedule;
+package com.tvtak.tvtak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+
+import com.tvtak.tvtak.model.Schedule.Schedule;
+import com.tvtak.tvtak.repository.ScheduleRepository;
+
 import java.util.*;
 
 @Service
-public class ScheduleDAO 
+public class ScheduleService 
 {
     @Autowired
     private ScheduleRepository repository;

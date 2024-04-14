@@ -3,6 +3,7 @@ package com.tvtak.tvtak.model.Notification;
 import com.tvtak.tvtak.model.User.User;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @IdClass(NotificationId.class)
@@ -11,6 +12,7 @@ public class Notification
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Getter
     private long id;
 
     @Id
@@ -19,33 +21,10 @@ public class Notification
     private User user;
 
     @Column(name = "time")
+    @Setter @Getter
     private String time;
 
     @Column(name = "content")
+    @Setter @Getter
     private String content;
-
-    public long getId()
-    {
-        return this.id;
-    }
-
-    public String getTime()
-    {
-        return this.time;
-    }
-
-    public void setId(String time)
-    {
-        this.time = time;
-    }
-
-    public String getContent()
-    {
-        return this.content;
-    }
-
-    public void setContent(String cnt)
-    {
-        this.content = cnt;
-    }
 }

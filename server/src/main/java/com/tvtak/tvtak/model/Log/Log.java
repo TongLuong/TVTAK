@@ -1,6 +1,7 @@
 package com.tvtak.tvtak.model.Log;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import com.tvtak.tvtak.model.Device.Device;
 
@@ -10,40 +11,18 @@ public class Log
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Getter
     private long id;
 
     @Column(name = "time")
+    @Setter @Getter
     private String time;
 
     @Column(name = "message")
+    @Setter @Getter
     private String message;
 
     @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
-
-    public long getId()
-    {
-        return this.id;
-    }
-
-    public String getTime()
-    {
-        return this.time;
-    }
-
-    public void setId(String time)
-    {
-        this.time = time;
-    }
-
-    public String getMessage()
-    {
-        return this.time;
-    }
-
-    public void setMessage(String msg)
-    {
-        this.message = msg;
-    }
 }

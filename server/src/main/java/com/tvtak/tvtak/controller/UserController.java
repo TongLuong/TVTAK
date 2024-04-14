@@ -2,44 +2,68 @@ package com.tvtak.tvtak.controller;
 
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.User.UserNoPassword;
-import com.tvtak.tvtak.services.UserService;
+import com.tvtak.tvtak.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/user")
 public class UserController
 {
     @Autowired
     private UserService userService;
-    @PostMapping("/register-account")
-    public ResponseEntity<Object> newUser(@RequestBody User user) {
-        try {
-            this.userService.registerAccount(user);
-            return ResponseEntity.status(HttpStatus.OK).body("register account success");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to register: " + e.getMessage());
+
+    @PostMapping("/signup")
+    public ResponseEntity<Object> newUser(@RequestBody User user) 
+    {
+        try 
+        {
+            if (this.userService.registerAccount(user))
+                return new ResponseEntity<>("account registered successfully", HttpStatus.OK);
+            
+            return new ResponseEntity<>("account is already taken", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        catch (Exception e) 
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Object> handleLogin(@RequestParam("account") String account, @RequestParam("password") String password) {
-        try {
+    @GetMapping("/signin")
+    public ResponseEntity<Object> handleLogin(
+        @RequestParam("account") String account, 
+        @RequestParam("password") String password)
+    {
+        try 
+        {
             UserNoPassword infoUser = this.userService.handleLoginService(account, password);
 
-            if (infoUser != null) {
+            if (infoUser != null)
                 return new ResponseEntity<>(infoUser, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.BAD_REQUEST);
+            
+            return new ResponseEntity<>("login failed", HttpStatus.UNAUTHORIZED);
+        } 
+        catch (Exception e) 
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
+    @GetMapping("/get-all-user")
+    public ResponseEntity<List<User>> handleLogin()
+    {
+        try 
+        {
+            List<User> allUsers = this.userService.getAllUser();
+            return new ResponseEntity<>(allUsers, HttpStatus.OK);
+        } 
+        catch (Exception e) 
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
