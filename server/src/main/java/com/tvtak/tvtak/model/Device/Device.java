@@ -2,6 +2,7 @@ package com.tvtak.tvtak.model.Device;
 
 import jakarta.persistence.*;
 import java.util.*;
+import lombok.*;
 
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Schedule.Schedule;
@@ -14,15 +15,19 @@ public class Device
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Getter
     private long id;
 
     @Column(name = "name")
+    @Setter @Getter
     private String name;
 
     @Column(name = "status")
+    @Setter @Getter
     private boolean status; // 0: off, 1: on
 
     @Column(name = "type", nullable = false)
+    @Setter @Getter
     private String type; // "sensor" or "mechanical"
 
     @ManyToOne
@@ -38,46 +43,4 @@ public class Device
 
     @OneToMany(mappedBy = "sensor")
     private Set<Record> records;
-
-    public Device()
-    {
-
-    }
-
-    public long getId()
-    {
-        return this.id;
-    }
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public boolean getStatus()
-    {
-        return this.status;
-    }
-
-    public void setStatus(boolean status)
-    {
-        this.status = status;
-    }
-
-    public String getType()
-    {
-        return this.type;
-    }
-
-    public void setType(String type)
-    {
-        if (type != "sensor" && type != "mechanical")
-            throw new IllegalArgumentException();
-        this.type = type;
-    }
 }

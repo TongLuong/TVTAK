@@ -5,34 +5,36 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.tvtak.tvtak.model.Device.*;
+// import com.tvtak.tvtak.model.Device.*;
+import com.tvtak.tvtak.model.User.User;
+// import com.tvtak.tvtak.service.DeviceService;
+import com.tvtak.tvtak.service.UserService;
 
 @SpringBootTest
 class TvtakApplicationTests 
 {
+	// @Autowired
+	// private DeviceService deviceService;
+
 	@Autowired
-	private DeviceDAO deviceDao;
+	private UserService userService;
 
 	@Test
 	void contextLoads()
 	{
-		Device device = new Device();
-		device.setName("iot-light");
-		device.setStatus(false);
-		device.setType("sensor");
-		deviceDao.save(device);
-
-		Device device2 = new Device();
-		device2.setName("iot-humid");
-		device2.setStatus(false);
-		device2.setType("sensor");
-		deviceDao.save(device2);
-		deviceDao.delete(device);
+		User user = new User();
+		user.setEmail("account@gmail.com");
+		user.setUsername("account");
+		user.setPassword("1234");
+		user.setBio("helloworld");
+		user.setAddress("sun");
+		user.setPhone("012345678900");
+		userService.registerAccount(user);
 	}
 
 	@Test
 	void contextDeletes()
 	{
-		deviceDao.deleteAll();
+
 	}
 }

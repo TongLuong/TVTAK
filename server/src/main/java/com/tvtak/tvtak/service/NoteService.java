@@ -1,12 +1,16 @@
-package com.tvtak.tvtak.model.Note;
+package com.tvtak.tvtak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+
+import com.tvtak.tvtak.model.Note.Note;
+import com.tvtak.tvtak.repository.NoteRepository;
+
 import java.util.*;
 
 @Service
-public class NoteDAO 
+public class NoteService 
 {
     @Autowired
     private NoteRepository repository;

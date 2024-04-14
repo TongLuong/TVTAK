@@ -1,12 +1,16 @@
-package com.tvtak.tvtak.model.Record;
+package com.tvtak.tvtak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+
+import com.tvtak.tvtak.model.Record.Record;
+import com.tvtak.tvtak.repository.RecordRepository;
+
 import java.util.*;
 
 @Service
-public class RecordDAO 
+public class RecordService 
 {
     @Autowired
     private RecordRepository repository;
