@@ -26,7 +26,7 @@ export default function App({navigation}) {
               />
             </View>
             <View>
-              <TouchableOpacity style = {loginStyle.submitButton}>
+              <TouchableOpacity style = {loginStyle.submitButton} onPress={() => navigation.navigate('Account')}>
                 <Text style={ loginStyle.submitButtonText}>Đăng nhập</Text>
               </TouchableOpacity>
             </View>
@@ -48,6 +48,10 @@ export default function App({navigation}) {
       loginMain: {
         backgroundColor:'white',
         paddingHorizontal:30,
+        borderColor: 'black',
+        borderWidth: 1,
+        margin: 10,
+        height: 450
       },
       title:{
         marginTop: 30,
