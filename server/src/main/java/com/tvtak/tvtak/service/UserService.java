@@ -15,6 +15,11 @@ public class UserService
     @Autowired
     private UserRepository userRepository;
 
+    public void delete(User user)
+    {
+        userRepository.delete(user);
+    }
+
     public boolean registerAccount(User user)
     {
         if (this.userRepository.findByEmail(user.getEmail()) != null

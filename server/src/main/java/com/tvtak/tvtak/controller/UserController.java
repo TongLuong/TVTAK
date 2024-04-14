@@ -33,7 +33,7 @@ public class UserController
         }
     }
 
-    @GetMapping("/signin")
+    @GetMapping("/signing")
     public ResponseEntity<Object> handleLogin(
         @RequestParam("account") String account, 
         @RequestParam("password") String password)

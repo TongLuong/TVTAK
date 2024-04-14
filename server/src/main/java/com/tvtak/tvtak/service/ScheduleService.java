@@ -15,7 +15,7 @@ public class ScheduleService
     @Autowired
     private ScheduleRepository repository;
 
-    public void save(Schedule schedule)
+    public void createSchedule(Schedule schedule)
     {
         repository.save(schedule);
     }
