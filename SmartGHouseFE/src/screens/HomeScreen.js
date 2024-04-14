@@ -89,7 +89,7 @@ const AppButton4 = ({ onPress, title }) => (
 export default function App( {navigation} ) {
 
   return (
-  <>
+  <View style={{paddingTop: 108}}>
 
     <View style={{ margin: 10, backgroundColor: '#EFF9F1', borderRadius: 45, padding: 10, marginTop: 20}}>
       <View style={{ flexDirection: 'row', alignSelf: "center",justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1, marginBottom: 10, borderColor: '#3CAF58'}}>
@@ -178,7 +178,7 @@ export default function App( {navigation} ) {
     </DataTable> 
     </View>
 
-  </>
+  </View>
     );
   }
   

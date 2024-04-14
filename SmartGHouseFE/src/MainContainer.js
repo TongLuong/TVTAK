@@ -72,11 +72,11 @@ export default function App() {
           }}
         >
 
-            <Tab.Screen name={homeName} component={HomeScreen} />
-            <Tab.Screen name={manageName} component={ManageScreen} />
-            <Tab.Screen name={calendarName} component={CalendarScreen} />
-            <Tab.Screen name={historyName} component={HistoryScreen} />
-            <Tab.Screen name={userName} component={UserScreen} />
+            <Tab.Screen name={homeName} component={HomeScreen} options={{ headerShown: false }} />
+            <Tab.Screen name={manageName} component={ManageScreen} options={{ headerShown: false }}/>
+            <Tab.Screen name={calendarName} component={CalendarScreen} options={{ headerShown: false }}/>
+            <Tab.Screen name={historyName} component={HistoryScreen} options={{ headerShown: false }}/>
+            <Tab.Screen name={userName} component={UserScreen} options={{ headerShown: false }}/>
 
           </Tab.Navigator>
       </NavigationContainer>
