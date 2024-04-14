@@ -1,7 +1,13 @@
-package com.tvtak.tvtak.model;
+package com.tvtak.tvtak.model.Device;
 
 import jakarta.persistence.*;
 import java.util.*;
+import lombok.*;
+
+import com.tvtak.tvtak.model.User.User;
+import com.tvtak.tvtak.model.Schedule.Schedule;
+import com.tvtak.tvtak.model.Log.Log;
+import com.tvtak.tvtak.model.Record.Record;
 
 @Entity
 public class Device
@@ -9,16 +15,20 @@ public class Device
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Getter
     private long id;
 
     @Column(name = "name")
+    @Setter @Getter
     private String name;
 
     @Column(name = "status")
+    @Setter @Getter
     private boolean status; // 0: off, 1: on
 
-    @Column(name = "password", nullable = false)
-    private String type;
+    @Column(name = "type", nullable = false)
+    @Setter @Getter
+    private String type; // "sensor" or "mechanical"
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -33,39 +43,4 @@ public class Device
 
     @OneToMany(mappedBy = "sensor")
     private Set<Record> records;
-
-    public Device()
-    {
-
-    }
-
-    public long getId()
-    {
-        return this.id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return this.name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public boolean getStatus()
-    {
-        return this.status;
-    }
-
-    public void setName(boolean status)
-    {
-        this.status = status;
-    }
 }
