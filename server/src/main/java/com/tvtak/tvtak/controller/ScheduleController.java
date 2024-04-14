@@ -7,24 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/schedule")
 public class ScheduleController
 {
     @Autowired
     private ScheduleService schedService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<Object> newUser(@RequestBody Schedule sched) 
+    @PostMapping("/create-schedule")
+    public ResponseEntity<Object> newSched(
+        @RequestBody Schedule sched,
+        @RequestParam long user_id,
+        @RequestParam long device_id)
     {
-        try 
+        try
         {
-            // if (this.schedService.createSchedule(sched))
-            //     return new ResponseEntity<>("account registered successfully", HttpStatus.OK);
+            this.schedService.createSchedule(sched, user_id, device_id);
             
-            return new ResponseEntity<>("account is already taken", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("account registered successfully", HttpStatus.OK);
         }
         catch (Exception e) 
         {

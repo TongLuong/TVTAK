@@ -6,6 +6,7 @@ import java.util.*;
 import com.tvtak.tvtak.model.Note.Note;
 import com.tvtak.tvtak.model.Notification.Notification;
 import com.tvtak.tvtak.model.Schedule.Schedule;
+import com.tvtak.tvtak.model.Device.Device;
 import lombok.*;
 
 @Entity
@@ -41,15 +42,19 @@ public class User
     @Setter @Getter
     private String bio;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Setter @Getter
     private Set<Note> notes;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Setter @Getter
     private Set<Notification> notifications;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Setter @Getter
     private Set<Schedule> schedules;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Schedule> devices;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Setter @Getter
+    private Set<Device> devices;
 }

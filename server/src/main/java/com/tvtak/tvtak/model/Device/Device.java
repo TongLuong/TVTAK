@@ -36,10 +36,10 @@ public class Device
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
+    @Setter @Getter
     private Schedule schedule;
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @Setter @Getter
     private Set<Log> logs;
-
-
 }

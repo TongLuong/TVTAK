@@ -22,17 +22,21 @@ public class DeviceService
 
     @Autowired
     private AdafruitConnection adafruitConnection;
-    public String save(Device device, Long id)
+
+    public String save(Device device, long id, boolean createNewFeed)
     {
-        if (isExist(device.getName())){
+        if (isExist(device.getName()))
+        {
             return "device is exist";
         }
 
-        this.adafruitConnection.createFeed(device.getName());
+        if (createNewFeed)
+            this.adafruitConnection.createFeed(device.getName());
 
         //find user by id
         Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent())
+        {
             User user = userOptional.get();
             device.setUser(user);
         }
@@ -40,10 +44,13 @@ public class DeviceService
         this.deviceRepository.save(device);
         return "add device success";
     }
-    public boolean isExist(String name){
+
+    public boolean isExist(String name)
+    {
 
         return this.deviceRepository.findByName(name) != null;
     }
+
     public List<Device> getAllDevices()
     {
         List<Device> devices = new ArrayList<>();

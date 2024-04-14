@@ -1,6 +1,5 @@
 package com.tvtak.tvtak.repository;
 
-import com.tvtak.tvtak.model.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

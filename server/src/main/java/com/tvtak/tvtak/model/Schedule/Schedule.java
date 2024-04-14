@@ -25,7 +25,7 @@ public class Schedule
     @Setter @Getter
     private String date; // dd-MM-YYYY
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     @Setter @Getter
     private Set<Device> devices;
 

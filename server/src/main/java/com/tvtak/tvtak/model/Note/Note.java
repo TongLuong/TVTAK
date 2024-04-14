@@ -18,6 +18,7 @@ public class Note
     @Id
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
+    @Getter
     private User user;
 
     @Column(name = "content")
