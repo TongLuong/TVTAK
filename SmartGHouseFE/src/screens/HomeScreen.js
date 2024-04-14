@@ -90,7 +90,7 @@ const AppButton4 = ({ onPress, title }) => (
   </TouchableOpacity>
 );
 
-export default function App() {
+export default function App( {navigation} ) {
 
   return (
   <>
