@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
-import styles from '../styles/styles';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './LoginScreen'
+import SignupScreen from './SignUpScreen'
+import AuthopScreen from './AuthOptionScreen'
+
+const Stack = createStackNavigator();
 
 export default function App() {
     return (
-      <View style={styles.container}>
-        
-        <Text style={styles.baseText}>Welcome to User Screen</Text>
-  
-      </View>
+      <Stack.Navigator>
+        <Stack.Screen name="Authop" component={AuthopScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
     );
   }
-  
-  
