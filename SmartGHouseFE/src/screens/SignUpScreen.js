@@ -41,7 +41,7 @@ export default function App({navigation}) {
       </View>
       <View style = {{alignItems:'center'}}>
         <View>
-          <TouchableOpacity style = {signupStyle.submitButton}>
+          <TouchableOpacity style = {signupStyle.submitButton} onPress={() => navigation.navigate('Account')}>
             <Text style={ signupStyle.submitButtonText}>Đăng ký</Text>
           </TouchableOpacity>
         </View>
