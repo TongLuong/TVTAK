@@ -7,7 +7,6 @@ import lombok.*;
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Schedule.Schedule;
 import com.tvtak.tvtak.model.Log.Log;
-import com.tvtak.tvtak.model.Record.Record;
 
 @Entity
 public class Device
@@ -18,7 +17,7 @@ public class Device
     @Getter
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     @Setter @Getter
     private String name;
 
@@ -32,6 +31,7 @@ public class Device
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Setter @Getter
     private User user;
 
     @ManyToOne
@@ -41,6 +41,5 @@ public class Device
     @OneToMany(mappedBy = "device")
     private Set<Log> logs;
 
-    @OneToMany(mappedBy = "sensor")
-    private Set<Record> records;
+
 }
