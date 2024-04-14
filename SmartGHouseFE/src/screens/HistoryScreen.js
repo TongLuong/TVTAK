@@ -6,11 +6,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function App() {
     return (
     <>
- <View style={[styles.container, {marginTop: 88,marginLeft: 15, marginRight: 15, backgroundColor:'#EFF9F1'}]}>
+ <View style={[styles.container, {marginTop: 88,marginLeft: 15, marginRight: 15, backgroundColor:'#EFF9F1', borderRadius: 30}]}>
         
  <DataTable>
       <DataTable.Row>
-        <DataTable.Cell> <Text style={{fontSize: 23, color: '#3CAF58'}}> <Ionicons size={20} name="settings-sharp"/>  Lịch sử thiết bị</Text></DataTable.Cell>
+        <DataTable.Cell> <Text style={{fontSize: 23, color: '#3CAF58'}}> Lịch sử thiết bị</Text></DataTable.Cell>
         <DataTable.Cell style={{flex:0.8}}>
           <View style={{justifyContent: 'center', paddingBottom: 10}}>
           </View>
@@ -49,7 +49,19 @@ export default function App() {
         <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
         <DataTable.Cell style={{flex: 0.8}} textStyle={{color: '#3CAF58'}}>07:00</DataTable.Cell> 
         <DataTable.Cell style={{flex: 1.2}} textStyle={{color: '#3CAF58'}}>Hệ thống tưới</DataTable.Cell>
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bặt</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
+      </DataTable.Row> 
+      <DataTable.Row> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 0.8}} textStyle={{color: '#3CAF58'}}>07:00</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1.2}} textStyle={{color: '#3CAF58'}}>Máy bơm nước</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
+      </DataTable.Row> 
+      <DataTable.Row> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 0.8}} textStyle={{color: '#3CAF58'}}>07:00</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1.2}} textStyle={{color: '#3CAF58'}}>Máy bơm nước</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
       </DataTable.Row> 
       <DataTable.Row> 
         <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
@@ -62,15 +74,11 @@ export default function App() {
   
       </View>
 
-      <View style={[styles.container, {backgroundColor: '#EFF9F1', marginTop: 10 ,marginBottom: 80, marginLeft: 15, marginRight: 15}]}>
+      <View style={{backgroundColor: '#EFF9F1', marginTop: 10 ,marginBottom: 80, marginLeft: 15, marginRight: 15, borderRadius: 30}}>
         
       <DataTable>
       <DataTable.Row>
-        <DataTable.Cell> <Text style={{fontSize: 23, color: '#3CAF58'}}> <Ionicons size={20} name="settings-sharp"/>  Lịch sử Cảm biến</Text></DataTable.Cell>
-        <DataTable.Cell style={{flex:0.8}}>
-          <View style={{justifyContent: 'center', paddingBottom: 10}}>
-          </View>
-        </DataTable.Cell>
+        <DataTable.Cell> <Text style={{fontSize: 23, color: '#3CAF58'}}>Lịch sử Cảm biến</Text></DataTable.Cell>
       </DataTable.Row>
       <DataTable.Header> 
         <DataTable.Cell style={{flex: 1}}>
@@ -105,7 +113,7 @@ export default function App() {
         <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
         <DataTable.Cell style={{flex: 0.8}} textStyle={{color: '#3CAF58'}}>07:00</DataTable.Cell> 
         <DataTable.Cell style={{flex: 1.2}} textStyle={{color: '#3CAF58'}}>Ánh sáng</DataTable.Cell>
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bặt</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
       </DataTable.Row> 
       <DataTable.Row> 
         <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
@@ -114,6 +122,12 @@ export default function App() {
         <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
       </DataTable.Row> 
 
+      <DataTable.Row> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>14/04/2024</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 0.8}} textStyle={{color: '#3CAF58'}}>07:00</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1.2}} textStyle={{color: '#3CAF58'}}>Độ ẩm</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
+      </DataTable.Row> 
     </DataTable> 
   
       </View>

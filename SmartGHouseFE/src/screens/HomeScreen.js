@@ -60,7 +60,7 @@ const AppButton2 = ({ onPress, title }) => (
       paddingRight: 30,
     }}
   >
-    <Text style={{ fontSize: 14, fontVariant: 'roboto', color: '#3CAF58' }}>
+    <Text style={{ fontSize: 12, fontVariant: 'roboto', color: '#3CAF58' }}>
       {title}
     </Text>
   </TouchableOpacity>
@@ -80,7 +80,7 @@ const AppButton4 = ({ onPress, title }) => (
       paddingRight: 30,
     }}
   >
-    <Text style={{ fontSize: 14, fontVariant: 'roboto', color: '#3CAF58' }}>
+    <Text style={{ fontSize: 12, fontVariant: 'roboto', color: '#3CAF58' }}>
       {title}
     </Text>
   </TouchableOpacity>
@@ -89,7 +89,7 @@ const AppButton4 = ({ onPress, title }) => (
 export default function App( {navigation} ) {
 
   return (
-  <View style={{paddingTop: 108}}>
+  <View style={{paddingTop: 50}}>
 
     <View style={{ margin: 10, backgroundColor: '#EFF9F1', borderRadius: 45, padding: 10, marginTop: 20}}>
       <View style={{ flexDirection: 'row', alignSelf: "center",justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1, marginBottom: 10, borderColor: '#3CAF58'}}>
@@ -148,23 +148,23 @@ export default function App( {navigation} ) {
       <DataTable.Row> 
         <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Hệ thống tưới</DataTable.Cell> 
         <DataTable.Cell textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Không hoạt động</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
       </DataTable.Row> 
   
       <DataTable.Row> 
         <DataTable.Cell style={{flex: 1.3 }} textStyle={{color: '#3CAF58'}}>Hệ thống chiếu sáng</DataTable.Cell> 
         <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Đang hoạt động</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
       </DataTable.Row> 
       <DataTable.Row> 
       <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Cảm biến nhiệt độ</DataTable.Cell> 
         <DataTable.Cell textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Không hoạt động</DataTable.Cell> 
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell> 
       </DataTable.Row>
       <DataTable.Row> 
       <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Cảm biến độ ẩm</DataTable.Cell> 
         <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}  >Đang hoạt động</DataTable.Cell>
+        <DataTable.Cell textStyle={{color: '#3CAF58'}}  >Bật</DataTable.Cell>
       </DataTable.Row>
 
       <DataTable.Row style={{padding: 30}}>
