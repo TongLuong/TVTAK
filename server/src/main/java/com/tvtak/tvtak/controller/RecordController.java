@@ -26,4 +26,32 @@ public class RecordController {
             return new ResponseEntity<>("Error while fetching data from Adafruit API", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/get-data-last")
+    public ResponseEntity<Object> getRecordDeviceLast(@RequestParam("feed_id") String feed_id)
+    {
+        try {
+            FeedData lastData = recordService.getFeedDataLast(feed_id);
+
+            if (lastData != null) return new ResponseEntity<>(lastData, HttpStatus.OK);
+
+            return new ResponseEntity<>("No data available for the specified feed", HttpStatus.NOT_FOUND);
+        } catch (RestClientException e) {
+            return new ResponseEntity<>("Error while fetching data from Adafruit API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-data-by")
+    public ResponseEntity<Object> getRecordByMonth(
+            @RequestParam("feed_id") String feed_id,
+            @RequestParam("month") int month,
+            @RequestParam("year") int year)
+    {
+        try {
+            List<FeedData> filterData = recordService.getFeedDataByMonth(month, year, feed_id);
+
+            return new ResponseEntity<>(filterData, HttpStatus.OK);
+
+        } catch (RestClientException e) {
+            return new ResponseEntity<>("Error while fetching data from Adafruit API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

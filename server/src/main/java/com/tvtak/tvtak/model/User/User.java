@@ -1,5 +1,6 @@
 package com.tvtak.tvtak.model.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +36,5 @@ public class User
     @Column(name = "bio")
     @Setter @Getter
     private String bio;
+
 }
