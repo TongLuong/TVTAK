@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tvtak.tvtak.model.Schedule.Schedule;
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Device.Device;
-import com.tvtak.tvtak.repository.ScheduleRepository;
-import com.tvtak.tvtak.repository.UserRepository;
-import com.tvtak.tvtak.repository.DeviceRepository;
+import com.tvtak.tvtak.repository.*;
 
 import java.util.*;
 
@@ -32,32 +30,21 @@ public class ScheduleService
         //find user by id
         Optional<User> userOptional = userRepository.findById(user_id);
         if (userOptional.isPresent())
-        {
-            User user = userOptional.get();
-            schedule.setUser(user);
-        }
-        
-        //find device by id
-        Optional<Device> deviceOptional = deviceRepository.findById(device_id);
+            schedule.setUser(userOptional.get());
+
+        Optional<Device> deviceOptional = deviceRepository.findById(
+                                                            device_id);
+        Device device = null;
         if (deviceOptional.isPresent())
         {
-            Device device = deviceOptional.get();
-            Set<Device> temp = schedule.getDevices();
-            if (temp == null)
-                temp = new HashSet<>();
-            
-            temp.add(device);
-            
-            schedule.setDevices(temp);
+            device = deviceOptional.get();
+            device.setSchedule(schedule);
         }
-        
-        try
-        {schedRepository.save(schedule);
-        }
-        catch (Exception e)
-        {
-            System.out.println("yo" + e);
-        }
+
+        schedRepository.save(schedule);
+
+        if (device != null)
+            deviceRepository.save(device);
     }
 
     public List<Schedule> getAllSchedules()

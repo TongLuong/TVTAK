@@ -25,11 +25,29 @@ public class ScheduleController
         {
             this.schedService.createSchedule(sched, user_id, device_id);
             
-            return new ResponseEntity<>("account registered successfully", HttpStatus.OK);
+            return new ResponseEntity<>("schedule created successfully", HttpStatus.OK);
         }
         catch (Exception e) 
         {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @PostMapping("/create-schedule")
+    // public ResponseEntity<Object> newSched(
+    //     @RequestBody Schedule sched,
+    //     @RequestParam long user_id,
+    //     @RequestParam long device_id)
+    // {
+    //     try
+    //     {
+    //         this.schedService.createSchedule(sched, user_id, device_id);
+            
+    //         return new ResponseEntity<>("schedule created successfully", HttpStatus.OK);
+    //     }
+    //     catch (Exception e) 
+    //     {
+    //         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 }

@@ -1,10 +1,8 @@
 package com.tvtak.tvtak.model.Schedule;
 
 import jakarta.persistence.*;
-import java.util.*;
 
 import com.tvtak.tvtak.model.User.User;
-import com.tvtak.tvtak.model.Device.Device;
 
 import lombok.*;
 
@@ -25,9 +23,13 @@ public class Schedule
     @Setter @Getter
     private String date; // dd-MM-YYYY
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
+    @Column(name = "start_time", nullable = false)
     @Setter @Getter
-    private Set<Device> devices;
+    private String start_time; // HH:mm:ss
+
+    @Column(name = "end_time", nullable = false)
+    @Setter @Getter
+    private String end_time; // HH:mm:ss
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,12 +1,10 @@
 package com.tvtak.tvtak.model.Device;
 
 import jakarta.persistence.*;
-import java.util.*;
 import lombok.*;
 
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Schedule.Schedule;
-import com.tvtak.tvtak.model.Log.Log;
 
 @Entity
 public class Device
@@ -38,8 +36,4 @@ public class Device
     @JoinColumn(name = "schedule_id")
     @Setter @Getter
     private Schedule schedule;
-
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
-    @Setter @Getter
-    private Set<Log> logs;
 }

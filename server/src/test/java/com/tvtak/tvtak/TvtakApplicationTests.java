@@ -55,7 +55,7 @@ class TvtakApplicationTests
 	}
 
 	@Test
-	void contextDeletes()
+	void contextTests()
 	{
 
 	}
