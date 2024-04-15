@@ -10,7 +10,7 @@ import lombok.*;
 public class Note
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     @Getter
     private long id;
@@ -18,10 +18,15 @@ public class Note
     @Id
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
-    @Getter
+    @Setter @Getter
     private User user;
 
     @Column(name = "content")
     @Setter @Getter
     private String content;
+
+    public void assignNew(Note newNote)
+    {
+        this.content = newNote.content;
+    }
 }

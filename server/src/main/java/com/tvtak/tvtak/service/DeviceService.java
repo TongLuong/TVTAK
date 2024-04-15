@@ -3,7 +3,6 @@ package com.tvtak.tvtak.service;
 import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import com.tvtak.tvtak.model.Device.Device;
@@ -53,9 +52,7 @@ public class DeviceService
 
     public List<Device> getAllDevices()
     {
-        List<Device> devices = new ArrayList<>();
-        Streamable.of(deviceRepository.findAll())
-                    .forEach(devices::add);
+        List<Device> devices = deviceRepository.findAll();
         return devices;
     }
 

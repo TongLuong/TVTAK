@@ -8,5 +8,5 @@ import com.tvtak.tvtak.model.Note.Note;
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Long>
 {
-    
+    Note findByIdAndUser_id(long id, long user_id);
 }
