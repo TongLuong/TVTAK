@@ -10,7 +10,7 @@ import lombok.*;
 public class Notification
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     @Getter
     private long id;
@@ -18,6 +18,7 @@ public class Notification
     @Id
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
+    @Getter
     private User user;
 
     @Column(name = "time")

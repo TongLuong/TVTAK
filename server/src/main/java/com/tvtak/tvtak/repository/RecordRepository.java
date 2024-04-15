@@ -1,12 +1,7 @@
-package com.tvtak.tvtak.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.tvtak.tvtak.model.Record.Record;
-
-@Repository
-public interface RecordRepository extends JpaRepository<Record, Long>
-{
-    
-}
+//package com.tvtak.tvtak.repository;
+//
+//import com.tvtak.tvtak.model.Notification.Notification;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//public interface RecordRepository extends JpaRepository<Notification, Long> {
+//}

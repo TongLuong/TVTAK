@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-// import com.tvtak.tvtak.model.Device.*;
+import com.tvtak.tvtak.model.Device.*;
 import com.tvtak.tvtak.model.User.User;
-// import com.tvtak.tvtak.service.DeviceService;
+import com.tvtak.tvtak.service.DeviceService;
 import com.tvtak.tvtak.service.UserService;
 
 @SpringBootTest
 class TvtakApplicationTests 
 {
-	// @Autowired
-	// private DeviceService deviceService;
+	@Autowired
+	private DeviceService deviceService;
 
 	@Autowired
 	private UserService userService;
@@ -22,18 +22,43 @@ class TvtakApplicationTests
 	@Test
 	void contextLoads()
 	{
+		// add data
 		User user = new User();
-		user.setEmail("account@gmail.com");
-		user.setUsername("account");
-		user.setPassword("1234");
-		user.setBio("helloworld");
-		user.setAddress("sun");
-		user.setPhone("012345678900");
+		user.setEmail("hiwib65173@etopys.com");
+		user.setUsername("DADN_CNPM_3");
+		user.setPassword("tvtak3_dadn_cnpm");
+		user.setBio("");
+		user.setAddress("Ho Chi Minh City");
+		user.setPhone("0123456789");
 		userService.registerAccount(user);
+
+		Device light = new Device();
+		light.setName("light");
+		light.setStatus(0);
+		light.setType("sensor");
+		light.setUser(user);
+		light.setSwitchName("manual-light");
+		deviceService.save(light, user.getId(), false);
+
+		Device temp = new Device();
+		temp.setName("temp");
+		temp.setStatus(0);
+		temp.setType("sensor");
+		temp.setUser(user);
+		temp.setSwitchName("manual-temp");
+		deviceService.save(temp, user.getId(), false);
+
+		Device pump = new Device();
+		pump.setName("pump");
+		pump.setStatus(0);
+		pump.setType("sensor");
+		pump.setUser(user);
+		pump.setSwitchName("manual-pump");
+		deviceService.save(pump, user.getId(), false);
 	}
 
 	@Test
-	void contextDeletes()
+	void contextTests()
 	{
 
 	}

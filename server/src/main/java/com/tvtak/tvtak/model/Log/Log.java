@@ -24,5 +24,6 @@ public class Log
 
     @ManyToOne
     @JoinColumn(name = "device_id")
+    @Setter @Getter
     private Device device;
 }

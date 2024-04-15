@@ -6,7 +6,6 @@ import com.tvtak.tvtak.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.data.util.Streamable;
 import java.util.*;
 
 @Service
@@ -14,6 +13,11 @@ public class UserService
 {
     @Autowired
     private UserRepository userRepository;
+
+    public void delete(User user)
+    {
+        userRepository.delete(user);
+    }
 
     public boolean registerAccount(User user)
     {
@@ -59,9 +63,7 @@ public class UserService
 
     public List<User> getAllUser()
     {
-        List<User> users = new ArrayList<>();
-        Streamable.of(userRepository.findAll())
-                    .forEach(users::add);
+        List<User> users = userRepository.findAll();
         return users;
     }
 }

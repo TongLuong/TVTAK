@@ -11,3 +11,4 @@ public class TvtakApplication
 		SpringApplication.run(TvtakApplication.class, args);
 	}
 }
+

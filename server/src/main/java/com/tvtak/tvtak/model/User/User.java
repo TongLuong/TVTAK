@@ -1,11 +1,7 @@
 package com.tvtak.tvtak.model.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.*;
-
-import com.tvtak.tvtak.model.Note.Note;
-import com.tvtak.tvtak.model.Notification.Notification;
-import com.tvtak.tvtak.model.Schedule.Schedule;
 import lombok.*;
 
 @Entity
@@ -41,15 +37,4 @@ public class User
     @Setter @Getter
     private String bio;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Note> notes;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Notification> notifications;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Schedule> schedules;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Schedule> devices;
 }

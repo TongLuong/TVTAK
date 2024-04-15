@@ -1,7 +1,6 @@
 package com.tvtak.tvtak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import com.tvtak.tvtak.model.Notification.Notification;
@@ -22,9 +21,7 @@ public class NotificationService
 
     public List<Notification> getAllNotifications()
     {
-        List<Notification> notis = new ArrayList<>();
-        Streamable.of(repository.findAll())
-                    .forEach(notis::add);
+        List<Notification> notis = repository.findAll();
         return notis;
     }
 
