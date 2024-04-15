@@ -19,9 +19,13 @@ public class Device
     @Setter @Getter
     private String name;
 
+    @Column(name = "switch_name", unique = true, nullable = false)
+    @Setter @Getter
+    private String switchName;
+
     @Column(name = "status")
     @Setter @Getter
-    private boolean status; // 0: off, 1: on
+    private int status; // 0: off, 1: on
 
     @Column(name = "type", nullable = false)
     @Setter @Getter
@@ -36,4 +40,5 @@ public class Device
     @JoinColumn(name = "schedule_id")
     @Setter @Getter
     private Schedule schedule;
+
 }

@@ -34,23 +34,26 @@ class TvtakApplicationTests
 
 		Device light = new Device();
 		light.setName("light");
-		light.setStatus(false);
+		light.setStatus(0);
 		light.setType("sensor");
 		light.setUser(user);
+		light.setSwitchName("manual-light");
 		deviceService.save(light, user.getId(), false);
 
 		Device temp = new Device();
 		temp.setName("temp");
-		temp.setStatus(false);
+		temp.setStatus(0);
 		temp.setType("sensor");
 		temp.setUser(user);
+		temp.setSwitchName("manual-temp");
 		deviceService.save(temp, user.getId(), false);
 
 		Device pump = new Device();
 		pump.setName("pump");
-		pump.setStatus(false);
+		pump.setStatus(0);
 		pump.setType("sensor");
 		pump.setUser(user);
+		pump.setSwitchName("manual-pump");
 		deviceService.save(pump, user.getId(), false);
 	}
 

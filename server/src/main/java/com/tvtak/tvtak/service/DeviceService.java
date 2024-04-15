@@ -51,19 +51,50 @@ public class DeviceService
         return this.deviceRepository.findByName(name) != null;
     }
 
-    public List<Device> getAllDevices()
+    public List<Device> getAllDevices(Long user_id)
+
     {
-        List<Device> devices = new ArrayList<>();
-        Streamable.of(deviceRepository.findAll())
-                    .forEach(devices::add);
-        return devices;
+
+        return this.deviceRepository.findByUserId(user_id);
     }
 
-    public void delete(Device device)
+    public String delete(Long device_id, Long user_id)
     {
-        deviceRepository.delete(device);
-    }
+        try {
+            Optional<Device> deviceOptional = Optional.ofNullable(deviceRepository.findByIdAndUserId(device_id, user_id));
+            if (deviceOptional.isPresent()) {
+                Device device = deviceOptional.get();
+                adafruitConnection.deleteFeed(device.getName());
+                deviceRepository.delete(device);
 
+                return "Delete success";
+            } else {
+                return "Device not found for the user";
+            }
+
+        } catch (Exception e) {
+            return "Failed to delete";
+        }
+    }
+    public String toggleStatus(Long device_id, Long user_id, int status) {
+        try {
+            Optional<Device> deviceOptional = Optional.ofNullable(deviceRepository.findByIdAndUserId(device_id, user_id));
+            if (deviceOptional.isPresent()) {
+                Device device = deviceOptional.get();
+                String data = String.valueOf(status);
+                adafruitConnection.sendFeedData(data, device.getSwitchName());
+
+                device.setStatus(status);
+                deviceRepository.save(device);
+
+                return "Status updated successfully";
+            } else {
+                return "Device not found for the user";
+            }
+        } catch (Exception e) {
+            return "Failed to update status";
+        }
+    }
     public void deleteAll()
     {
         deviceRepository.deleteAll();
