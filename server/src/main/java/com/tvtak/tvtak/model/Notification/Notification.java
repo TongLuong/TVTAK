@@ -10,7 +10,7 @@ import lombok.*;
 public class Notification
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id")
     @Getter
     private long id;

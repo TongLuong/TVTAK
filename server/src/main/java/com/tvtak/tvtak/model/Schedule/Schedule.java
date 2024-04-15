@@ -35,4 +35,12 @@ public class Schedule
     @JoinColumn(name = "user_id")
     @Setter @Getter
     private User user;
+
+    public void assignNew(Schedule newSched)
+    {
+        this.type = newSched.type;
+        this.date = newSched.date;
+        this.start_time = newSched.start_time;
+        this.end_time = newSched.end_time;
+    }
 }
