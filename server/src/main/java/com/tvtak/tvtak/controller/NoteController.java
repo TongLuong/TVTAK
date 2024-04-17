@@ -22,9 +22,9 @@ public class NoteController
     {
         try
         {
-            this.noteService.createNewNote(note, user_id);
+            Object res = this.noteService.createNewNote(note, user_id);
 
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
         }
         catch (Exception e)

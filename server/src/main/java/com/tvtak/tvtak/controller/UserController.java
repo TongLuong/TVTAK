@@ -22,8 +22,9 @@ public class UserController
     {
         try 
         {
-            if (this.userService.registerAccount(user))
-                return new ResponseEntity<>("account registered successfully", HttpStatus.OK);
+            Object[] res = this.userService.registerAccount(user);
+            if ((boolean)res[0])
+                return new ResponseEntity<>(res[1], HttpStatus.OK);
             
             return new ResponseEntity<>("account is already taken", HttpStatus.UNPROCESSABLE_ENTITY);
         }

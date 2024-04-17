@@ -1,5 +1,4 @@
 package com.tvtak.tvtak.service;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tvtak.tvtak.model.Record.FeedData;
