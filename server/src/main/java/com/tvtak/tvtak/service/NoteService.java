@@ -12,7 +12,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class NoteService 
@@ -32,10 +31,11 @@ public class NoteService
         Optional<User> userOptional = userRepository.findById(user_id);
         if (userOptional.isPresent())
         {
-            note.setUser(userOptional.get());
+            User user = userOptional.get();
+            if (!em.contains(user))
+                em.merge(user);
 
-            if (!em.contains(userOptional.get()))
-                em.merge(userOptional.get());
+            note.setUser(user);
         }
         
         return noteRepository.save(note).getId();
@@ -58,10 +58,7 @@ public class NoteService
 
     public List<Note> getAllNotesByUser(long user_id)
     {
-        return noteRepository.findAll()
-                            .stream()
-                            .filter(x -> x.getUser().getId() == user_id)
-                            .collect(Collectors.toList());
+        return noteRepository.findAllByUser_id(user_id);
     }
 
     @Transactional

@@ -55,7 +55,7 @@ public class ScheduleController
         }
     }
 
-    @GetMapping("/get-all-schedule")
+    @GetMapping("/get-all-schedules")
     public ResponseEntity<List<Schedule>> getAllSchedByUser(
         @RequestParam long user_id)
     {

@@ -18,12 +18,12 @@ public class Notification
     @Id
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id")
-    @Getter
+    @Setter @Getter
     private User user;
 
     @Column(name = "time")
     @Setter @Getter
-    private String time;
+    private String time; // dd-MM-YYYY
 
     @Column(name = "content")
     @Setter @Getter

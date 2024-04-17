@@ -53,7 +53,7 @@ public class NoteController
         }
     }
 
-    @GetMapping("/get-all-note")
+    @GetMapping("/get-all-notes")
     public ResponseEntity<List<Note>> getAllNotesByUser(
         @RequestParam long user_id)
     {
