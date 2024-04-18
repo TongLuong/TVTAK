@@ -1,6 +1,5 @@
 package com.tvtak.tvtak.model.User;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

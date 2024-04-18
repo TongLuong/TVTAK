@@ -19,11 +19,11 @@ public class UserService
         userRepository.delete(user);
     }
 
-    public boolean registerAccount(User user)
+    public Object[] registerAccount(User user)
     {
         if (this.userRepository.findByEmail(user.getEmail()) != null
         || this.userRepository.findByEmail(user.getUsername()) != null)
-            return false;
+            return new Object[] {false, ""};
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -34,7 +34,7 @@ public class UserService
         user.setPassword(hashedPassword);
 
         this.userRepository.save(user);
-        return true;
+        return new Object[] {true, Long.toString(user.getId())};
     }
 
     public UserNoPassword handleLoginService(String account, String password)

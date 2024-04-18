@@ -24,9 +24,9 @@ public class ScheduleController
     {
         try
         {
-            this.schedService.createSchedule(sched, user_id, device_id);
+            Object res = this.schedService.createSchedule(sched, user_id, device_id);
             
-            return new ResponseEntity<>("schedule created successfully", HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }
         catch (Exception e) 
         {
@@ -55,7 +55,7 @@ public class ScheduleController
         }
     }
 
-    @GetMapping("/get-all-schedule")
+    @GetMapping("/get-all-schedules")
     public ResponseEntity<List<Schedule>> getAllSchedByUser(
         @RequestParam long user_id)
     {

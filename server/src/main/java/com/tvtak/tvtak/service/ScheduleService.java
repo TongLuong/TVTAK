@@ -8,11 +8,17 @@ import com.tvtak.tvtak.model.User.User;
 import com.tvtak.tvtak.model.Device.Device;
 import com.tvtak.tvtak.repository.*;
 
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+
 import java.util.*;
 
 @Service
 public class ScheduleService 
 {
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     private ScheduleRepository schedRepository;
 
@@ -22,14 +28,20 @@ public class ScheduleService
     @Autowired
     private DeviceRepository deviceRepository;
 
-    public void createSchedule(Schedule schedule,
+    @Transactional
+    public Object createSchedule(Schedule schedule,
                                 long user_id,
                                 long device_id)
     {
         //find user by id
         Optional<User> userOptional = userRepository.findById(user_id);
         if (userOptional.isPresent())
+        {
             schedule.setUser(userOptional.get());
+
+            if (!em.contains(userOptional.get()))
+                em.merge(userOptional.get());
+        }
 
         // find device by id
         Optional<Device> deviceOptional = deviceRepository.findById(
@@ -38,6 +50,10 @@ public class ScheduleService
         if (deviceOptional.isPresent())
         {
             device = deviceOptional.get();
+
+            if (!em.contains(device))
+                em.merge(device);
+
             device.setSchedule(schedule);
         }
 
@@ -45,8 +61,10 @@ public class ScheduleService
 
         if (device != null)
             deviceRepository.save(device);
+        return device.getId();
     }
 
+    @Transactional
     public boolean editSchedule(Schedule schedule,
                                 long schedule_id,
                                 long user_id)
@@ -57,6 +75,10 @@ public class ScheduleService
         if (schedOptional.isPresent())
         {
             Schedule sched = schedOptional.get();
+
+            if (!em.contains(sched))
+                em.merge(sched);
+
             if (sched.getUser().getId() == user_id)
             {
                 sched.assignNew(schedule);
@@ -72,6 +94,7 @@ public class ScheduleService
         return schedRepository.findByUser_id(user_id);
     }
 
+    @Transactional
     public void deleteSchedule(long schedule_id, long user_id)
     {
         Optional<User> userOptional = userRepository.findById(user_id);
@@ -79,6 +102,9 @@ public class ScheduleService
         {
             if (userOptional.get().getId() != user_id)
                 return;
+
+            if (!em.contains(userOptional.get()))
+                em.merge(userOptional.get());
         }
         else
             return;
@@ -88,6 +114,10 @@ public class ScheduleService
         for (Device device : devices)
         {
             device.setSchedule(null);
+
+            if (!em.contains(device))
+                em.merge(device);
+
             deviceRepository.save(device);
         }
 
