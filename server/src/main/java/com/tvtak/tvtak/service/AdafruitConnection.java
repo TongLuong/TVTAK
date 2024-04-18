@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 public class AdafruitConnection
 {
-
     private final String AIO_USERNAME;
     private final String AIO_KEY;
     private final String BASE_URL;
@@ -51,6 +50,7 @@ public class AdafruitConnection
             e.printStackTrace();
         }
     }
+
     public List<FeedData> getFeedData(String feed_id) 
     {
         String feedData_api = this.BASE_URL + feed_id + "/data";
@@ -86,6 +86,7 @@ public class AdafruitConnection
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForLocation(this.BASE_URL, requestEntity);
     }
+
     public void deleteFeed(String feedName) {
         // Construct the URL for deleting the feed
         String deleteFeedUrl = this.BASE_URL + feedName;
