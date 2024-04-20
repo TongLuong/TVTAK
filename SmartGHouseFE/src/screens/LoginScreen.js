@@ -1,38 +1,41 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useForm } from "react-hook-form";
+//import { useForm } from "react-hook-form";
 import axiosInst from "../axios/axiosClient";
 import { useState } from 'react';
-import axios from "axios";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function App({navigation}) {
-    const {register, handleSubmit} = useForm({
-      defaultValues: {username: "", password: ""}
-    });
-
     const [username, setUsername] = useState("");
     const [pass, setPass] = useState("");
 
+    // -1: login failed, 1: login succeeded, 0: not done
+    const [loginStatus, setLoginStatus] = useState(0);
+
     const onSignInSubmit = async () => {
-      // await axiosInst.get(
-      //   "/api/user/signin",
-      //   {
-      //     account: username,
-      //     password: pass
-      //   })
-      //   .then(res => {
-      //     console.log(res.data);
-      //   })
-      //   .catch(e => console.log(e));
-      console.log("yo");
       await axiosInst.get(
-        "test")
-        .then(res => {
-          console.log("hello");
+        "/api/user/signin",
+        {
+          params: {
+            account: username,
+            password: pass
+          }
         })
-        .catch(e => console.log(e));
-        console.log("yo2");
+        .then(res => {
+          if (res.status == 200)
+            {
+              setLoginStatus(1);
+              navigation.navigate('Account');
+          }
+        })
+        .catch(e => {
+          console.log(e.response.status + ": " + e.response.data);
+          setLoginStatus(-1);
+        });
+        // e.message: status code
+        // e.response.data: body
+        // e.response.status
+        // e.response.header
     };
 
     return (
@@ -43,9 +46,8 @@ export default function App({navigation}) {
           </View>
           <View style = {{flexDirection:'column'}}>
             <View>
-              <Text style = {loginStyle.inputTitle}>Địa chỉ email</Text>
+              <Text style = {loginStyle.inputTitle}>Tên đăng nhập hoặc email</Text>
               <TextInput
-                //{...register("username", { required: "field cannot be empty" })}
                 onChangeText={(text) => setUsername(text)}
                 style = {loginStyle.input}
                 placeholder=''
@@ -54,8 +56,7 @@ export default function App({navigation}) {
             </View>
             <View>
               <Text style = {loginStyle.inputTitle}>Mật khẩu</Text>
-              <TextInput 
-                //{...register("password")}
+              <TextInput
                 onChangeText={(text) => setPass(text)}
                 style = {loginStyle.input}
                 placeholder=''
@@ -63,9 +64,9 @@ export default function App({navigation}) {
               />
             </View>
             <View style = {{marginTop: 10}}>
+              {loginStatus == -1 && <Text style = {loginStyle.failedText}>Sai tên đăng nhập hoặc mật khẩu!</Text>}
               <TouchableOpacity style = {loginStyle.submitButton}
                 onPress={() => {
-                  //navigation.navigate('Account')}
                   onSignInSubmit()
                   }}>
                 <Text style={ loginStyle.submitButtonText}>Đăng nhập</Text>
@@ -121,6 +122,12 @@ export default function App({navigation}) {
         fontVariant:'roboto' ,
         fontWeight:'regular', 
         color:'black'
+      },
+      failedText:{
+        fontVariant:'roboto',
+        fontWeight:'regular',
+        textAlign: 'center',
+        color:'red'
       },
       submitButton: {
         backgroundColor: '#3CAF58',
