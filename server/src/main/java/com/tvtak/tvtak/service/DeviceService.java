@@ -29,15 +29,12 @@ public class DeviceService
     private AdafruitConnection adafruitConnection;
 
     @Transactional
-    public String save(Device device, long id, boolean createNewFeed)
+    public Object save(Device device, long id)
     {
         if (isExist(device.getName()))
         {
             return "device is exist";
         }
-
-        if (createNewFeed)
-            this.adafruitConnection.createFeed(device.getName());
 
         //find user by id
         Optional<User> userOptional = userRepository.findById(id);
@@ -51,8 +48,22 @@ public class DeviceService
             device.setUser(user);
         }
 
-        this.deviceRepository.save(device);
-        return "add device success";
+        long res = -1;
+        try
+        {
+            res = this.deviceRepository.save(device).getId();
+
+            this.adafruitConnection.createFeed(device.getName());
+            if (device.getSwitch_name() == null)
+                this.adafruitConnection.createFeed("manual-" + device.getName());
+            else
+                this.adafruitConnection.createFeed(device.getSwitch_name());
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+        return res;
     }
 
     public boolean isExist(String name)
@@ -79,6 +90,7 @@ public class DeviceService
                     em.merge(device);
 
                 adafruitConnection.deleteFeed(device.getName());
+                adafruitConnection.deleteFeed(device.getSwitch_name());
                 deviceRepository.delete(device);
 
                 return "Delete success";
@@ -107,7 +119,7 @@ public class DeviceService
                     em.merge(device);
 
                 String data = String.valueOf(status);
-                adafruitConnection.sendFeedData(data, device.getSwitchName());
+                adafruitConnection.sendFeedData(data, device.getSwitch_name());
 
                 device.setStatus(status);
                 deviceRepository.save(device);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/user")
 public class UserController
 {
@@ -28,13 +29,13 @@ public class UserController
             
             return new ResponseEntity<>("account is already taken", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/signing")
+    @GetMapping("/signin")
     public ResponseEntity<Object> handleLogin(
         @RequestParam("account") String account, 
         @RequestParam("password") String password)
@@ -48,13 +49,13 @@ public class UserController
             
             return new ResponseEntity<>("login failed", HttpStatus.UNAUTHORIZED);
         } 
-        catch (Exception e) 
+        catch (Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/get-all-user")
+    @GetMapping("/get-all-users")
     public ResponseEntity<List<User>> handleLogin()
     {
         try 
@@ -62,7 +63,7 @@ public class UserController
             List<User> allUsers = this.userService.getAllUser();
             return new ResponseEntity<>(allUsers, HttpStatus.OK);
         } 
-        catch (Exception e) 
+        catch (Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

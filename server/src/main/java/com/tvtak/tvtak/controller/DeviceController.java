@@ -11,24 +11,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/device")
-public class DeviceController {
+public class DeviceController 
+{
     @Autowired
     private DeviceService deviceService;
+
     @PostMapping("/add-device")
-    public ResponseEntity<Object> newDevice(@RequestBody Device device, @RequestParam("user_id") Long user_id)
+    public ResponseEntity<Object> newDevice(
+        @RequestBody Device device,
+        @RequestParam("user_id") Long user_id)
     {
         try
         {
-            String response = this.deviceService.save(device, user_id, true);
+            Object response = this.deviceService.save(device, user_id);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception e)
         {
+            System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @DeleteMapping("/delete-device")
-    public ResponseEntity<Object> delDevice(@RequestParam("device_id") Long device_id, @RequestParam("user_id") Long user_id)
+    public ResponseEntity<Object> delDevice(
+        @RequestParam("device_id") Long device_id,
+        @RequestParam("user_id") Long user_id)
     {
         try
         {
@@ -40,16 +48,15 @@ public class DeviceController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/get-all-device")
-    public ResponseEntity<Object> getAllDevice( @RequestParam("user_id") Long user_id)
+
+    @GetMapping("/get-all-devices")
+    public ResponseEntity<Object> getAllDevice(
+        @RequestParam("user_id") Long user_id)
     {
         try
         {
             List<Device> devices = this.deviceService.getAllDevices(user_id);
-            for (Device device : devices) {
-                System.out.println("Device Name: " + device.getName());
-            }
-            System.out.println("Devices fetched successfully: " + devices);
+            
             return new ResponseEntity<>(devices, HttpStatus.OK);
         }
         catch (Exception e)
@@ -57,6 +64,7 @@ public class DeviceController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/toggle-device")
     public ResponseEntity<Object> toggleDevice(
             @RequestParam int status,
@@ -73,5 +81,4 @@ public class DeviceController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
