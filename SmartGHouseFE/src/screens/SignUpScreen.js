@@ -1,21 +1,21 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App({navigation}) {
   return (
     <SafeAreaView style = {signupStyle.signupMain}>
       <View style = {signupStyle.title}>
-        <Text style = {{fontVariant:'roboto' ,fontWeight:'bold', fontSize:40, color:'#3CAF58'}}>Đăng Ký</Text>
+        <Text style = {signupStyle.titleText}>Đăng Ký</Text>
       </View>
       <View style = {{flexDirection:'column'}}>
         <View>
-          <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Họ và tên</Text>
+          <Text style = {signupStyle.inputTitle}>Họ và tên</Text>
           <TextInput
             style = {signupStyle.input}
           />
         </View>
         <View>
-          <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Địa chỉ email</Text>
+          <Text style = {signupStyle.inputTitle}>Địa chỉ email</Text>
           <TextInput
             style = {signupStyle.input}
             placeholder=''
@@ -23,7 +23,7 @@ export default function App({navigation}) {
           />
         </View>
         <View>
-          <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Mật khẩu</Text>
+          <Text style = {signupStyle.inputTitle}>Mật khẩu</Text>
           <TextInput 
             style = {signupStyle.input}
             placeholder=''
@@ -31,24 +31,22 @@ export default function App({navigation}) {
           />
         </View>
         <View>
-          <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Nhập lại mật khẩu</Text>
+          <Text style = {signupStyle.inputTitle}>Nhập lại mật khẩu</Text>
           <TextInput
             style = {signupStyle.input}
             placeholder=''
             placeholderTextColor = 'black'
           />
         </View>
-      </View>
-      <View style = {{alignItems:'center'}}>
         <View>
           <TouchableOpacity style = {signupStyle.submitButton} onPress={() => navigation.navigate('Account')}>
             <Text style={ signupStyle.submitButtonText}>Đăng ký</Text>
           </TouchableOpacity>
         </View>
-        <View style = {signupStyle.otherfunctionText}>
+        <View style = {signupStyle.otherfunction}>
           <Text>Đã có tài khoản?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'#3CAF58'}}>Đăng nhập ngay</Text>
+            <Text style = {signupStyle.otherfunctionText}>Đăng nhập ngay</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -60,36 +58,61 @@ const signupStyle = StyleSheet.create(
   {
     signupMain: {
       backgroundColor:'white',
-      paddingHorizontal:30,
+      paddingHorizontal: 40,
       borderColor: 'black',
       borderWidth: 1,
       margin: 10,
-      height: 600
+      height: 550,
+      marginTop: 100,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
     },
     title:{
       marginTop: 30,
+      flex: 1,
       alignItems: 'center',
       flexDirection: 'column'
     },
+    titleText:{
+        fontVariant:'roboto' ,
+        fontWeight:'bold', 
+        fontSize:40, 
+        color:'#3CAF58'
+      },
     input: {
+      margin: 10,
+      height: 40,
       borderColor: 'black',
       borderWidth: 1
     },
+    inputTitle:{
+        fontVariant:'roboto' ,
+        fontWeight:'regular', 
+        color:'black'
+      },
     submitButton: {
       backgroundColor: '#3CAF58',
-      padding: 10,
-      margin: 15,
-      height: 40,
-      borderColor: '#3CAF58',
-      alignItems:'center',
-      borderWidth: 1
+        padding: 10,
+        margin: 15,
+        height: 40,
+        borderColor: '#3CAF58',
+        alignItems:'center',
+        borderWidth: 1
     },
     submitButtonText: {
       color: 'white'
     },
+    otherfunction: {
+        marginBottom: 20,
+        marginLeft: 60,
+        flexDirection: 'row'
+      },
     otherfunctionText: {
-      marginTop:10,
-      flexDirection: 'row'
+      fontVariant:'roboto' ,
+      fontWeight:'regular', 
+      color:'#3CAF58', 
     },
   }
 )

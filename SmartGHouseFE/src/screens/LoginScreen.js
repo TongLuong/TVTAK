@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm } from "react-hook-form";
 import axiosInst from "../axios/axiosClient";
 import { useState } from 'react';
 import axios from "axios";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function App({navigation}) {
     const {register, handleSubmit} = useForm({
@@ -37,12 +38,12 @@ export default function App({navigation}) {
     return (
         <SafeAreaView style = {loginStyle.loginMain}>
           <View style = {loginStyle.title}>
-            <Image style = {loginStyle.image} source={require('../Image/User_avatar.png')}/>
-            <Text style = {{fontVariant:'roboto' ,fontWeight:'bold', fontSize:40, color:'#3CAF58'}}>Đăng nhập</Text>
+            <Ionicons name = 'person-circle' size = {60}/>
+            <Text style = {loginStyle.titleText}>Đăng nhập</Text>
           </View>
           <View style = {{flexDirection:'column'}}>
             <View>
-              <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Địa chỉ email</Text>
+              <Text style = {loginStyle.inputTitle}>Địa chỉ email</Text>
               <TextInput
                 //{...register("username", { required: "field cannot be empty" })}
                 onChangeText={(text) => setUsername(text)}
@@ -52,7 +53,7 @@ export default function App({navigation}) {
               />
             </View>
             <View>
-              <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'black'}}>Mật khẩu</Text>
+              <Text style = {loginStyle.inputTitle}>Mật khẩu</Text>
               <TextInput 
                 //{...register("password")}
                 onChangeText={(text) => setPass(text)}
@@ -61,7 +62,7 @@ export default function App({navigation}) {
                 placeholderTextColor = 'black'
               />
             </View>
-            <View>
+            <View style = {{marginTop: 10}}>
               <TouchableOpacity style = {loginStyle.submitButton}
                 onPress={() => {
                   //navigation.navigate('Account')}
@@ -70,13 +71,13 @@ export default function App({navigation}) {
                 <Text style={ loginStyle.submitButtonText}>Đăng nhập</Text>
               </TouchableOpacity>
             </View>
-            <View style = {loginStyle.otherfunctionText}>
+            <View style = {loginStyle.otherfunction}>
               <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'#3CAF58', }}>Đăng ký</Text>
+                <Text style = {loginStyle.otherfunctionText}>Đăng ký</Text>
               </TouchableOpacity>
               <Text style = {{flex:1}}/>
-              <TouchableOpacity>
-                <Text style = {{fontVariant:'roboto' ,fontWeight:'regular', color:'#3CAF58'}}>Quên mật khẩu</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Forget pass 1')}>
+                <Text style = {loginStyle.otherfunctionText}>Quên mật khẩu</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -91,7 +92,12 @@ export default function App({navigation}) {
         borderColor: 'black',
         borderWidth: 1,
         margin: 10,
-        height: 450
+        height: 500,
+        marginTop: 100,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
       },
       title:{
         marginTop: 30,
@@ -99,16 +105,22 @@ export default function App({navigation}) {
         alignItems: 'center',
         flexDirection: 'column'
       },
-      image: {
-        width: 50,
-        height: 50,
-        borderRadius: 100,
+      titleText:{
+        fontVariant:'roboto' ,
+        fontWeight:'bold', 
+        fontSize:40, 
+        color:'#3CAF58'
       },
       input: {
         margin: 15,
         height: 40,
         borderColor: 'black',
         borderWidth: 1
+      },
+      inputTitle:{
+        fontVariant:'roboto' ,
+        fontWeight:'regular', 
+        color:'black'
       },
       submitButton: {
         backgroundColor: '#3CAF58',
@@ -122,9 +134,14 @@ export default function App({navigation}) {
       submitButtonText: {
         color: 'white'
       },
-      otherfunctionText: {
-        marginTop:10,
+      otherfunction: {
+        marginBottom: 20,
         flexDirection: 'row'
+      },
+      otherfunctionText: {
+        fontVariant:'roboto' ,
+        fontWeight:'regular', 
+        color:'#3CAF58', 
       },
     }
   )
