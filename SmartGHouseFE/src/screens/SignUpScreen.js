@@ -1,7 +1,37 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import axiosInst from "../axios/axiosClient";
 
 export default function App({navigation}) {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const onSignUpSubmit = async () => {
+    await axiosInst.post(
+      "/api/user/signup",
+        {
+          email: email,
+          username: username,
+          password: password
+        }
+      )
+      .then(res => {
+        if (res.status == 200)
+          {
+            navigation.navigate('Account');
+        }
+      })
+      .catch(e => {
+        console.log(e.response.status + ": " + e.response.data);
+      });
+      // e.message: status code
+      // e.response.data: body
+      // e.response.status
+      // e.response.header
+  };
+
   return (
     <SafeAreaView style = {signupStyle.signupMain}>
       <View style = {signupStyle.title}>
@@ -9,14 +39,16 @@ export default function App({navigation}) {
       </View>
       <View style = {{flexDirection:'column'}}>
         <View>
-          <Text style = {signupStyle.inputTitle}>Họ và tên</Text>
+          <Text style = {signupStyle.inputTitle}>Tên đăng nhập</Text>
           <TextInput
+            onChangeText={(text) => setUsername(text)}
             style = {signupStyle.input}
           />
         </View>
         <View>
           <Text style = {signupStyle.inputTitle}>Địa chỉ email</Text>
           <TextInput
+            onChangeText={(text) => setEmail(text)}
             style = {signupStyle.input}
             placeholder=''
             placeholderTextColor = 'black'
@@ -24,7 +56,8 @@ export default function App({navigation}) {
         </View>
         <View>
           <Text style = {signupStyle.inputTitle}>Mật khẩu</Text>
-          <TextInput 
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
             style = {signupStyle.input}
             placeholder=''
             placeholderTextColor = 'black'
@@ -39,7 +72,10 @@ export default function App({navigation}) {
           />
         </View>
         <View>
-          <TouchableOpacity style = {signupStyle.submitButton} onPress={() => navigation.navigate('Account')}>
+          <TouchableOpacity style = {signupStyle.submitButton}
+            onPress={() => {
+              onSignUpSubmit()
+            }}>
             <Text style={ signupStyle.submitButtonText}>Đăng ký</Text>
           </TouchableOpacity>
         </View>
