@@ -3,7 +3,11 @@ import sys
 from datetime import datetime
 
 sys.path.append("../adafruit-io/")
-import connect as adafruit_conn
+from connect import AdafruitConnection
+
+adafruit_conn = AdafruitConnection("DADN_CNPM_3"
+                    "aio_lCaK60OFwRJhKMC1laoTjfIk5OGJ",
+                    "iot-light")
 
 feedData = adafruit_conn.getFeedData()
 
