@@ -2,7 +2,7 @@
 FROM eclipse-temurin:21 as builder
 WORKDIR /server
 
-RUN chmod +x ./mvnw
+# RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 RUN ./mvnw clean install
 
