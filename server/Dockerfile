@@ -1,7 +1,8 @@
 # first stage
 FROM eclipse-temurin:21 as builder
+WORK 
 
-RUN chmod +x mvnw
+RUN ["chmod", "+x", "mvnw"]
 RUN ./mvnw dependency:go-offline
 RUN ./mvnw clean install
 
