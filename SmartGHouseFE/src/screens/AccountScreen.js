@@ -12,7 +12,7 @@ export default function App({navigation}){
             <TouchableOpacity style = {accountStyle.functionButton}>
                 <Text style={ accountStyle.functionButtonText}>Thông tin người dùng</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {accountStyle.functionButton} onPress={() => navigation.navigate('User')}>
+            <TouchableOpacity style = {accountStyle.functionButton} onPress={() => navigation.navigate('UserScreen')}>
                 <Text style={ accountStyle.functionButtonText}>Đăng xuất</Text>
             </TouchableOpacity>
         </View>

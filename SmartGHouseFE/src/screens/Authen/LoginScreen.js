@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 //import { useForm } from "react-hook-form";
-import axiosInst from "../axios/axiosClient";
+import axiosInst from "../../axios/axiosClient";
 import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { signIn } from '../../services/userService';
 export default function App({navigation}) {
     const [username, setUsername] = useState("");
     const [pass, setPass] = useState("");
@@ -13,29 +13,16 @@ export default function App({navigation}) {
     const [loginStatus, setLoginStatus] = useState(0);
 
     const onSignInSubmit = async () => {
-      await axiosInst.get(
-        "/api/user/signin",
-        {
-          params: {
-            account: username,
-            password: pass
-          }
-        })
-        .then(res => {
-          if (res.status == 200)
-            {
-              setLoginStatus(1);
-              navigation.navigate('Account');
-          }
-        })
-        .catch(e => {
-          console.log(e.response.status + ": " + e.response.data);
-          setLoginStatus(-1);
-        });
-        // e.message: status code
-        // e.response.data: body
-        // e.response.status
-        // e.response.header
+      try {
+        const res = await signIn(username, pass);
+        if (res.status === 200) {
+          setLoginStatus(1);
+          navigation.navigate('HomeScreen');
+        }
+      } catch (error) {
+        console.log(error.response.status + ": " + error.response.data);
+        setLoginStatus(-1);
+      }
     };
 
     return (
