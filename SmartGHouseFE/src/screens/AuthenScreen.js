@@ -13,7 +13,7 @@ export default function AuthenScreen() {
   return (
       <Stack.Navigator>
         <Stack.Screen name={path.AUTHEN} component={AuthopScreen} options={{ headerShown: false }} />
-        <Stack.Screen name={path.LOGIN } component={LoginScreen} />
+        <Stack.Screen name={path.LOGIN} component={LoginScreen} />
         <Stack.Screen name={path.FORGET1} component={ForgetPass1Screen}/>
         <Stack.Screen name={path.FORGET2} component={ForgetPass2Screen}/>
         <Stack.Screen name={path.SIGNUP} component={SignupScreen} />
