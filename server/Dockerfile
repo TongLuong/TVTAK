@@ -3,7 +3,7 @@ FROM eclipse-temurin:21 as builder
 
 COPY mvnw pom.xml ./
 
-# RUN chmod +x mvnw
+RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 RUN ./mvnw clean install
 
