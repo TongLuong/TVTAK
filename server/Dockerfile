@@ -1,5 +1,10 @@
 # first stage
 FROM ubuntu:22.04 as builder
+ENV JAVA_HOME /usr/lib/jvm
+RUN export JAVA_HOME
+
+RUN echo $JAVA_HOME
+
 RUN apt-get update
 WORKDIR /docker
 
@@ -13,6 +18,7 @@ RUN ./mvnw clean install
 
 # second stage
 FROM ubuntu:22.04
+ENV JAVA_HOME /usr/lib/jvm
 WORKDIR /docker
 EXPOSE 8080
 COPY --from=builder /docker/target/*.jar /docker/*.jar
