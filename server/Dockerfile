@@ -1,5 +1,6 @@
 # first stage
 FROM eclipse-temurin:21 as builder
+WORKDIR /server
 
 RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline
