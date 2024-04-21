@@ -1,24 +1,16 @@
 # first stage
-FROM ubuntu:22.04 as builder
-ENV JAVA_HOME /usr/lib/jvm
-RUN export JAVA_HOME
-
-RUN echo $JAVA_HOME
-
-RUN apt-get update
+FROM eclipse-temurin:21 as builder
 WORKDIR /docker
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 COPY src ./src
 
 RUN ./mvnw clean install
 
 # second stage
-FROM ubuntu:22.04
-ENV JAVA_HOME /usr/lib/jvm
+FROM eclipse-temurin:21
 WORKDIR /docker
 EXPOSE 8080
 COPY --from=builder /docker/target/*.jar /docker/*.jar
