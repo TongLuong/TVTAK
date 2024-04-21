@@ -1,31 +1,46 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import axiosInst from "../axios/axiosClient";
-
+import { signUp } from '../../services/userService';
 export default function App({navigation}) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
   const onSignUpSubmit = async () => {
-    await axiosInst.post(
-      "/api/user/signup",
-        {
-          email: email,
-          username: username,
-          password: password
-        }
-      )
-      .then(res => {
-        if (res.status == 200)
-          {
-            navigation.navigate('Account');
-        }
-      })
-      .catch(e => {
-        console.log(e.response.status + ": " + e.response.data);
-      });
+    try {
+      const data = {
+        email: email,
+        username: username,
+        password: password
+      }
+      const res = await signUp(data);
+      if (res.status === 200) {
+        console.log("Sign up succeeded");
+        navigation.navigate('User');
+        // navigation.navigate('User');
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.status + ": " + error.response.data);
+    }
+    // await axiosInst.post(
+    //   "/api/user/signup",
+    //     {
+    //       email: email,
+    //       username: username,
+    //       password: password
+    //     }
+    //   )
+    //   .then(res => {
+    //     if (res.status == 200)
+    //       {
+    //         navigation.navigate('Account');
+    //     }
+    //   })
+    //   .catch(e => {
+    //     console.log(e.response.status + ": " + e.response.data);
+    //   });
       // e.message: status code
       // e.response.data: body
       // e.response.status
