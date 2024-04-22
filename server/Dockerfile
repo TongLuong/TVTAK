@@ -8,7 +8,7 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 
 COPY ./src ./src
-CMD [&amp;quot;./mvnw&amp;quot;, &amp;quot;spring-boot:run&amp;quot;]
+CMD ./mvnw spring-boot:run
 
 # RUN ./mvnw clean install
 
