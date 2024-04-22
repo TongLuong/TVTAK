@@ -17,7 +17,7 @@ export default function App({navigation}) {
       const res = await signUp(data);
       if (res.status === 200) {
         console.log("Sign up succeeded");
-        navigation.navigate('User');
+        navigation.navigate('Login');
       }
     } catch (error) {
       console.log(error);
