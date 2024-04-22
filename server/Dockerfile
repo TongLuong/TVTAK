@@ -1,5 +1,5 @@
 # first stage
-FROM maven:3.9.6-eclipse-temurin-17 as builder
+FROM eclipse-temurin:17-jdk as builder
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
