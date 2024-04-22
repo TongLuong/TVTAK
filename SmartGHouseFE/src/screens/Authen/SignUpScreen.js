@@ -17,34 +17,16 @@ export default function App({navigation}) {
       const res = await signUp(data);
       if (res.status === 200) {
         console.log("Sign up succeeded");
-        navigation.navigate('User');
-        // navigation.navigate('User');
+        navigation.navigate('Login');
       }
     } catch (error) {
       console.log(error);
       console.log(error.response.status + ": " + error.response.data);
     }
-    // await axiosInst.post(
-    //   "/api/user/signup",
-    //     {
-    //       email: email,
-    //       username: username,
-    //       password: password
-    //     }
-    //   )
-    //   .then(res => {
-    //     if (res.status == 200)
-    //       {
-    //         navigation.navigate('Account');
-    //     }
-    //   })
-    //   .catch(e => {
-    //     console.log(e.response.status + ": " + e.response.data);
-    //   });
-      // e.message: status code
-      // e.response.data: body
-      // e.response.status
-      // e.response.header
+    // e.message: status code
+    // e.response.data: body
+    // e.response.status
+    // e.response.header
   };
 
   return (

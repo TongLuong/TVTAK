@@ -127,7 +127,7 @@ export default function HomeScreen( {navigation} ) {
     return () => clearInterval(intervalId);
   }, []);
   return (
-  <View style={{paddingTop: 50}}>
+  <View style={{paddingTop: "5%"}}>
 
     <View style={{ margin: 10, backgroundColor: '#EFF9F1', borderRadius: 45, padding: 10, marginTop: 20}}>
       <View style={{ flexDirection: 'row', alignSelf: "center",justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1, marginBottom: 10, borderColor: '#3CAF58'}}>
@@ -152,64 +152,64 @@ export default function HomeScreen( {navigation} ) {
           <Text style={statusStyle.content}>{light} Lux</Text> 
         </View>
       </View>
-      <AppButton title={"Đi đến Quản lý nhà kính"} onPress={() => {navigation.navigate('Manage')}}/>
+      <AppButton title={"Quản lý"} onPress={() => {navigation.navigate('Manage')}}/>
     </View>
 
-    <View style={{ margin: 10, backgroundColor: '#EFF9F1', borderRadius: 45, paddingTop: 10}}>
+    <View style={{ margin: 10, marginTop: 0, height: '100%', backgroundColor: '#EFF9F1', borderRadius: 45, paddingTop: 10}}>
     <DataTable>
       <DataTable.Row>
         <DataTable.Cell> <Text style={{fontSize: 23, color: '#3CAF58'}}> <Ionicons size={20} name="settings-sharp"/>  Thiết bị</Text></DataTable.Cell>
         <DataTable.Cell>
-          <View style={{justifyContent: 'center', paddingBottom: 10}}>
-            <AppButton1 title={"Thêm thiết bị"} onPress={() => navigation.navigate('History')}/>
+          <View style={{justifyContent: 'center', paddingBottom: 10, width: "100%"}}>
+            <AppButton1 title={"Thêm"} onPress={() => navigation.navigate('History')}/>
           </View>
         </DataTable.Cell>
       </DataTable.Row>
       <DataTable.Header> 
-        <DataTable.Cell style={{flex: 1.3}}>
+        <DataTable.Cell style={{flex: 3}}>
           <Text style={{color: '#3CAF58'}}>
             Tên thiết bị
           </Text>
         </DataTable.Cell> 
-        <DataTable.Title>
+        <DataTable.Title style={{flex: 2}}>
           <Text style={{color: '#3CAF58'}}>
             Chế độ
           </Text>
         </DataTable.Title> 
-        <DataTable.Title>
+        <DataTable.Title  style={{flex: 1}}>
           <Text style={{color: '#3CAF58'}}>
             Trạng thái
           </Text>
         </DataTable.Title>
       </DataTable.Header> 
       <DataTable.Row> 
-        <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Hệ thống tưới</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
+        <DataTable.Cell style={{flex: 3}} textStyle={{color: '#3CAF58'}}>Hệ thống tưới</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 2}} textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell>
       </DataTable.Row> 
   
       <DataTable.Row> 
-        <DataTable.Cell style={{flex: 1.3 }} textStyle={{color: '#3CAF58'}}>Hệ thống chiếu sáng</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
+        <DataTable.Cell style={{flex: 3}} textStyle={{color: '#3CAF58'}}>Hệ thống chiếu sáng</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 2}} textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
       </DataTable.Row> 
       <DataTable.Row> 
-      <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Cảm biến nhiệt độ</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 3}} textStyle={{color: '#3CAF58'}}>Cảm biến nhiệt độ</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 2}} textStyle={{color: '#3CAF58'}}>Thủ công</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>Tắt</DataTable.Cell> 
       </DataTable.Row>
       <DataTable.Row> 
-      <DataTable.Cell style={{flex: 1.3}} textStyle={{color: '#3CAF58'}}>Cảm biến độ ẩm</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
-        <DataTable.Cell textStyle={{color: '#3CAF58'}}  >Bật</DataTable.Cell>
+        <DataTable.Cell style={{flex: 3}} textStyle={{color: '#3CAF58'}}>Cảm biến độ ẩm</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 2}} textStyle={{color: '#3CAF58'}}>Tự động</DataTable.Cell> 
+        <DataTable.Cell style={{flex: 1}} textStyle={{color: '#3CAF58'}}>Bật</DataTable.Cell>
       </DataTable.Row>
 
-      <DataTable.Row style={{padding: 30}}>
-        <DataTable.Cell style={{flex: 1.1}} textStyle={{color: '#3CAF58'}}>
-        <AppButton2 title={"Cài đặt thiết bị"}/>
+      <DataTable.Row style={{padding: "3%"}}>
+        <DataTable.Cell style={{position: "absolute", left: "10%"}} textStyle={{color: '#3CAF58'}}>
+        <AppButton2 title={"Cài đặt"}/>
         </DataTable.Cell>
-        <DataTable.Cell style={{flex: 1.4}}>
-          <AppButton4 title={"Xem lịch sử hoạt động"} onPress={() => {navigation.navigate('History')}}/>
+        <DataTable.Cell style={{position: "absolute", right: "10%"}}>
+          <AppButton4 title={"Lịch sử"} onPress={() => {navigation.navigate('History')}}/>
         </DataTable.Cell>
       </DataTable.Row>
     </DataTable> 
