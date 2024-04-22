@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-//import { useForm } from "react-hook-form";
-import axiosInst from "../../axios/axiosClient";
 import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { signIn } from '../../services/userService';

@@ -29,7 +29,7 @@ public class DeviceService
     private AdafruitConnection adafruitConnection;
 
     @Transactional
-    public Object save(Device device, long id)
+    public Object save(Device device, long id, boolean createFeed)
     {
         if (isExist(device.getName()))
         {
@@ -53,11 +53,14 @@ public class DeviceService
         {
             res = this.deviceRepository.save(device).getId();
 
-            this.adafruitConnection.createFeed(device.getName());
-            if (device.getSwitch_name() == null)
-                this.adafruitConnection.createFeed("manual-" + device.getName());
-            else
-                this.adafruitConnection.createFeed(device.getSwitch_name());
+            if (createFeed)
+            {
+                this.adafruitConnection.createFeed(device.getName());
+                if (device.getSwitch_name() == null)
+                    this.adafruitConnection.createFeed("manual-" + device.getName());
+                else
+                    this.adafruitConnection.createFeed(device.getSwitch_name());
+            }
         }
         catch (Exception e)
         {

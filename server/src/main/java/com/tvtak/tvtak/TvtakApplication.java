@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @SpringBootApplication
 @RestController
 @CrossOrigin
-public class TvtakApplication 
+public class TvtakApplication
 {
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		SpringApplication.run(TvtakApplication.class, args);
 	}
