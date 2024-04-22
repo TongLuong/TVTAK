@@ -8,12 +8,12 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 
 COPY ./src ./src
-RUN ./mvnw spring-boot:run
+# RUN ./mvnw spring-boot:run
 
-# RUN ./mvnw clean install
+RUN ./mvnw clean install
 
-# # second stage
-# FROM eclipse-temurin:21
-# EXPOSE 8080
-# COPY --from=builder /target/*.jar /*.jar
-# ENTRYPOINT [&amp;quot;java&amp;quot;, &amp;quot;-jar&amp;quot;, &amp;quot;/docker/*.jar&amp;quot;]
+# second stage
+FROM eclipse-temurin:17-jdk
+EXPOSE 8080
+COPY --from=builder /target/*.jar /*.jar
+ENTRYPOINT ["java","-jar", "/*.jar"]
