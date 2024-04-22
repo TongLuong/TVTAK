@@ -23,7 +23,7 @@ public class DeviceController
     {
         try
         {
-            Object response = this.deviceService.save(device, user_id);
+            Object response = this.deviceService.save(device, user_id, true);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception e)
