@@ -3,6 +3,7 @@ import axiosInst from "../axios/axiosClient";
 
 const signIn = async (account, pass) => {
     return await axiosInst.get(`/api/user/signin?account=${account}&password=${pass}`)
+                            .catch(e => console.log(e))
 }
 const signUp = async (body) => {
     return await axiosInst.post("/api/user/signup", body)
