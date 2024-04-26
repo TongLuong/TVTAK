@@ -12,14 +12,14 @@ const AppButton = ({ onPress, title }) => (
     style={{
       backgroundColor: 'white',
       alignItems: 'center',
-      width: "56%",
+      width: "46%",
       alignSelf: 'center',
       marginBottom: 10,
-      height: 26,
+      maxHeight: 26,
       borderRadius: 20
     }}
   >
-    <Text style={{ fontSize: 15, fontVariant: 'roboto', color: '#3CAF58' }}>
+    <Text style={{ fontSize: 16, fontVariant: 'roboto', color: '#3CAF58', paddingVertical: '1%' }}>
       {title}
     </Text>
   </TouchableOpacity>
@@ -32,16 +32,15 @@ const AppButton1 = ({ onPress, title }) => (
       backgroundColor: 'white',
       alignItems: 'center',
       alignSelf: 'center',
-      justifyContent: 'center',
-      height: 26,
+      justifyContent: 'space-between',
+      maxHeight: 26,
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30
     }}
   >
-    <Text style={{ fontSize: 14, fontVariant: 'roboto', color: '#3CAF58' }}>
-      <Ionicons name='add-circle-outline' size={14} />
-      {" " + title}
+    <Text style={{ fontSize: 16, fontVariant: 'roboto', color: '#3CAF58' }}>
+    <Ionicons style={{alignSelf: 'center'}} name='add-circle-outline' size={12} />{" " + title}
     </Text>
   </TouchableOpacity>
 );
