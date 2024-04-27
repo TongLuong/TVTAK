@@ -45,6 +45,7 @@ export default function App() {
   const notiList = ['2024-04-25', '2024-04-20'];
   const [cur, setCur] = useState(null);
   const [isNoted, setIsNoted] = useState(false);
+  const [markAct, setMarkAct] = useState(false);
 
   const weeks = React.useMemo(() => {
     const start = moment().add(week, 'weeks').startOf('week');
@@ -116,7 +117,8 @@ export default function App() {
                       key={dateIndex}
                       onPress={() => {
                         setValue(item.date)
-                        setCur(item)}}>
+                        setCur(item)
+                        }}>
                       <View
                         style={[
                           styles.item,
@@ -149,8 +151,11 @@ export default function App() {
           </Swiper>
         </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
-        <AppButton title={"Đánh dấu"} onPress={ () => {cur.isMarked = true}}/>
-        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {cur.isMarked = false}}/>
+        <AppButton title={"Đánh dấu"} onPress={ () => {
+                                                      cur.isMarked = true;
+                                                      setMarkAct(!markAct)}}/>
+        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {cur.isMarked = false
+                                                                                      setMarkAct(!markAct)}}/>
       </View>
 
       {/* <View>

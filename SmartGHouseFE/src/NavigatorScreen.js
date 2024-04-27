@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AccountScreen from './screens/AccountScreen';
 import HomeScreen from "./screens/HomeScreen";
 import ManageScreen from "./screens/ManageScreen";
-import CalendarScreen from "./screens/CalendarScreen";
+import CalendarScreen from "./screens/Calendar/CalendarScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import {path} from "../src/utils/constants"
 
