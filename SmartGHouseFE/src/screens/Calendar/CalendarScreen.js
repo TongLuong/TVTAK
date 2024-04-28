@@ -43,7 +43,7 @@ export default function App() {
   const m = true;
   const markedList = ['2024-04-14', '2024-04-17'];
   const notiList = ['2024-04-25', '2024-04-20'];
-  const [cur, setCur] = useState(null);
+  const [cur, setCur] = useState(false);
   const [isNoted, setIsNoted] = useState(false);
   const [markAct, setMarkAct] = useState(false);
 
@@ -152,9 +152,9 @@ export default function App() {
         </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
         <AppButton title={"Đánh dấu"} onPress={ () => {
-                                                      cur.isMarked = true;
+                                                      setCur(true)
                                                       setMarkAct(!markAct)}}/>
-        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {cur.isMarked = false
+        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
                                                                                       setMarkAct(!markAct)}}/>
       </View>
 
