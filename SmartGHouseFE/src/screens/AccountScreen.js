@@ -9,7 +9,7 @@ export default function AccountScreen({navigation}){
         const user = await AsyncStorage.getItem('User');
         const userData = JSON.parse(user);
         if (!userData) {
-          navigation.navigate('UserScreen');
+          navigation.navigate('AuthenScreen');
         }
         console.log(userData);
         
@@ -29,7 +29,7 @@ export default function AccountScreen({navigation}){
             <TouchableOpacity style = {accountStyle.functionButton}>
                 <Text style={ accountStyle.functionButtonText}>Thông tin người dùng</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {accountStyle.functionButton} onPress={() => navigation.navigate('UserScreen')}>
+            <TouchableOpacity style = {accountStyle.functionButton} onPress={() => navigation.navigate('AuthenScreen')}>
                 <Text style={ accountStyle.functionButtonText}>Đăng xuất</Text>
             </TouchableOpacity>
         </View>

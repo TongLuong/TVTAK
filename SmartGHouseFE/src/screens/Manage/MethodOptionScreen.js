@@ -58,7 +58,7 @@ const methodopStyle = StyleSheet.create(
       },
       functionButtonText: {
         color: 'black',
-        marginLeft: 130
+        marginLeft: "35%"
       }
     }
   )
