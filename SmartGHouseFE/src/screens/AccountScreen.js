@@ -1,7 +1,24 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-export default function App({navigation}){
+import { useEffect} from 'react';
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
+export default function AccountScreen({navigation}){
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const user = await AsyncStorage.getItem('User');
+        const userData = JSON.parse(user);
+        if (!userData) {
+          navigation.navigate('UserScreen');
+        }
+        console.log(userData);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    checkLogin();
+  });
   return (
     <View style = {{backgroundColor: '#EFF9F1', flex: 1}}>
         <View style = {accountStyle.accountSym}>
