@@ -1,33 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { DataTable, Checkbox } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
-
+import {toggleDevice} from "../../services/userService"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function App() {
   const [checkedItems, setCheckedItems] = useState(Array(8).fill(false));
   const [isStarted, setIsStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [value, setValue] = useState(null);
   const [isEnded, setIsEnded] = useState(false);
+  const [user, setUser] = useState({});
   const data = [
     { label: 'Màu đỏ', value: '1' },
     { label: 'Màu vàng', value: '2' },
     { label: 'Màu xanh', value: '3' },
   ];
-  const handleStartStop = () => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await AsyncStorage.getItem('User');
+        if (!user) {
+          navigator.navigate('UserScreen');
+        }
+        const userData = JSON.parse(user);
+        setUser(userData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchUser();
+  }, [])
+
+  const handleStartStop = async () => {
+    const newStatus = !isStarted ? 1 : 0;
     setIsStarted(!isStarted);
     setIsEnded(false);
     setIsPaused(false);
+    await toggleDevice(user?.id, 2, newStatus);
+    // await toggleDevice(user?.id, 1, newStatus);  //id light database host
   };
 
   const handlePauseResume = () => {
     setIsPaused(!isPaused);
   };
 
-  const handleEnd = () => {
+  const handleEnd = async() => {
+    const newStatus = !isStarted ? 1 : 0;
     setIsEnded(true);
     setIsStarted(false);
     setIsPaused(false);
+    await toggleDevice(user?.id, 2, newStatus);
+    // await toggleDevice(user?.id, 1, newStatus);
   };
   const handleCheckboxChange = (index) => {
     const newCheckedItems = [...checkedItems];

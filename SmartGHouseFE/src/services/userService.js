@@ -53,7 +53,8 @@ const deleteDevice = async (user_id, device_id) => {
     return await axiosInst.delete(`api/device/delete-device?user_id=${user_id}&device_id=${device_id}`)
 }
 const toggleDevice = async (user_id, device_id, status) => {
-    return await axiosInst.post(`api/device/toggle-device?user_id=${user_id}&device_id=${device_id}status=${status}`)
+    return await axiosInst.post(`api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`)
+    
 }
 
 const getRecord = async (device_name) => {
@@ -64,7 +65,7 @@ const getRecordLast = async (device_name) => {
 }
 
 const getDataByMonth = async (device_name, month, year) => {
-    return await axiosInst.get(`api/record/get-data-by?feed_id=${device_name}&month=${month}year=${year}`)
+    return await axiosInst.get(`api/record/get-data-by?feed_id=${device_name}&month=${month}&year=${year}`)
 }
 
 export {
