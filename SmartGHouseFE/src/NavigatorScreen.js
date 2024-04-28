@@ -6,6 +6,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ManageScreen from "./screens/ManageScreen";
 import CalendarScreen from "./screens/Calendar/CalendarScreen";
 import HistoryScreen from "./screens/HistoryScreen";
+import AuthOptionScreen from "./screens/Authen/AuthOptionScreen";
 import {path} from "../src/utils/constants"
 
 
