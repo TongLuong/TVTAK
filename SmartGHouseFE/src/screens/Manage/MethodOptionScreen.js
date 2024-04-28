@@ -19,10 +19,7 @@ export default function App({navigation, route}){
                 <Ionicons name = 'hand-left-outline' size = {20}/>
                 <Text style={methodopStyle.functionButtonText}>Thủ công</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {methodopStyle.functionButton} onPress= {() => {
-              let destination = (option.func === "light" ? 'autolight' : 'autowater')
-              navigation.navigate(destination)
-            }
+            <TouchableOpacity style = {methodopStyle.functionButton} onPress= {() => {navigation.navigate("Auto")}
             }>
                 <Ionicons name = 'settings-outline' size = {20}/>
                 <Text style={methodopStyle.functionButtonText}>Tự động</Text>
