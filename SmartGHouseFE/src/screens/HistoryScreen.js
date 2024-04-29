@@ -131,26 +131,31 @@ export default function HistoryScreen() {
         style={[
           styles.container,
           {
-            marginTop: 40,
-            marginLeft: 15,
-            marginRight: 15,
             backgroundColor: "#EFF9F1",
-            borderRadius: 30,
+            borderRadius: 30
           },
         ]}
       >
-        <View>
+        <View style={{ 
+          marginTop: "0%",
+          position: "absolute",
+          top: "7%"
+        }}>
           <Text style={{ fontSize: 23, color: "#3CAF58" }}>
             Lịch sử hoạt động
           </Text>
         </View>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{
+          flexDirection: "row",
+          position: "absolute",
+          top: "12%"
+        }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             {/* Example usage of MaterialIcons */}
             {selectedValue == "manual-pump" ? (
               <Ionicons name="water-outline" size={24} color="white" />
             ) : (
-              <FontAwesome5 name="lightbulb" size={24} color="yellow" />
+              <FontAwesome5 name="lightbulb" size={24} color="#daa520" />
             )}
             <Text style={{ marginLeft: 5 }}>
               {selectedValue == "manual-light"
@@ -172,28 +177,47 @@ export default function HistoryScreen() {
               {"Tháng " + selectedMonth + " Năm " + selectedYear}
             </Text>
           </View>
-          <MaterialCommunityIcons
+          {/* <MaterialCommunityIcons
             name="filter"
             size={24}
             color="black"
             onPress={togglePicker}
-          />
+          /> */}
         </View>
 
-        <DataTable>
+        <View
+          style={{
+            flexDirection: "row",
+            position: "absolute",
+            top: "17%"
+          }}
+        >
+          <Button
+            onPress={togglePicker}
+            title="Lọc dữ liệu"
+          />
+        </View>
+        
+        <DataTable 
+          style={{ 
+          justifyContent: "space-evenly", 
+          marginLeft: "5%",
+          marginTop: "10%"
+        }}
+        >
           <DataTable.Row style={{ flex: 1 }}>
             <DataTable.Cell> </DataTable.Cell>
             <DataTable.Cell></DataTable.Cell>
           </DataTable.Row>
           <DataTable.Header>
-            <DataTable.Cell style={{ flex: 1 }}>
+            <DataTable.Cell style={{ marginLeft: "5%" }}>
               <Text style={{ color: "#3CAF58" }}>Ngày</Text>
             </DataTable.Cell>
-            <DataTable.Title style={{ flex: 0.8 }}>
+            <DataTable.Title style={{  }}>
               <Text style={{ color: "#3CAF58" }}>Giờ</Text>
             </DataTable.Title>
 
-            <DataTable.Title>
+            <DataTable.Title style={{  }}>
               <Text style={{ color: "#3CAF58" }}>Hoạt động</Text>
             </DataTable.Title>
           </DataTable.Header>
@@ -202,29 +226,36 @@ export default function HistoryScreen() {
             const date = new Date(item.created_at);
 
             // Format the date and time as desired
-            const formattedDate = date.toLocaleDateString(); // Example: "4/25/2024"
+            const formattedDate = date.toLocaleDateString([], {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit"
+            }); // Example: "4/25/2024"
             const formattedTime = date.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              second: "2-digit",
               hour12: false,
             }); // Example: "3:00:53 PM"
 
             return (
               <DataTable.Row key={index}>
                 <DataTable.Cell
-                  style={{ flex: 1 }}
+                  style={{ marginLeft: "5%" }}
                   textStyle={{ color: "black" }}
                 >
                   {formattedDate}
                 </DataTable.Cell>
                 <DataTable.Cell
-                  style={{ flex: 0.8 }}
+                  style={{ }}
                   textStyle={{ color: "black" }}
                 >
                   {formattedTime}
                 </DataTable.Cell>
 
-                <DataTable.Cell textStyle={{ color: "black" }}>
+                <DataTable.Cell
+                  style={{ }}
+                  textStyle={{ color: "black" }}>
                   {item.value == 1 ? "Bật" : "Tắt"}
                 </DataTable.Cell>
               </DataTable.Row>
