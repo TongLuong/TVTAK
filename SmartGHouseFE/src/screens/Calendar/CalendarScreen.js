@@ -14,6 +14,8 @@ import Swiper from 'react-native-swiper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { DataTable } from 'react-native-paper';
+import NoteAddition from './NoteAddition';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
 
@@ -36,7 +38,7 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
   </TouchableOpacity>
 );
 
-export default function App() {
+export default function App({ navigation }) {
   const swiper = useRef();
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
@@ -82,6 +84,7 @@ export default function App() {
   // }, [value])
 
   return (
+    <ScrollView style={{marginBottom: 65}}>
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
 
@@ -152,9 +155,9 @@ export default function App() {
         </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
         <AppButton title={"Đánh dấu"} onPress={ () => {
-                                                      setCur(true)
+                                                      cur.isMarked = true;
                                                       setMarkAct(!markAct)}}/>
-        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
+        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {cur.isMarked = false;
                                                                                       setMarkAct(!markAct)}}/>
       </View>
 
@@ -164,7 +167,7 @@ export default function App() {
           </Text>
       </View> */}
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20 }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thời gian thu hoạch dự kiến</Text>
           <AppButton title={"Dự kiến thu hoạch"} style={{marginTop: '2%'}} />
@@ -183,10 +186,10 @@ export default function App() {
         </View>
       </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20  }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20  }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
-          <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} />
+          <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} onPress={() => {navigation.navigate("NotiAddition")}}/>
         </View>
         <View>
           <DataTable>
@@ -215,7 +218,7 @@ export default function App() {
                 <Text style={{color: '#3CAF58'}}>Thăm vườn</Text>
               </DataTable.Cell>
               <DataTable.Cell>
-                <AppButton title={"Xóa"} />
+                  <AppButton title={"Xóa"} />
               </DataTable.Cell>
             </DataTable.Row>
             <DataTable.Row>
@@ -233,19 +236,28 @@ export default function App() {
         </View>
       </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '1%', marginHorizontal: '2%', borderRadius: 20 }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú</Text>
-          { isNoted? <Text> Sửa | Xóa </Text> : <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} />  }
+          { isNoted? 
+            <Text> <Text onPress={() => {console.log("Edit Note")}}>Sửa  </Text>| 
+            <Text onPress={() => {console.log("Delete Note")}}>  Xóa</Text> </Text> 
+            : 
+            <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {navigation.navigate("NoteAddition")}}/>  }
         </View>
-        <View style={{marginTop: 7}}>
+        <View style={{marginTop: 5}}>
           <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%'}}>
-            Trống
+          Ngày biệt li người đi chẳng nói nên câu{'\n'}
+          Dẫu em có níu lại vài câu ướt mi{'\n'}
+          Vì si mê một ai thì đâu có dễ ngưng lại{'\n'}
+          Biết rằng chẳng còn như lúc đầu{'\n'}
           </Text>
         </View>
+        <AppButton title={"Xem tất cả"} style={{width: '40%',paddingHorizontal: '2%'}} onPress={() => { navigation.navigate("NoteList")}}/>
       </View>
       </View>
     </SafeAreaView>
+    </ScrollView>
   );
   }
 
