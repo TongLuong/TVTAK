@@ -5,6 +5,7 @@ import AccountScreen from "./screens/AccountScreen";
 import HomeControl from "./screens/HomeControl";
 import ManageScreen from "./screens/ManageScreen";
 import CalendarScreen from "./screens/Calendar/CalendarScreen";
+import CalendarControl from "./screens/CalendarControl";
 import HistoryScreen from "./screens/HistoryScreen";
 import AuthOptionScreen from "./screens/Authen/AuthOptionScreen";
 import { path } from "../src/utils/constants";
@@ -41,7 +42,7 @@ export default function App() {
             iconName = focused ? "home" : "home-outline";
           } else if (rn === path.MANAGE) {
             iconName = focused ? "construct" : "construct-outline";
-          } else if (rn === path.CALENDAR) {
+          } else if (rn === "CalendarControl") {
             iconName = focused ? "calendar" : "calendar-outline";
           } else if (rn === path.HISTORY) {
             iconName = focused ? "list-circle" : "list-circle-outline";
@@ -64,8 +65,8 @@ export default function App() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name={path.CALENDAR}
-        component={CalendarScreen}
+        name={"CalendarControl"}
+        component={CalendarControl}
         options={{ headerShown: false }}
       />
       <Tab.Screen

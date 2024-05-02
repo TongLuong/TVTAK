@@ -135,7 +135,6 @@ export default function HomeScreen({ navigation }) {
             fontSize: 23,
             color: "#3CAF58",
             alignSelf: "center",
-            marginBottom: 10,
           }}
         >
           Trạng thái hệ thống
@@ -154,7 +153,7 @@ export default function HomeScreen({ navigation }) {
         >
           <View style={dataStyle.container}>
             <View style={{ alignSelf: "center" }}>
-              <Ionicons name="water-outline" size={24} color="white" />
+              <Ionicons name="water-outline" size={24} color="#3CAF58" />
             </View>
             <Text style={statusStyle.content}>{humidity}%</Text>
             <Text style={statusStyle.title}>Độ ẩm{"\n"}</Text>
@@ -164,7 +163,7 @@ export default function HomeScreen({ navigation }) {
               <MaterialCommunityIcons
                 name="thermometer"
                 size={24}
-                color="orange"
+                color="#3CAF58"
               />
             </View>
             <Text style={statusStyle.content}>{temp}°</Text>
@@ -172,7 +171,7 @@ export default function HomeScreen({ navigation }) {
           </View>
           <View style={dataStyle.container}>
             <View style={{ alignSelf: "center" }}>
-              <FontAwesome5 name="lightbulb" size={24} color="yellow" />
+              <FontAwesome5 name="lightbulb" size={24} color="#3CAF58" />
             </View>
             <Text style={statusStyle.content}>{light} Lux</Text>
             <Text style={statusStyle.title}>Cường độ sáng{"\n"}</Text>
@@ -353,24 +352,25 @@ const statusStyle = StyleSheet.create({
   title: {
     fontSize: 12,
     alignSelf: "center",
-    color: "white",
+    color: "#3CAF58",
   },
   content: {
     fontSize: 20,
     alignSelf: "center",
-    color: "white",
+    color: "#3CAF58",
   },
 });
 const dataStyle = StyleSheet.create({
   container: {
-    backgroundColor: "#49796B", // Fallback color if gradients are not supported
+    backgroundColor: "#FAF9F8", // Fallback color if gradients are not supported
     // backgroundImage: 'linear-gradient(315deg, #55efc4 0%, #000000 74%)',
     borderRadius: 10,
     padding: 10,
     marginTop: 20,
-    borderColor: "black",
-    borderWidth: 1,
+    // borderColor: "black",
+    // borderWidth: 1,
     flex: 1,
+    elevation: 4
   },
   measureLine: {},
 });
