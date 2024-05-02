@@ -8,12 +8,15 @@ import {
   Dimensions,
   TouchableOpacity,
   Touchable,
+  ScrollView,
 } from 'react-native';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { DataTable } from 'react-native-paper';
+import NoteAddition from './NoteAddition';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('window');
 
@@ -36,23 +39,27 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
   </TouchableOpacity>
 );
 
-export default function App() {
+export default function App({ navigation }) {
   const swiper = useRef();
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const m = true;
-  const markedList = ['2024-04-14', '2024-04-17'];
-  const notiList = ['2024-04-25', '2024-04-20'];
+  // const markedList = ['2024-04-14', '2024-04-17'];
+  // const notiList = ['2024-04-25', '2024-04-20'];
+  const markedList = [];
+  const notiList = [];
   const [cur, setCur] = useState(false);
   const [isNoted, setIsNoted] = useState(false);
   const [markAct, setMarkAct] = useState(false);
 
   const weeks = React.useMemo(() => {
-    const start = moment().add(week, 'weeks').startOf('week');
-
+    console.log(week);
+    const start = moment().add(week, 'weeks').startOf('isoWeek');
+    
     return [-1, 0, 1].map(adj => {
       return Array.from({ length: 7 }).map((_, index) => {
         const date = moment(start).add(adj, 'week').add(index, 'day');
+        
         let marked = false;
         let noti = false;
         for (let i in markedList){
@@ -82,89 +89,95 @@ export default function App() {
   // }, [value])
 
   return (
+    <ScrollView style={{marginBottom: 65}}>
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
 
-        <View style={styles.picker}>
-          <Swiper
-            index={1}
-            ref={swiper}
-            loop={false}
-            showsPagination={false}
-            onIndexChanged={ind => {
-              if (ind === 1) {
-                return;
-              }
-              else {
-                setTimeout(() => {
+          <View style={styles.picker}>
+            <Swiper
+              index={1}
+              ref={swiper}
+              loop={false}
+              showsPagination={false}
+              onIndexChanged={ind => {
+                if (ind === 1) {
+                  return;
+                }
+                else {
                   const newIndex = ind - 1;
                   const newWeek = week + newIndex;
-                  setWeek(newWeek);
+                  // setWeek(newWeek);
                   setValue(moment(value).add(newIndex, 'week').toDate());
                   swiper.current.scrollTo(1, false);
-                }, 100);
-              }
-            }}>
-            {weeks.map((dates, index) => (
-              <View
-                style={[styles.itemRow, { paddingHorizontal: 16 }]}
-                key={index}>
-                {dates.map((item, dateIndex) => {
-                  const isActive =
-                    value.toDateString() === item.date.toDateString();
-                  return (
-                    <TouchableWithoutFeedback
-                      key={dateIndex}
-                      onPress={() => {
-                        setValue(item.date)
-                        setCur(item)
-                        }}>
-                      <View
-                        style={[
-                          styles.item,
-                          isActive && {
-                            backgroundColor: '#9CDD9B',
-                          },
-                        ]}>
-                        {item.isMarked && <Ionicons style={{marginBottom: 10}} size={13} name="ellipse"/>}
-                        <Text
+                  // setTimeout(() => {
+                  //   const newIndex = ind - 1;
+                  //   const newWeek = week + newIndex;
+                  //   setWeek(newWeek);
+                  //   setValue(moment(value).add(newIndex, 'week').toDate());
+                  //   swiper.current.scrollTo(1, false);
+                  // }, 100);
+                }
+              }}>
+              {weeks.map((dates, index) => (
+                <View
+                  style={[styles.itemRow, { paddingHorizontal: 16 }]}
+                  key={index}>
+                  {dates.map((item, dateIndex) => {
+                    const isActive =
+                      value.toDateString() === item.date.toDateString();
+                    return (
+                      <TouchableWithoutFeedback
+                        key={dateIndex}
+                        onPress={() => {
+                          setValue(item.date)
+                          setCur(item)
+                          }}>
+                        <View
                           style={[
-                            styles.itemWeekday,
-                            isActive && { color: 'black' },
+                            styles.item,
+                            isActive && {
+                              backgroundColor: '#9CDD9B',
+                            },
                           ]}>
-                          {item.weekday}
-                        </Text>
-                        <Text
-                          style={[
-                            styles.itemDate,
-                            isActive && { color: 'black' },
-                          ]}>
-                          {item.date.getDate()}
-                        </Text>
-                        {item.haveNoti && <Ionicons style={{marginTop: 10}} size={16} name="notifications"/>}
-                      </View>
-                    </TouchableWithoutFeedback>
-                  );
-                })}
-              </View>
-            ))}
-          </Swiper>
+                          {item.isMarked && <Ionicons style={{marginBottom: 10}} size={13} name="ellipse"/>}
+                          <Text
+                            style={[
+                              styles.itemWeekday,
+                              isActive && { color: 'black' },
+                            ]}>
+                            {item.weekday}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.itemDate,
+                              isActive && { color: 'black' },
+                            ]}>
+                            {item.date.getDate()}
+                          </Text>
+                          {item.haveNoti && <Ionicons style={{marginTop: 10}} size={16} name="notifications"/>}
+                        </View>
+                      </TouchableWithoutFeedback>
+                    );
+                  })}
+                </View>
+              ))}
+            </Swiper>
+          </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
+          <AppButton title={"Đánh dấu"} onPress={ () => {
+                                                        setCur(true)
+                                                        setMarkAct(!markAct)}}/>
+          <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
+                                                                                        setMarkAct(!markAct)}}/>
         </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
-        <AppButton title={"Đánh dấu"} onPress={ () => {
-                                                      setCur(true)
-                                                      setMarkAct(!markAct)}}/>
-        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
-                                                                                      setMarkAct(!markAct)}}/>
-      </View>
 
-      {/* <View>
-          <Text>
-            {JSON.stringify(value)}
-          </Text>
-      </View> */}
+        {/* <View>
+            <Text>
+              {JSON.stringify(value)}
+            </Text>
+        </View> */}
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20 }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thời gian thu hoạch dự kiến</Text>
           <AppButton title={"Dự kiến thu hoạch"} style={{marginTop: '2%'}} />
@@ -183,10 +196,10 @@ export default function App() {
         </View>
       </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20  }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20  }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
-          <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} />
+          <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} onPress={() => {navigation.navigate("NotiAddition")}}/>
         </View>
         <View>
           <DataTable>
@@ -215,7 +228,7 @@ export default function App() {
                 <Text style={{color: '#3CAF58'}}>Thăm vườn</Text>
               </DataTable.Cell>
               <DataTable.Cell>
-                <AppButton title={"Xóa"} />
+                  <AppButton title={"Xóa"} />
               </DataTable.Cell>
             </DataTable.Row>
             <DataTable.Row>
@@ -233,19 +246,28 @@ export default function App() {
         </View>
       </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
+      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '1%', marginHorizontal: '2%', borderRadius: 20 }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú</Text>
-          { isNoted? <Text> Sửa | Xóa </Text> : <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} />  }
+          { isNoted? 
+            <Text> <Text onPress={() => {console.log("Edit Note")}}>Sửa  </Text>| 
+            <Text onPress={() => {console.log("Delete Note")}}>  Xóa</Text> </Text> 
+            : 
+            <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {navigation.navigate("NoteAddition")}}/>  }
         </View>
-        <View style={{marginTop: 7}}>
+        <View style={{marginTop: 5}}>
           <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%'}}>
-            Trống
+          Ngày biệt li người đi chẳng nói nên câu{'\n'}
+          Dẫu em có níu lại vài câu ướt mi{'\n'}
+          Vì si mê một ai thì đâu có dễ ngưng lại{'\n'}
+          Biết rằng chẳng còn như lúc đầu{'\n'}
           </Text>
         </View>
+        <AppButton title={"Xem tất cả"} style={{width: '40%',paddingHorizontal: '2%'}} onPress={() => { navigation.navigate("NoteList")}}/>
       </View>
       </View>
     </SafeAreaView>
+    </ScrollView>
   );
   }
 
