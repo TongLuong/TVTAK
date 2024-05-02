@@ -57,6 +57,7 @@ export default function HistoryScreen() {
     setSelectedMonth(parseInt(selections?.col_2));
     setSelectedYear(parseInt(selections?.col_3));
   };
+
   const togglePicker = () => {
     setIsVisible(!isVisible); // Toggle the visibility state
   };
@@ -202,7 +203,7 @@ export default function HistoryScreen() {
           style={{ 
           justifyContent: "space-evenly", 
           marginLeft: "5%",
-          marginTop: "10%"
+          marginTop: "6%"
         }}
         >
           <DataTable.Row style={{ flex: 1 }}>
@@ -210,9 +211,9 @@ export default function HistoryScreen() {
             <DataTable.Cell></DataTable.Cell>
           </DataTable.Row>
           <DataTable.Header>
-            <DataTable.Cell style={{ marginLeft: "5%" }}>
+            <DataTable.Title style={{ marginLeft: "5%" }}>
               <Text style={{ color: "#3CAF58" }}>Ngày</Text>
-            </DataTable.Cell>
+            </DataTable.Title>
             <DataTable.Title style={{  }}>
               <Text style={{ color: "#3CAF58" }}>Giờ</Text>
             </DataTable.Title>
@@ -266,7 +267,7 @@ export default function HistoryScreen() {
         <View
           style={{
             flexDirection: "row",
-            marginTop: 50,
+            marginTop: "5%",
             justifyContent: "center",
             alignItems: "center",
           }}

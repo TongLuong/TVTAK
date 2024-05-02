@@ -127,7 +127,7 @@ export default function HomeScreen({ navigation }) {
           backgroundColor: "#EFF9F1",
           borderRadius: 45,
           padding: 10,
-          marginTop: 20,
+          marginTop: "5%",
         }}
       >
         <Text
@@ -189,7 +189,7 @@ export default function HomeScreen({ navigation }) {
       <View
         style={{
           margin: 10,
-          marginTop: 0,
+          marginTop: "0%",
           height: "100%",
           backgroundColor: "#EFF9F1",
           borderRadius: 45,

@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Touchable,
+  ScrollView,
 } from 'react-native';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
@@ -41,18 +42,22 @@ export default function App() {
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const m = true;
-  const markedList = ['2024-04-14', '2024-04-17'];
-  const notiList = ['2024-04-25', '2024-04-20'];
+  // const markedList = ['2024-04-14', '2024-04-17'];
+  // const notiList = ['2024-04-25', '2024-04-20'];
+  const markedList = [];
+  const notiList = [];
   const [cur, setCur] = useState(false);
   const [isNoted, setIsNoted] = useState(false);
   const [markAct, setMarkAct] = useState(false);
 
   const weeks = React.useMemo(() => {
-    const start = moment().add(week, 'weeks').startOf('week');
-
+    console.log(week);
+    const start = moment().add(week, 'weeks').startOf('isoWeek');
+    
     return [-1, 0, 1].map(adj => {
       return Array.from({ length: 7 }).map((_, index) => {
         const date = moment(start).add(adj, 'week').add(index, 'day');
+        
         let marked = false;
         let noti = false;
         for (let i in markedList){
@@ -82,170 +87,177 @@ export default function App() {
   // }, [value])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
+    <ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
 
-        <View style={styles.picker}>
-          <Swiper
-            index={1}
-            ref={swiper}
-            loop={false}
-            showsPagination={false}
-            onIndexChanged={ind => {
-              if (ind === 1) {
-                return;
-              }
-              else {
-                setTimeout(() => {
+          <View style={styles.picker}>
+            <Swiper
+              index={1}
+              ref={swiper}
+              loop={false}
+              showsPagination={false}
+              onIndexChanged={ind => {
+                if (ind === 1) {
+                  return;
+                }
+                else {
                   const newIndex = ind - 1;
                   const newWeek = week + newIndex;
-                  setWeek(newWeek);
+                  // setWeek(newWeek);
                   setValue(moment(value).add(newIndex, 'week').toDate());
                   swiper.current.scrollTo(1, false);
-                }, 100);
-              }
-            }}>
-            {weeks.map((dates, index) => (
-              <View
-                style={[styles.itemRow, { paddingHorizontal: 16 }]}
-                key={index}>
-                {dates.map((item, dateIndex) => {
-                  const isActive =
-                    value.toDateString() === item.date.toDateString();
-                  return (
-                    <TouchableWithoutFeedback
-                      key={dateIndex}
-                      onPress={() => {
-                        setValue(item.date)
-                        setCur(item)
-                        }}>
-                      <View
-                        style={[
-                          styles.item,
-                          isActive && {
-                            backgroundColor: '#9CDD9B',
-                          },
-                        ]}>
-                        {item.isMarked && <Ionicons style={{marginBottom: 10}} size={13} name="ellipse"/>}
-                        <Text
+                  // setTimeout(() => {
+                  //   const newIndex = ind - 1;
+                  //   const newWeek = week + newIndex;
+                  //   setWeek(newWeek);
+                  //   setValue(moment(value).add(newIndex, 'week').toDate());
+                  //   swiper.current.scrollTo(1, false);
+                  // }, 100);
+                }
+              }}>
+              {weeks.map((dates, index) => (
+                <View
+                  style={[styles.itemRow, { paddingHorizontal: 16 }]}
+                  key={index}>
+                  {dates.map((item, dateIndex) => {
+                    const isActive =
+                      value.toDateString() === item.date.toDateString();
+                    return (
+                      <TouchableWithoutFeedback
+                        key={dateIndex}
+                        onPress={() => {
+                          setValue(item.date)
+                          setCur(item)
+                          }}>
+                        <View
                           style={[
-                            styles.itemWeekday,
-                            isActive && { color: 'black' },
+                            styles.item,
+                            isActive && {
+                              backgroundColor: '#9CDD9B',
+                            },
                           ]}>
-                          {item.weekday}
-                        </Text>
-                        <Text
-                          style={[
-                            styles.itemDate,
-                            isActive && { color: 'black' },
-                          ]}>
-                          {item.date.getDate()}
-                        </Text>
-                        {item.haveNoti && <Ionicons style={{marginTop: 10}} size={16} name="notifications"/>}
-                      </View>
-                    </TouchableWithoutFeedback>
-                  );
-                })}
-              </View>
-            ))}
-          </Swiper>
+                          {item.isMarked && <Ionicons style={{marginBottom: 10}} size={13} name="ellipse"/>}
+                          <Text
+                            style={[
+                              styles.itemWeekday,
+                              isActive && { color: 'black' },
+                            ]}>
+                            {item.weekday}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.itemDate,
+                              isActive && { color: 'black' },
+                            ]}>
+                            {item.date.getDate()}
+                          </Text>
+                          {item.haveNoti && <Ionicons style={{marginTop: 10}} size={16} name="notifications"/>}
+                        </View>
+                      </TouchableWithoutFeedback>
+                    );
+                  })}
+                </View>
+              ))}
+            </Swiper>
+          </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
+          <AppButton title={"Đánh dấu"} onPress={ () => {
+                                                        setCur(true)
+                                                        setMarkAct(!markAct)}}/>
+          <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
+                                                                                        setMarkAct(!markAct)}}/>
         </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
-        <AppButton title={"Đánh dấu"} onPress={ () => {
-                                                      setCur(true)
-                                                      setMarkAct(!markAct)}}/>
-        <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
-                                                                                      setMarkAct(!markAct)}}/>
-      </View>
 
-      {/* <View>
-          <Text>
-            {JSON.stringify(value)}
-          </Text>
-      </View> */}
+        {/* <View>
+            <Text>
+              {JSON.stringify(value)}
+            </Text>
+        </View> */}
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20 }}>
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-          <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thời gian thu hoạch dự kiến</Text>
-          <AppButton title={"Dự kiến thu hoạch"} style={{marginTop: '2%'}} />
+        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+            <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thời gian thu hoạch dự kiến</Text>
+            <AppButton title={"Dự kiến thu hoạch"} style={{marginTop: '2%'}} />
+          </View>
+          <View>
+            <Text style={{fontSize: 25, marginLeft: '10%', color: '#3CAF58', marginVertical: '2%'}}>
+              31 tháng 12 năm 2024
+            </Text>
+          </View>
+          <View style={{flexDirection:'row', justifyContent: 'flex-end'}}>
+            <Text style={{marginTop:'1%', marginRight: '2%', color: '#3CAF58'}}>
+              Đánh dấu ngày này vào lịch?
+            </Text>
+            <AppButton title={"Có"} style={{width:"10%", borderColor: '#3CAF58', borderWidth: 1, height: 26, marginRight: '2%'}}/>
+            <AppButton title={"Không"} style={{width:"15%", borderColor: 'red', borderWidth: 1, height: 26, marginRight: '2%'}} titleStyle={{color: 'red'}}/>
+          </View>
         </View>
-        <View>
-          <Text style={{fontSize: 25, marginLeft: '10%', color: '#3CAF58', marginVertical: '2%'}}>
-            31 tháng 12 năm 2024
-          </Text>
-        </View>
-        <View style={{flexDirection:'row', justifyContent: 'flex-end'}}>
-          <Text style={{marginTop:'1%', marginRight: '2%', color: '#3CAF58'}}>
-            Đánh dấu ngày này vào lịch?
-          </Text>
-          <AppButton title={"Có"} style={{width:"10%", borderColor: '#3CAF58', borderWidth: 1, height: 26, marginRight: '2%'}}/>
-          <AppButton title={"Không"} style={{width:"15%", borderColor: 'red', borderWidth: 1, height: 26, marginRight: '2%'}} titleStyle={{color: 'red'}}/>
-        </View>
-      </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', marginHorizontal: '2%', borderRadius: 20  }}>
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-          <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
-          <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} />
+        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20  }}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+            <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
+            <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} />
+          </View>
+          <View>
+            <DataTable>
+              <DataTable.Row>
+                  <DataTable.Title>
+                    <View>
+                      <Text style={{color: '#3CAF58'}}>Giờ</Text>
+                    </View>
+                  </DataTable.Title>
+                  <DataTable.Title>
+                    <View>
+                      <Text style={{color: '#3CAF58'}}>Nội dung</Text>
+                    </View>
+                  </DataTable.Title>
+                  <DataTable.Title>
+                    <View>
+                      <Text></Text>
+                    </View>
+                  </DataTable.Title>
+              </DataTable.Row>
+              <DataTable.Row>
+                <DataTable.Cell>
+                  <Text style={{color: '#3CAF58'}}>15:00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={{color: '#3CAF58'}}>Thăm vườn</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <AppButton title={"Xóa"} />
+                </DataTable.Cell>
+              </DataTable.Row>
+              <DataTable.Row>
+              <DataTable.Cell>
+                  <Text style={{color: '#3CAF58'}}>18:00</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={{color: '#3CAF58'}}>Tắt máy bơm</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <AppButton title={"Xóa"} />
+                </DataTable.Cell>
+              </DataTable.Row>
+            </DataTable>
+          </View>
         </View>
-        <View>
-          <DataTable>
-            <DataTable.Row>
-                <DataTable.Title>
-                  <View>
-                    <Text style={{color: '#3CAF58'}}>Giờ</Text>
-                  </View>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <View>
-                    <Text style={{color: '#3CAF58'}}>Nội dung</Text>
-                  </View>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <View>
-                    <Text></Text>
-                  </View>
-                </DataTable.Title>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>
-                <Text style={{color: '#3CAF58'}}>15:00</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={{color: '#3CAF58'}}>Thăm vườn</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <AppButton title={"Xóa"} />
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-            <DataTable.Cell>
-                <Text style={{color: '#3CAF58'}}>18:00</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={{color: '#3CAF58'}}>Tắt máy bơm</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <AppButton title={"Xóa"} />
-              </DataTable.Cell>
-            </DataTable.Row>
-          </DataTable>
-        </View>
-      </View>
 
-      <View style = {{ backgroundColor: '#EFF9F1', marginTop:'5%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-          <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú</Text>
-          { isNoted? <Text> Sửa | Xóa </Text> : <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} />  }
+        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+            <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú</Text>
+            { isNoted? <Text> Sửa | Xóa </Text> : <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} />  }
+          </View>
+          <View style={{marginTop: 7}}>
+            <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%'}}>
+              Trống
+            </Text>
+          </View>
         </View>
-        <View style={{marginTop: 7}}>
-          <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%'}}>
-            Trống
-          </Text>
         </View>
-      </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
   }
 
