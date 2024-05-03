@@ -28,6 +28,9 @@ export default function NoteList() {
           renderItem={({item}) => (
             <View style={styles.item}>
               <Text style={styles.title}>{item}</Text>
+              <View style={{backgroundColor: 'black'}}>
+                <Text>ABC</Text>
+              </View>
             </View>
           )}
         />

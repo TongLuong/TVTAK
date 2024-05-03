@@ -214,7 +214,7 @@ export default function HomeScreen({ navigation }) {
               >
                 <AppButton1
                   title={"Thêm"}
-                  onPress={() => navigation.navigate("History")}
+                  onPress={() => navigation.navigate("DeviceAddtion")}
                 />
               </View>
             </DataTable.Cell>
@@ -317,7 +317,7 @@ export default function HomeScreen({ navigation }) {
               style={{ position: "absolute", left: "10%" }}
               textStyle={{ color: "#3CAF58" }}
             >
-              <AppButton2 title={"Cài đặt"} />
+              <AppButton2 title={"Cài đặt"} onPress={() => {navigation.navigate("DeviceList")}} />
             </DataTable.Cell>
             <DataTable.Cell style={{ position: "absolute", right: "10%" }}>
               <AppButton4

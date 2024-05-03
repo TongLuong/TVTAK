@@ -8,7 +8,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Touchable,
-  ScrollView,
 } from 'react-native';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
