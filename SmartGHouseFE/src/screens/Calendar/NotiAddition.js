@@ -1,7 +1,9 @@
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView, Button, Pressable, Platform, StyleSheet } from "react-native";
-import { useState } from "react";
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView, Button, Pressable, Platform, StyleSheet, Alert } from "react-native";
+import { useState, useEffect } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { createNotification } from '../../services/userService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppButton = ({ onPress, title, style, titleStyle }) => (
     <TouchableOpacity
@@ -22,13 +24,14 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
     </TouchableOpacity>
   );
 
-export default function NotiAddition() {
+export default function NotiAddition({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [text, onChangeText] = useState('');
   const [value, setValue] = useState('');
   const [time, setTime] = useState('');
   const [timePicker, setTimePicker] = useState(false);
+  const [user, setUser] = useState({});
 
     const toggleDatePicker = () => {
       setOpen(!open);
@@ -69,6 +72,29 @@ export default function NotiAddition() {
     const confirmIOSDate = () => {
       setValue(date.toDateString());
       toggleDatePicker();
+    }
+
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const user = await AsyncStorage.getItem("User");
+          const userData = JSON.parse(user);
+          setUser(userData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchUser();
+    }, []);
+
+    const sendNewNoti = async () => {
+      const noti = {
+        time: date.toISOString(),
+        content: text
+      };
+
+      const res = await createNotification(user?.id, noti);
+      return res.status == 200;
     }
 
     return (
@@ -113,22 +139,22 @@ export default function NotiAddition() {
 
                   <Pressable
                   onPress={toggleDatePicker}>
-                <View
-                style={{
-                    backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20, borderWidth: 1, borderColor: '#3CAF58'
-                }}>
-                    <TextInput
-                      editable={false}
-                      multiline={true}
-                      numberOfLines={2}
-                      onChangeText={text => onChangeText(text)}
-                      value={value}
-                      style={{padding: 10, color: "black"}}
-                      placeholder="Chọn ngày..."
-                      onPressIn={toggleDatePicker}
-                  />
-                </View>
-                </Pressable>
+                    <View
+                    style={{
+                        backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20, borderWidth: 1, borderColor: '#3CAF58'
+                    }}>
+                        <TextInput
+                          editable={false}
+                          multiline={true}
+                          numberOfLines={2}
+                          onChangeText={text => onChangeText(text)}
+                          value={value}
+                          style={{padding: 10, color: "black"}}
+                          placeholder="Chọn ngày..."
+                          onPressIn={toggleDatePicker}
+                      />
+                    </View>
+                  </Pressable>
                 </View>
                 <View>
                   <Text style={{marginHorizontal: '4%', fontSize: 16, marginTop: '3%'}}>Giờ</Text>
@@ -197,10 +223,18 @@ export default function NotiAddition() {
             <View style = {{ alignItems: 'center', marginTop: "5%"}}>
                 <AppButton title={"Lưu thông báo"} 
                 onPress={() => 
-                {console.log("Date Pick: ", value);
-                console.log("Time pick: ", time);
-                console.log("Content: ", text)}}/>
-                <AppButton title={"Hủy"} titleStyle={{color: 'red'}}/>
+                {
+                  // console.log("Date Pick: ", date.toISOString());
+                  // console.log("Time pick: ", time);
+                  // console.log("Content: ", text);
+                  if (sendNewNoti())
+                    navigation.navigate("CalendarScreen");
+                  else
+                  {
+                    Alert.alert("Error", "Server side error!");
+                  }
+                }}/>
+                <AppButton title={"Hủy"} titleStyle={{color: 'red'}} onPress={() => navigation.navigate("CalendarScreen")}/>
             </View> 
         </ScrollView>        
     )

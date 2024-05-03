@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
-  Touchable,
+  Touchable
 } from 'react-native';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
@@ -45,14 +45,13 @@ export default function App({ navigation }) {
   const m = true;
   // const markedList = ['2024-04-14', '2024-04-17'];
   // const notiList = ['2024-04-25', '2024-04-20'];
-  const markedList = [];
-  const notiList = [];
+  const [markedList, setMarkedList] = useState([]);
+  const [notiList, setNotiList] = useState([]);
   const [cur, setCur] = useState(false);
   const [isNoted, setIsNoted] = useState(false);
   const [markAct, setMarkAct] = useState(false);
 
   const weeks = React.useMemo(() => {
-    console.log(week);
     const start = moment().add(week, 'weeks').startOf('isoWeek');
     
     return [-1, 0, 1].map(adj => {
@@ -62,12 +61,13 @@ export default function App({ navigation }) {
         let marked = false;
         let noti = false;
         for (let i in markedList){
-          if (markedList[i] === date.toDate().toISOString().slice(0,10)) {
+          //date.toDate().toISOString().slice(0,10)
+          if (!(markedList[i].getTime() < date.toDate().getTime()) && !(markedList[i].getTime() > date.toDate().getTime())) {
             marked = true;
           }
         }
         for (let i in notiList){
-          if (notiList[i] === date.toDate().toISOString().slice(0,10)) {
+          if (!(notiList[i].getTime() < date.toDate().getTime()) && !(notiList[i].getTime() > date.toDate().getTime())) {
             noti = true;
           }
         }
@@ -80,7 +80,7 @@ export default function App({ navigation }) {
         };
       });
     });
-  }, [week]);
+  }, [week, markedList, notiList]);
 
   // useEffect(() => 
   // {
@@ -103,10 +103,10 @@ export default function App({ navigation }) {
                   return;
                 }
                 else {
-                  const newIndex = ind - 1;
-                  const newWeek = week + newIndex;
+                  // const newIndex = ind - 1;
+                  // const newWeek = week + newIndex;
                   // setWeek(newWeek);
-                  setValue(moment(value).add(newIndex, 'week').toDate());
+                  // setValue(moment(value).add(newIndex, 'week').toDate());
                   swiper.current.scrollTo(1, false);
                   // setTimeout(() => {
                   //   const newIndex = ind - 1;
@@ -122,8 +122,10 @@ export default function App({ navigation }) {
                   style={[styles.itemRow, { paddingHorizontal: 16 }]}
                   key={index}>
                   {dates.map((item, dateIndex) => {
-                    const isActive =
-                      value.toDateString() === item.date.toDateString();
+                    var currDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                    var eleDate = new Date(item.date.getFullYear(), item.date.getMonth(), item.date.getDate());
+
+                    const isActive = !(currDate.getTime() < eleDate.getTime()) && !(currDate.getTime() > eleDate.getTime());
                     return (
                       <TouchableWithoutFeedback
                         key={dateIndex}
@@ -163,11 +165,23 @@ export default function App({ navigation }) {
             </Swiper>
           </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
-          <AppButton title={"Đánh dấu"} onPress={ () => {
-                                                        setCur(true)
-                                                        setMarkAct(!markAct)}}/>
-          <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={() => {setCur(false)
-                                                                                        setMarkAct(!markAct)}}/>
+          <AppButton title={"Đánh dấu"} onPress={ 
+            () => {
+                const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                setMarkedList(markedList => [...markedList, selectedDate]);
+
+                // remove noti
+                setNotiList(notiList.filter(item => {
+                  return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
+                }));
+          }}/>
+          <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={
+            () => {
+              const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+              setMarkedList(markedList.filter(item => {
+                return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
+              }));
+            }}/>
         </View>
 
         {/* <View>
@@ -188,10 +202,31 @@ export default function App({ navigation }) {
         </View>
         <View style={{flexDirection:'row', justifyContent: 'flex-end'}}>
           <Text style={{marginTop:'1%', marginRight: '2%', color: '#3CAF58'}}>
-            Đánh dấu ngày này vào lịch?
+            Đặt thông báo vào ngày này?
           </Text>
-          <AppButton title={"Có"} style={{width:"10%", borderColor: '#3CAF58', borderWidth: 1, height: 26, marginRight: '2%'}}/>
-          <AppButton title={"Không"} style={{width:"15%", borderColor: 'red', borderWidth: 1, height: 26, marginRight: '2%'}} titleStyle={{color: 'red'}}/>
+          <AppButton title={"Có"} style={{width:"10%", borderColor: '#3CAF58', borderWidth: 1, height: 26, marginRight: '2%'}}
+            onPress={
+              () => {
+                const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                setNotiList(notiList => [...notiList, selectedDate]);
+                
+                // remove marked
+                setMarkedList(markedList.filter(item => {
+                  return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
+                }));
+              }
+            }
+          />
+          <AppButton title={"Xóa"} style={{width:"15%", borderColor: 'red', borderWidth: 1, height: 26, marginRight: '2%'}} titleStyle={{color: 'red'}}
+            onPress={
+              () => {
+                const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+                setNotiList(notiList.filter(item => {
+                  return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
+                }));
+              }
+            }
+          />
         </View>
       </View>
 

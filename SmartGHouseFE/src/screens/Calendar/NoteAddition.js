@@ -1,5 +1,7 @@
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createNewNote } from '../../services/userService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppButton = ({ onPress, title, style, titleStyle }) => (
     <TouchableOpacity
@@ -20,8 +22,32 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
     </TouchableOpacity>
   );
 
-export default function NoteAddition() {
+export default function NoteAddition({ navigation }) {
     const [value, onChangeText] = useState('');
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const user = await AsyncStorage.getItem("User");
+          const userData = JSON.parse(user);
+          setUser(userData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchUser();
+    }, []);
+
+    const sendNewNote = async () => {
+      const note = {
+        content: value
+      };
+
+      const res = await createNewNote(user?.id, note);
+      return res.status;
+    };
+
     return (
         <ScrollView style={{marginBottom: 65}}>
             <View>
@@ -50,8 +76,15 @@ export default function NoteAddition() {
                 </View>
             </View>
             <View style = {{ alignItems: 'center', marginTop: "5%"}}>
-                <AppButton title={"Lưu ghi chú"} />
-                <AppButton title={"Hủy"} titleStyle={{color: 'red'}}/>
+                <AppButton title={"Lưu ghi chú"} onPress={() => {
+                  if (sendNewNote())
+                    navigation.navigate("CalendarScreen");
+                  else
+                  {
+                    Alert.alert("Error", "Server side error!");
+                  }
+                }}/>
+                <AppButton title={"Hủy"} titleStyle={{color: 'red'}} onPress={() => navigation.navigate("CalendarScreen")}/>
                 <AppButton title={"Xóa tất cả"} titleStyle={{color: 'black'}} onPress={() => {onChangeText('')}}/>
             </View> 
         </ScrollView>        
