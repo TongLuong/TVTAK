@@ -160,7 +160,7 @@ export default function App() {
           <DataTable.Row>
             <DataTable.Cell> <Text style={{ color: '#3CAF58' }}> <Ionicons size={14} name="alarm-outline" />  Thời gian thực hiện</Text></DataTable.Cell>
             <DataTable.Cell>
-              <View style={{ justifyContent: 'center', paddingRight: 10 }}>
+              <View style={{ justifyContent: 'center', flex: 0.3 }}>
                 <TouchableOpacity
         style={styles.addButton}
         onPress={toggleTimeFormVisibility}
@@ -200,7 +200,7 @@ export default function App() {
       <DataTable.Row>
         <DataTable.Cell> <Text style={{ color: '#3CAF58'}}> <Ionicons size={14} name="calendar-outline"/>  Lịch biểu</Text></DataTable.Cell>
         <DataTable.Cell>
-          <View style={{justifyContent: 'center', paddingRight: 10}}>
+          <View style={{justifyContent: 'center', flex: 0.3}}>
             <TouchableOpacity
         style={styles.addButton}
         onPress={toggleScheduleFormVisibility}
