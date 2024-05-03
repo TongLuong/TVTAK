@@ -42,7 +42,7 @@ export default function App() {
             iconName = focused ? "home" : "home-outline";
           } else if (rn === path.MANAGE) {
             iconName = focused ? "construct" : "construct-outline";
-          } else if (rn === "CalendarControl") {
+          } else if (rn === /*"CalendarControl"*/path.CALENDAR) {
             iconName = focused ? "calendar" : "calendar-outline";
           } else if (rn === path.HISTORY) {
             iconName = focused ? "list-circle" : "list-circle-outline";
@@ -65,7 +65,8 @@ export default function App() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name={"CalendarControl"}
+        // name={"CalendarControl"}
+        name={path.CALENDAR}
         component={CalendarControl}
         options={{ headerShown: false }}
       />

@@ -43,7 +43,8 @@ const deleteNote = async (user_id, note_id) => {
   );
 };
 const getAllNote = async (user_id) => {
-  return await axiosInst.get(`/api/note/get-all-notes?user_id=${user_id}`);
+  return await axiosInst.get(`/api/note/get-all-notes?user_id=${user_id}`)
+                        .catch((e) => console.log(e));
 };
 const editNote = async (user_id, note_id, note) => {
   return await axiosInst.post(
@@ -55,7 +56,8 @@ const createNotification = async (user_id, notification) => {
   return await axiosInst.post(
     `/api/notification/create-notification?user_id=${user_id}`,
     notification
-  );
+  )
+  .catch((e) => console.log(e));
 };
 const getAllNotification = async (user_id) => {
   return await axiosInst.get(

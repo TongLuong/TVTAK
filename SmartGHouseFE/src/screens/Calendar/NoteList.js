@@ -1,29 +1,35 @@
 import { View, Text, SectionList, StyleSheet, StatusBar, SafeAreaView } from "react-native";
-
-const DATA = [
-    {
-      date: 'Main dishes',
-      data: ['Ngày biệt ly người đi chẳng nói nên câu, Dẫu em còn níu lại vài câu ướt mi'],
-    },
-    {
-      date: 'Sides',
-      data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-    },
-    {
-      date: 'Drinks',
-      data: ['Water', 'Coke', 'Beer'],
-    },
-    {
-      date: 'Desserts',
-      data: ['Cheese Cake', 'Ice Cream'],
-    },
-  ];
+import { getAllNote } from '../../services/userService';
+import { useState, useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function NoteList() {
+    const [user, setUser] = useState({});
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+      const getAllNotes = async () => {
+        try {
+          const user = await AsyncStorage.getItem("User");
+          const userData = JSON.parse(user);
+          setUser(userData);
+
+          const res = await getAllNote(userData?.id);
+          setData(JSON.parse(JSON.stringify(res.data)).map((item, _) => {
+              return {data: [item.content]};
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getAllNotes();
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
         <SectionList
-          sections={DATA}
+          sections={data}
           keyExtractor={(item, index) => item + index}
           renderItem={({item}) => (
             <View style={styles.item}>
