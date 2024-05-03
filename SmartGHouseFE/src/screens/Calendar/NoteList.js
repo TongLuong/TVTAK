@@ -28,7 +28,7 @@ export default function NoteList() {
 
     return (
         <SafeAreaView style={styles.container}>
-        <SectionList
+        {/* <SectionList
           sections={data}
           keyExtractor={(item, index) => item + index}
           renderItem={({item}) => (
@@ -39,7 +39,7 @@ export default function NoteList() {
               </View>
             </View>
           )}
-        />
+        /> */}
       </SafeAreaView>
     )
 }
