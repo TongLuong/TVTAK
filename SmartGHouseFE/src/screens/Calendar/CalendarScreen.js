@@ -16,6 +16,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { DataTable } from 'react-native-paper';
 import NoteAddition from './NoteAddition';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllNote } from '../../services/userService';
 
 const { width } = Dimensions.get('window');
 
@@ -49,7 +51,27 @@ export default function App({ navigation }) {
   const [notiList, setNotiList] = useState([]);
   const [cur, setCur] = useState(false);
   const [isNoted, setIsNoted] = useState(false);
-  const [markAct, setMarkAct] = useState(false);
+  const [notes, setNotes] = useState(["Loading..."]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const getAllNotes = async () => {
+      try {
+        const user = await AsyncStorage.getItem("User");
+        const userData = JSON.parse(user);
+        setUser(userData);
+
+        const res = await getAllNote(userData?.id);
+        setNotes(JSON.parse(JSON.stringify(res.data)).map((item, _) => {
+            return item.content;
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllNotes();
+  }, [isNoted, notes]);
 
   const weeks = React.useMemo(() => {
     const start = moment().add(week, 'weeks').startOf('isoWeek');
@@ -283,21 +305,27 @@ export default function App({ navigation }) {
       <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '1%', marginHorizontal: '2%', borderRadius: 20 }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
           <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú</Text>
-          { isNoted? 
+          <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {
+              navigation.navigate("NoteAddition");
+              setIsNoted(!isNoted);
+          }}/>
+          {/* { isNoted? 
             <Text> <Text onPress={() => {console.log("Edit Note")}}>Sửa  </Text>| 
             <Text onPress={() => {console.log("Delete Note")}}>  Xóa</Text> </Text> 
             : 
-            <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {navigation.navigate("NoteAddition")}}/>  }
+            <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {
+              navigation.navigate("NoteAddition");
+              setIsNoted(!isNoted);
+            }}/>  } */}
         </View>
         <View style={{marginTop: 5}}>
-          <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%'}}>
-          Ngày biệt li người đi chẳng nói nên câu{'\n'}
-          Dẫu em có níu lại vài câu ướt mi{'\n'}
-          Vì si mê một ai thì đâu có dễ ngưng lại{'\n'}
-          Biết rằng chẳng còn như lúc đầu{'\n'}
+          <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%', marginLeft: "12%"}}>
+            {notes[0]}
           </Text>
         </View>
-        <AppButton title={"Xem tất cả"} style={{width: '40%',paddingHorizontal: '2%'}} onPress={() => { navigation.navigate("NoteList")}}/>
+        <AppButton title={"Xem tất cả"} 
+          style={{width: '40%', paddingHorizontal: '2%', marginTop: "5%"}}
+          onPress={() => { navigation.navigate("NoteList")}}/>
       </View>
       </View>
     </SafeAreaView>

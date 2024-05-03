@@ -40,7 +40,8 @@ const createNewNote = async (user_id, note) => {
 const deleteNote = async (user_id, note_id) => {
   return await axiosInst.delete(
     `/api/note/delete-note?user_id=${user_id}&note_id=${note_id}`
-  );
+  )
+  .catch((e) => console.log(e));
 };
 const getAllNote = async (user_id) => {
   return await axiosInst.get(`/api/note/get-all-notes?user_id=${user_id}`)
