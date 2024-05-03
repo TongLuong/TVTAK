@@ -48,46 +48,42 @@ export default function NoteList() {
 
     return (
         <SafeAreaView style={styles.container}>
-        <SectionList
-          sections={data}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => (
-            <View style={styles.item}>
-              <Text style={styles.title}>{item}</Text>
-              <MaterialCommunityIcons
-                name="note-edit"
-                size={20}
-                color="black"
-                style={{flex: 1}}
-                onPress={() => {console.log("edit note")}}
-              />
-              <Text> | </Text>
-              <MaterialCommunityIcons
-                name="delete"
-                size={20}
-                color="black"
-                style={{flex: 1}}
-                onPress={() => {
-                  if(_deleteNote(index))
-                  {
-                    console.log("Done");
-                    Alert.alert("Success", "Delete note successfully!");
-                  }
-                  else
-                  {
-                    console.log("Failed");
-                    Alert.alert("Error", "Server side error!");
-                  }
-                }}
-              />
-              {/* <Text style={{marginLeft: "5%"}}>
-                <Text onPress={() => {console.log("Edit Note")}}>Sửa  </Text>| 
-                <Text onPress={() => {console.log("Delete Note")}}>  Xóa</Text>
-              </Text> */}
-            </View>
-          )}
-        />
-      </SafeAreaView>
+          <SectionList
+            sections={data}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({item, index}) => (
+              <View style={styles.item}>
+                <Text style={styles.title}>{item}</Text>
+                <MaterialCommunityIcons
+                  name="note-edit"
+                  size={20}
+                  color="black"
+                  style={{flex: 1}}
+                  onPress={() => {console.log("edit note")}}
+                />
+                <Text> | </Text>
+                <MaterialCommunityIcons
+                  name="delete"
+                  size={20}
+                  color="black"
+                  style={{flex: 1}}
+                  onPress={() => {
+                    if(_deleteNote(index))
+                    {
+                      console.log("Done");
+                      Alert.alert("Success", "Delete note successfully!");
+                    }
+                    else
+                    {
+                      console.log("Failed");
+                      Alert.alert("Error", "Server side error!");
+                    }
+                  }}
+                />
+              </View>
+            )}
+          />
+        </SafeAreaView>
     )
 }
 
