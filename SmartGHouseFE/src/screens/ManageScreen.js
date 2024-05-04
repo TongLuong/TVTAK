@@ -15,7 +15,11 @@ export default function App() {
         component={FuncOptionScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Methodop" component={MethodOptionScreen} />
+      <Stack.Screen
+        name="Methodop"
+        component={MethodOptionScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="Manuallight" component={ManualLightScreen} />
       <Stack.Screen name="Manualwater" component={ManualWaterScreen} />
       <Stack.Screen name="Auto" component={AutoScreen} />

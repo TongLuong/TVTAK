@@ -1,5 +1,5 @@
 import axiosInst from "../axios/axiosClient";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const signIn = async (account, pass) => {
   return await axiosInst
     .get(`/api/user/signin?account=${account}&password=${pass}`)
@@ -10,6 +10,7 @@ const signUp = async (body) => {
 };
 
 const createSchedule = async (user_id, device_id, schedule) => {
+  console.log(user_id, device_id, schedule);
   return await axiosInst.post(
     `/api/schedule/create-schedule?user_id=${user_id}&device_id=${device_id}`,
     schedule
@@ -43,8 +44,9 @@ const deleteNote = async (user_id, note_id) => {
   );
 };
 const getAllNote = async (user_id) => {
-  return await axiosInst.get(`/api/note/get-all-notes?user_id=${user_id}`)
-                        .catch((e) => console.log(e));
+  return await axiosInst
+    .get(`/api/note/get-all-notes?user_id=${user_id}`)
+    .catch((e) => console.log(e));
 };
 const editNote = async (user_id, note_id, note) => {
   return await axiosInst.post(
@@ -53,11 +55,12 @@ const editNote = async (user_id, note_id, note) => {
   );
 };
 const createNotification = async (user_id, notification) => {
-  return await axiosInst.post(
-    `/api/notification/create-notification?user_id=${user_id}`,
-    notification
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .post(
+      `/api/notification/create-notification?user_id=${user_id}`,
+      notification
+    )
+    .catch((e) => console.log(e));
 };
 const getAllNotification = async (user_id) => {
   return await axiosInst.get(
@@ -103,7 +106,26 @@ const getDataByMonth = async (device_name, month, year) => {
     `api/record/get-data-by?feed_id=${device_name}&month=${month}&year=${year}`
   );
 };
-
+const getDeviceByScheduleId = async (schedule_id) => {
+  return await axiosInst.get(
+    `api/device/get-device-by-schedule?schedule_id=${schedule_id}`
+  );
+};
+const getUserFromStorage = async () => {
+  try {
+    const user = await AsyncStorage.getItem("User");
+    if (!user) {
+      return null;
+    }
+    return JSON.parse(user);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const setUserToStorage = async (user) => {
+  const userDataString = JSON.stringify(user);
+  await AsyncStorage.setItem("User", userDataString);
+};
 export {
   signIn,
   signUp,
@@ -125,4 +147,7 @@ export {
   getRecord,
   getRecordLast,
   getDataByMonth,
+  getDeviceByScheduleId,
+  getUserFromStorage,
+  setUserToStorage,
 };

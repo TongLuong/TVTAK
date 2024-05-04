@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput } from 'react-native';
-import CalendarStrip from 'react-native-calendar-strip';
-import { DataTable } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import CalendarStrip from "react-native-calendar-strip";
+import { DataTable } from "react-native-paper";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { createSchedule } from "../../services/userService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TimeForm = ({ isVisible, onClose }) => {
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [content, setContent] = useState('');
+const TimeForm = ({ isVisible, onClose, deviceOption }) => {
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleConfirm = () => {
-    console.log('Start Time:', startTime);
-    console.log('End Time:', endTime);
-    console.log('Selected Date:', selectedDate);
-    console.log('Content:', content);
+  const handleConfirm = async () => {
+    console.log("Start Time:", startTime);
+    console.log("End Time:", endTime);
+    console.log("Selected Date:", selectedDate);
+    console.log("Content:", content);
+    const schedule = {
+      type: "mechanical",
+      date: selectedDate,
+      start_time: startTime,
+      end_time: endTime,
+    };
+
+    const device_id = deviceOption === "light" ? 1 : 3;
+    try {
+      const user = await AsyncStorage.getItem("User");
+      const userData = JSON.parse(user);
+      const res = await createSchedule(userData?.id, device_id, schedule);
+    } catch (error) {
+      console.log(error);
+    }
+
     onClose();
   };
 
@@ -58,18 +83,18 @@ const TimeForm = ({ isVisible, onClose }) => {
 };
 
 const ScheduleForm = ({ isVisible, onClose }) => {
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [dayOfWeek, setDayOfWeek] = useState('');
-  const [repeat, setRepeat] = useState('');
-  const [content, setContent] = useState('');
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [dayOfWeek, setDayOfWeek] = useState("");
+  const [repeat, setRepeat] = useState("");
+  const [content, setContent] = useState("");
 
   const handleConfirm = () => {
-    console.log('Start Time:', startTime);
-    console.log('End Time:', endTime);
-    console.log('Day of Week:', dayOfWeek);
-    console.log('Repeat:', repeat);
-    console.log('Content:', content);
+    console.log("Start Time:", startTime);
+    console.log("End Time:", endTime);
+    console.log("Day of Week:", dayOfWeek);
+    console.log("Repeat:", repeat);
+    console.log("Content:", content);
     onClose();
   };
 
@@ -118,11 +143,12 @@ const ScheduleForm = ({ isVisible, onClose }) => {
   );
 };
 
-export default function App() {
+export default function App({ navigation, route }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isTimeFormVisible, setIsTimeFormVisible] = useState(false);
   const [isScheduleFormVisible, setIsScheduleFormVisible] = useState(false);
-
+  const option = route.params;
+  console.log(option);
   const toggleTimeFormVisibility = () => {
     setIsTimeFormVisible(!isTimeFormVisible);
   };
@@ -131,7 +157,7 @@ export default function App() {
     setIsScheduleFormVisible(!isScheduleFormVisible);
   };
 
-  const handleDateSelected = date => {
+  const handleDateSelected = (date) => {
     setSelectedDate(date);
   };
 
@@ -142,107 +168,113 @@ export default function App() {
           style={styles.calendar}
           selectedDate={selectedDate}
           onDateSelected={handleDateSelected}
-          calendarAnimation={{ type: 'sequence', duration: 30 }}
+          calendarAnimation={{ type: "sequence", duration: 30 }}
           daySelectionAnimation={{
-            type: 'border',
+            type: "border",
             borderWidth: 1,
-            borderHighlightColor: '#EFF9F1',
+            borderHighlightColor: "#EFF9F1",
           }}
-          calendarHeaderStyle={{ color: 'black' }}
-          calendarColor={'white'}
+          calendarHeaderStyle={{ color: "black" }}
+          calendarColor={"white"}
           iconContainer={{ flex: 0.1 }}
           dateContainerStyle={{ borderRadius: 20 }}
-          highlightDateContainerStyle={{ backgroundColor: '#9CDD9B', borderRadius: 20 }}
+          highlightDateContainerStyle={{
+            backgroundColor: "#9CDD9B",
+            borderRadius: 20,
+          }}
         />
       </View>
       <View style={styles.container}>
         <DataTable>
           <DataTable.Row>
-            <DataTable.Cell> <Text style={{ color: '#3CAF58' }}> <Ionicons size={14} name="alarm-outline" />  Thời gian thực hiện</Text></DataTable.Cell>
             <DataTable.Cell>
-              <View style={{ justifyContent: 'center', paddingRight: 10 }}>
+              {" "}
+              <Text style={{ color: "#3CAF58" }}>
+                {" "}
+                <Ionicons size={14} name="alarm-outline" /> Thời gian thực hiện
+              </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <View style={{ justifyContent: "center", paddingRight: 10 }}>
                 <TouchableOpacity
-        style={styles.addButton}
-        onPress={toggleTimeFormVisibility}
-      >
-        <Text style={styles.addButtonText}>
-          <Ionicons name='timer-outline' size={14} />
-          {" Đặt thời gian"}
-        </Text>
-      </TouchableOpacity>
+                  style={styles.addButton}
+                  onPress={toggleTimeFormVisibility}
+                >
+                  <Text style={styles.addButtonText}>
+                    <Ionicons name="timer-outline" size={14} />
+                    {" Đặt thời gian"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </DataTable.Cell>
           </DataTable.Row>
           <DataTable.Header>
             <DataTable.Cell style={{ flex: 1.3 }}>
-              <Text style={{ color: '#3CAF58' }}>
-                Ngày
-              </Text>
+              <Text style={{ color: "#3CAF58" }}>Ngày</Text>
             </DataTable.Cell>
             <DataTable.Title>
-              <Text style={{ color: '#3CAF58' }}>
-                Giờ
-              </Text>
+              <Text style={{ color: "#3CAF58" }}>Giờ</Text>
             </DataTable.Title>
             <DataTable.Title>
-              <Text style={{ color: '#3CAF58' }}>
-                Nội dung
-              </Text>
+              <Text style={{ color: "#3CAF58" }}>Nội dung</Text>
               <Text></Text>
             </DataTable.Title>
           </DataTable.Header>
-          <DataTable.Row style={{ padding: 30 }}>
-          </DataTable.Row>
+          <DataTable.Row style={{ padding: 30 }}></DataTable.Row>
         </DataTable>
       </View>
       <View style={styles.container}>
         <DataTable>
-      <DataTable.Row>
-        <DataTable.Cell> <Text style={{ color: '#3CAF58'}}> <Ionicons size={14} name="calendar-outline"/>  Lịch biểu</Text></DataTable.Cell>
-        <DataTable.Cell>
-          <View style={{justifyContent: 'center', paddingRight: 10}}>
-            <TouchableOpacity
-        style={styles.addButton}
-        onPress={toggleScheduleFormVisibility}
-      >
-        <Text style={styles.addButtonText}>
-          <Ionicons name='add-circle-outline' size={14} />
-          {" Đặt lịch biểu"}
-        </Text>
-      </TouchableOpacity>
-          </View>
-        </DataTable.Cell>
-      </DataTable.Row>
-      <DataTable.Header> 
-        <DataTable.Cell style={{flex: 1.3}}>
-          <Text style={{color: '#3CAF58'}}>
-            Thứ
-          </Text>
-        </DataTable.Cell> 
-        <DataTable.Title>
-          <Text style={{color: '#3CAF58'}}>
-            Giờ
-          </Text>
-        </DataTable.Title> 
-        <DataTable.Title>
-          <Text style={{color: '#3CAF58'}}>
-            Nội dung
-          </Text>
-          <Text style={{color: '#3CAF58'}}>
-            Lặp lại
-          </Text>
-          <Text></Text>
-        </DataTable.Title>
-      </DataTable.Header> 
-      <DataTable.Row style={{padding: 30}}>
-      </DataTable.Row>
-    </DataTable>
+          <DataTable.Row>
+            <DataTable.Cell>
+              {" "}
+              <Text style={{ color: "#3CAF58" }}>
+                {" "}
+                <Ionicons size={14} name="calendar-outline" /> Lịch biểu
+              </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <View style={{ justifyContent: "center", paddingRight: 10 }}>
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={toggleScheduleFormVisibility}
+                >
+                  <Text style={styles.addButtonText}>
+                    <Ionicons name="add-circle-outline" size={14} />
+                    {" Đặt lịch biểu"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Header>
+            <DataTable.Cell style={{ flex: 1.3 }}>
+              <Text style={{ color: "#3CAF58" }}>Thứ</Text>
+            </DataTable.Cell>
+            <DataTable.Title>
+              <Text style={{ color: "#3CAF58" }}>Giờ</Text>
+            </DataTable.Title>
+            <DataTable.Title>
+              <Text style={{ color: "#3CAF58" }}>Nội dung</Text>
+              <Text style={{ color: "#3CAF58" }}>Lặp lại</Text>
+              <Text></Text>
+            </DataTable.Title>
+          </DataTable.Header>
+          <DataTable.Row style={{ padding: 30 }}></DataTable.Row>
+        </DataTable>
       </View>
       {isTimeFormVisible && (
-        <TimeForm isVisible={isTimeFormVisible} onClose={toggleTimeFormVisibility} />
+        <TimeForm
+          isVisible={isTimeFormVisible}
+          onClose={toggleTimeFormVisibility}
+          deviceOption={option}
+        />
       )}
       {isScheduleFormVisible && (
-        <ScheduleForm isVisible={isScheduleFormVisible} onClose={toggleScheduleFormVisibility} />
+        <ScheduleForm
+          isVisible={isScheduleFormVisible}
+          onClose={toggleScheduleFormVisibility}
+        />
       )}
     </View>
   );
@@ -250,61 +282,61 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EFF9F1',
+    backgroundColor: "#EFF9F1",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom: 100
+    marginBottom: 100,
   },
   calendar: {
     height: 100,
     paddingTop: 20,
     paddingBottom: 10,
-    backgroundColor: '#EFF9F1',
+    backgroundColor: "#EFF9F1",
   },
-    formContainer: {
-    backgroundColor: 'white',
+  formContainer: {
+    backgroundColor: "white",
     elevation: 3,
     borderRadius: 10,
     padding: 20,
     marginBottom: 20,
-    top: '30%' ,
-    left: '35%' ,
-    position:'absolute'
+    top: "30%",
+    left: "35%",
+    position: "absolute",
   },
-   hidden: {
-    display: 'none',
+  hidden: {
+    display: "none",
   },
   title: {
     fontSize: 20,
     marginBottom: 10,
-    color: '#3CAF58',
+    color: "#3CAF58",
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     borderRadius: 5,
     paddingLeft: 10,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   addButton: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    backgroundColor: "white",
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
     height: 26,
     borderRadius: 20,
     paddingLeft: 30,
-    paddingRight: 30
+    paddingRight: 30,
   },
   addButtonText: {
     fontSize: 14,
-    color: '#3CAF58',
+    color: "#3CAF58",
   },
 });
