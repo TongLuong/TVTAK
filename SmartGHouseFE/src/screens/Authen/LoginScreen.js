@@ -48,7 +48,7 @@ export default function App({ navigation }) {
           <TextInput
             onChangeText={(text) => setUsername(text)}
             style={loginStyle.input}
-            placeholder="Nhap ten dang nhap hoac email"
+            placeholder="Nhập tên đăng nhập hoặc email"
             placeholderTextColor="#aaa"
           />
         </View>
@@ -59,7 +59,7 @@ export default function App({ navigation }) {
               secureTextEntry={!showPassword}
               onChangeText={(text) => setPass(text)}
               style={loginStyle.inputPass}
-              placeholder="Nhap mat khau"
+              placeholder="Nhập mật khẩu"
               placeholderTextColor="#aaa"
             />
             <MaterialCommunityIcons

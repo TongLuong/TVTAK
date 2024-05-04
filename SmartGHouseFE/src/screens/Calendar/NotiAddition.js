@@ -25,13 +25,13 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
   );
 
 export default function NotiAddition({ navigation }) {
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [text, onChangeText] = useState('');
-  const [value, setValue] = useState('');
-  const [time, setTime] = useState('');
-  const [timePicker, setTimePicker] = useState(false);
-  const [user, setUser] = useState({});
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = useState(false);
+    const [text, onChangeText] = useState('');
+    const [value, setValue] = useState('');
+    const [time, setTime] = useState('');
+    const [timePicker, setTimePicker] = useState(false);
+    const [user, setUser] = useState({});
 
     const toggleDatePicker = () => {
       setOpen(!open);
@@ -92,7 +92,7 @@ export default function NotiAddition({ navigation }) {
         time: date.toISOString(),
         content: text
       };
-
+      
       const res = await createNotification(user?.id, noti);
       return res.status == 200;
     }
@@ -224,9 +224,6 @@ export default function NotiAddition({ navigation }) {
                 <AppButton title={"Lưu thông báo"} 
                 onPress={() => 
                 {
-                  // console.log("Date Pick: ", date.toISOString());
-                  // console.log("Time pick: ", time);
-                  // console.log("Content: ", text);
                   if (sendNewNoti())
                     navigation.navigate("CalendarScreen");
                   else

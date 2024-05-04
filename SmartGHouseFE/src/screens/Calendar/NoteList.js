@@ -5,10 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   MaterialCommunityIcons
 } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useIsFocused } from '@react-navigation/native';
 
-export default function NoteList() {
+export default function NoteList({ navigation }) {
     const [data, setData] = useState([{data: ["Loading..."]}]);
     const [idNote, setIdNote] = useState([-1]);
+    const [update, setUpdate] = useState(false);
     const [user, setUser] = useState({});
 
     useEffect(() => {
@@ -19,10 +22,10 @@ export default function NoteList() {
           setUser(userData);
 
           const res = await getAllNote(userData?.id);
-          setData(JSON.parse(JSON.stringify(res.data)).map((item) => {
-              return {data: [item.content]};
-            })
-          );
+          setData([{data: JSON.parse(JSON.stringify(res.data)).map((item) => {
+                return item.content;
+              })
+          }]);
           
           setIdNote(JSON.parse(JSON.stringify(res.data)).map((item) => {
             return item.id;
@@ -33,11 +36,11 @@ export default function NoteList() {
         }
       };
       getAllNotes();
-    }, [idNote]);
+    }, [update, useIsFocused()]);
 
     const _deleteNote = async (i) => {
-      console.log(idNote, i);
       const res = await deleteNote(user?.id, idNote[i]);
+      setUpdate(!update);
       if (res.status == 200)
       {
         setIdNote(idNote.filter((_, ind) => ind != i));
@@ -52,14 +55,22 @@ export default function NoteList() {
             sections={data}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => (
-              <View style={styles.item}>
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => {
+                    navigation.navigate("NoteAddition", {id: idNote[index], content: data[0].data[index]});
+                  }
+                }
+              >
                 <Text style={styles.title}>{item}</Text>
-                <MaterialCommunityIcons
+                {/* <MaterialCommunityIcons
                   name="note-edit"
                   size={20}
                   color="black"
                   style={{flex: 1}}
-                  onPress={() => {console.log("edit note")}}
+                  onPress={() => {
+                    navigation.navigate("NoteAddition", {id: idNote[index], content: data[0].data[index]});
+                  }}
                 />
                 <Text> | </Text>
                 <MaterialCommunityIcons
@@ -68,19 +79,31 @@ export default function NoteList() {
                   color="black"
                   style={{flex: 1}}
                   onPress={() => {
-                    if(_deleteNote(index))
-                    {
-                      console.log("Done");
-                      Alert.alert("Success", "Delete note successfully!");
-                    }
-                    else
-                    {
-                      console.log("Failed");
-                      Alert.alert("Error", "Server side error!");
-                    }
+                    Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
+                      [
+                        {
+                          text: "Hủy bỏ",
+                          onPress: () => console.log("Canceled"),
+                          style: "cancel"
+                        },
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            if(_deleteNote(index))
+                            {
+                              Alert.alert("Thành công", "Bạn đã xóa ghi chú!");
+                            }
+                            else
+                            {
+                              Alert.alert("Lỗi", "Lỗi server!");
+                            }
+                          }
+                        }
+                      ]
+                    )
                   }}
-                />
-              </View>
+                /> */}
+              </TouchableOpacity>
             )}
           />
         </SafeAreaView>
