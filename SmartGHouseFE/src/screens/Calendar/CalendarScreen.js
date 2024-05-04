@@ -76,10 +76,17 @@ export default function App({ navigation }) {
         );
 
         const res2 = await getAllNotification(userData?.id);
-        setNoti(JSON.parse(JSON.stringify(res2.data)).map((item, _) => {
-            return {id: item.id, time: item.time, content: item.content};
-          })
-        );
+        const tempNoti = JSON.parse(JSON.stringify(res2.data)).map((item, _) => {
+          return {id: item.id, time: item.time, content: item.content};
+        });
+        setNoti(tempNoti);
+        const sortedNoti = [...tempNoti].sort((a, b) => {
+          if ((new Date(a.time)).valueOf() < (new Date(b.time)).valueOf())
+            return -1;
+          else
+            return 1;
+        });
+        setNoti(sortedNoti);
       } catch (error) {
         console.log(error);
       }
@@ -95,7 +102,6 @@ export default function App({ navigation }) {
       Alert.alert("Thông báo!", noti[0].content);
 
     // update every 60 seconds
-    console.log(todayTime, nextNoti);
     setTimeout(() => {
       if (timer >= 2)
         setTimer(0);
