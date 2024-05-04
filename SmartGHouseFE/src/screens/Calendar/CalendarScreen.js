@@ -299,6 +299,7 @@ export default function App({ navigation }) {
               </DataTable.Cell>
             </DataTable.Row>
           </DataTable>
+          <AppButton title={"Xem tất cả"} style={{marginTop: '3%'}} onPress={() => {navigation.navigate("NotiList")}}/>
         </View>
       </View>
 

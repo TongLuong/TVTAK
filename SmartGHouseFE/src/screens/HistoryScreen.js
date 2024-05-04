@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import styles from "../styles/styles";
 import { DataTable, Modal } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -22,6 +22,27 @@ const getCurrentYear = () => {
   const currentYear = currentDate.getFullYear();
   return currentYear;
 };
+
+const AppButton = ({ onPress, title, style, titleStyle, disabledCondition }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={[{
+      width: '60%',
+      backgroundColor: 'white',
+      alignItems: 'center',
+      marginBottom: 10,
+      maxHeight: 35,
+      borderRadius: 20,
+      paddingHorizontal: '10%'
+    }, style]}
+    disabled = {disabledCondition}
+  >
+    <Text style={[{ fontSize: 20, fontVariant: 'roboto', color: '#3CAF58', paddingVertical: '1%' }, titleStyle,]}>
+      {title}
+    </Text>
+  </TouchableOpacity>
+);
+
 export default function HistoryScreen() {
   const [logDevice, setLogDevice] = useState([]);
   const [selectedValue, setSelectedValue] = useState("manual-light");
@@ -156,7 +177,7 @@ export default function HistoryScreen() {
             {selectedValue == "manual-pump" ? (
               <Ionicons name="water-outline" size={24} color="white" />
             ) : (
-              <FontAwesome5 name="lightbulb" size={24} color="#daa520" />
+              <FontAwesome5 name="lightbulb" size={24} color="black" />
             )}
             <Text style={{ marginLeft: 5 }}>
               {selectedValue == "manual-light"
@@ -189,14 +210,16 @@ export default function HistoryScreen() {
         <View
           style={{
             flexDirection: "row",
-            position: "absolute",
-            top: "17%"
+            justifyContent: 'center'
           }}
         >
-          <Button
+          {/* <Button
             onPress={togglePicker}
             title="Lọc dữ liệu"
-          />
+          /> */}
+          <AppButton title={"Lọc dữ liệu"}
+          onPress={togglePicker} 
+          style={{ width: '50%'}}/>
         </View>
         
         <DataTable 
@@ -287,6 +310,10 @@ export default function HistoryScreen() {
             color={"#0a5962"}
             disabled={endIndex >= logDevice.length}
           />
+          {/* <AppButton title="Trang kế tiếp"
+            onPress = {nextPage}
+            disabledCondition={endIndex >= logDevice.length} */}
+           {/* /> */}
         </View>
       </View>
     </>
