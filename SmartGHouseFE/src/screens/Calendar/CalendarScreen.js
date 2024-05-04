@@ -60,6 +60,8 @@ export default function App({ navigation }) {
   const [noti, setNoti] = useState([{id: -1, time: "00:00", content: "Loading..."}]);
   const [user, setUser] = useState({});
 
+  const [timer, setTimer] = useState(0);
+
   useEffect(() => {
     const getAllNotes = async () => {
       try {
@@ -84,6 +86,23 @@ export default function App({ navigation }) {
     };
     getAllNotes();
   }, [useIsFocused()]);
+
+  useEffect(() => {
+    const today = new Date();
+    const todayTime = moment(today).format("DD/MM/YYYY") + " " + moment(today).format("HH:mm");
+    const nextNoti = moment(new Date(noti[0].time)).format("DD/MM/YYYY") + " " + moment(new Date(noti[0].time)).format("HH:mm");
+    if (todayTime === nextNoti)
+      Alert.alert("Thông báo!", noti[0].content);
+
+    // update every 60 seconds
+    console.log(todayTime, nextNoti);
+    setTimeout(() => {
+      if (timer >= 2)
+        setTimer(0);
+      else
+        setTimer(timer + 1);
+    }, 40000);
+  }, [timer]);
 
   const delNoti = async (index) => {
     const res = await deleteNotification(user?.id, noti[index].id);
@@ -185,8 +204,8 @@ export default function App({ navigation }) {
             >Thông báo tiếp theo</Text>
           </View>
           <View style={{justifyContent: "center", alignItems: "center"}}>
-            <Text style={{fontSize: 25, color: '#3CAF58', marginVertical: '2%'}}>
-              31 tháng 12 năm 2024
+            <Text style={{fontSize: 14, color: '#3CAF58', marginVertical: '2%'}}>
+              {noti.length <= 0? "Không có thông báo nào" : "Ngày " + moment(new Date(noti[0].time)).format("DD/MM/YYYY") + ", vào lúc " + moment(new Date(noti[0].time)).format("HH:mm")}
             </Text>
           </View>
         </View>
@@ -282,7 +301,7 @@ export default function App({ navigation }) {
           </View>
           
           <View style={{marginTop: 5, maxHeight: 230}}>
-            <Text style={{color: '#3CAF58', fontSize: 16, marginHorizontal: '5%', marginLeft: "8%"}}>
+            <Text style={{color: '#3CAF58', fontSize: 14, marginHorizontal: '5%', marginLeft: "8%"}}>
               {notes[0]}
             </Text>
           </View>

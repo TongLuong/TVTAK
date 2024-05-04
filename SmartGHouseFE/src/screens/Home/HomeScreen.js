@@ -173,8 +173,8 @@ export default function HomeScreen({ navigation }) {
             <View style={{ alignSelf: "center" }}>
               <FontAwesome5 name="lightbulb" size={24} color="#3CAF58" />
             </View>
-            <Text style={statusStyle.content}>{light} Lux</Text>
-            <Text style={statusStyle.title}>Cường độ sáng{"\n"}</Text>
+            <Text style={statusStyle.content}>{light} lx</Text>
+            <Text style={statusStyle.title}>Độ sáng{"\n"}</Text>
           </View>
         </View>
         <AppButton

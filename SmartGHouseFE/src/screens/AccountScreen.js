@@ -1,10 +1,12 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AccountScreen({ navigation }) {
   const [user, setUser] = useState({});
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
     const checkLogin = async () => {
       try {
@@ -14,13 +16,13 @@ export default function AccountScreen({ navigation }) {
           navigation.navigate("AuthenScreen");
         }
         setUser(userData);
-        console.log(userData);
       } catch (error) {
         console.log(error);
       }
     };
     checkLogin();
   }, []);
+
   return (
     <View style={{ backgroundColor: "#EFF9F1", flex: 1, marginTop: 20 }}>
       <View style={accountStyle.accountSym}>
@@ -28,6 +30,15 @@ export default function AccountScreen({ navigation }) {
         <Ionicons name="person-circle" size={100} />
       </View>
       <View style={{ flexDirection: "column" }}>
+        {/* <View style={accountStyle.functionButton}>
+          <Ionicons name="mail" size={24} color="black" />
+          <TextInput
+            editable
+            style={{color: "black", flex: 1, paddingLeft: 20}}
+            onChangeText={text => setEmail(text)}
+            value={user.email ? user.email : "Chưa cập nhật"}
+          />
+        </View> */}
         <TouchableOpacity style={accountStyle.functionButton}>
           <Ionicons name="mail" size={24} color="black" />
           <Text style={accountStyle.functionButtonText}>
