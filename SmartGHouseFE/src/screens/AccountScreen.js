@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function AccountScreen({ navigation }) {
+  const [user, setUser] = useState({});
   useEffect(() => {
     const checkLogin = async () => {
       try {
@@ -11,29 +13,50 @@ export default function AccountScreen({ navigation }) {
         if (!userData) {
           navigation.navigate("AuthenScreen");
         }
+        setUser(userData);
         console.log(userData);
       } catch (error) {
         console.log(error);
       }
     };
     checkLogin();
-  });
+  }, []);
   return (
-    <View style={{ backgroundColor: "#EFF9F1", flex: 1 }}>
+    <View style={{ backgroundColor: "#EFF9F1", flex: 1, marginTop: 20 }}>
       <View style={accountStyle.accountSym}>
-        <Ionicons name="person-circle" size={60} />
-        <Text style={accountStyle.nameText}>Email</Text>
+        <Text style={accountStyle.nameText}>{user?.username}</Text>
+        <Ionicons name="person-circle" size={100} />
       </View>
-      <View style={{ flexDirection: "column", marginTop: 50 }}>
+      <View style={{ flexDirection: "column" }}>
         <TouchableOpacity style={accountStyle.functionButton}>
+          <Ionicons name="mail" size={24} color="black" />
+          <Text style={accountStyle.functionButtonText}>
+            {user.email ? user.email : "Chưa cập nhật"}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={accountStyle.functionButton}>
+          <Ionicons name="person" size={24} color="black" />
+          <Text style={accountStyle.functionButtonText}>
+            {user.username ? user.username : "Chưa cập nhật"}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={accountStyle.functionButton}>
+          <Ionicons name="call" size={24} color="black" />
+          <Text style={accountStyle.functionButtonText}>
+            {user.phone ? user.phone : "Chưa cập nhật"}
+          </Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity style={accountStyle.functionButton}>
+          <Ionicons name="lock-closed" size={24} color="black" />
           <Text style={accountStyle.functionButtonText}>
             Thông tin người dùng
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={accountStyle.functionButton}
           onPress={() => navigation.navigate("AuthenScreen")}
         >
+          <Ionicons name="log-out" size={24} color="black" />
           <Text style={accountStyle.functionButtonText}>Đăng xuất</Text>
         </TouchableOpacity>
       </View>
@@ -43,27 +66,29 @@ export default function AccountScreen({ navigation }) {
 
 const accountStyle = StyleSheet.create({
   accountSym: {
-    flexDirection: "row",
     alignItems: "center",
     marginTop: 20,
+    height: 200,
+    backgroundColor: "white",
   },
   nameText: {
     fontVariant: "roboto",
     fontWeight: "bold",
     fontSize: 40,
     color: "#3CAF58",
+    marginTop: 20,
   },
   functionButton: {
-    backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    flexDirection: "row",
+    height: 50,
     padding: 10,
-    margin: 15,
-    height: 40,
-    borderColor: "#3CAF58",
-    alignItems: "center",
-    borderWidth: 1,
-    marginVertical: 50,
+    margin: 20,
+    marginTop: 30,
   },
   functionButtonText: {
     color: "black",
+    paddingLeft: 20,
   },
 });
