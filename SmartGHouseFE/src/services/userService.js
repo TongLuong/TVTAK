@@ -23,8 +23,9 @@ const getAllSchedule = async (user_id) => {
 };
 const deleteSchedule = async (user_id, schedule_id) => {
   return await axiosInst.delete(
-    `/api/schedule/delete-schedule?user_id=${user_id}&schedule_id=${schedule_id}`
-  );
+    `/api/schedule/delete-schedule?schedule_id=${schedule_id}&user_id=${user_id}`
+  )
+  .catch((e) => console.log(e));
 };
 const updateSchedule = async (user_id, schedule_id, schedule) => {
   return await axiosInst.post(
