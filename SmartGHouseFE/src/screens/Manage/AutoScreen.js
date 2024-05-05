@@ -198,6 +198,7 @@ export default function App({ navigation, route }) {
                 type: item.type
             }]
           );
+          // console.log(res);
         }
         else
           setScheds([]);

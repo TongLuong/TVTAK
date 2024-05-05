@@ -22,6 +22,7 @@ const AppButton = ({ onPress, title }) => (
       marginBottom: 10,
       maxHeight: 26,
       borderRadius: 20,
+      elevation: 4
     }}
   >
     <Text
@@ -49,6 +50,7 @@ const AppButton1 = ({ onPress, title }) => (
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30,
+      elevation: 4
     }}
   >
     <Text style={{ fontSize: 16, fontVariant: "roboto", color: "#3CAF58" }}>
@@ -74,6 +76,7 @@ const AppButton2 = ({ onPress, title }) => (
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30,
+      elevation: 4
     }}
   >
     <Text style={{ fontSize: 12, fontVariant: "roboto", color: "#3CAF58" }}>
@@ -94,6 +97,7 @@ const AppButton4 = ({ onPress, title }) => (
       borderRadius: 20,
       paddingLeft: 30,
       paddingRight: 30,
+      elevation: 4
     }}
   >
     <Text style={{ fontSize: 12, fontVariant: "roboto", color: "#3CAF58" }}>
