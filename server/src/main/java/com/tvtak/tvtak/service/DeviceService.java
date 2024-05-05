@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tvtak.tvtak.model.Device.Device;
+import com.tvtak.tvtak.model.Schedule.Schedule;
 
 import java.util.*;
 
@@ -74,13 +75,13 @@ public class DeviceService
         return this.deviceRepository.findByName(name) != null;
     }
 
-    public List<Device> getAllDevices(Long user_id)
+    public List<Device> getAllDevices(long user_id)
     {
         return this.deviceRepository.findByUserId(user_id);
     }
 
     @Transactional
-    public String delete(Long device_id, Long user_id)
+    public String delete(long device_id, long user_id)
     {
         try
         {
@@ -109,7 +110,7 @@ public class DeviceService
     }
 
     @Transactional
-    public String toggleStatus(Long device_id, Long user_id, int status)
+    public String toggleStatus(long device_id, long user_id, int status)
     {
         try
         {
@@ -144,7 +145,12 @@ public class DeviceService
     }
 
     @Transactional
-    public List<Device> getDeviceBySchedule(Long schedule_id){
+    public List<Device> getDeviceBySchedule(long schedule_id){
         return deviceRepository.findBySchedule_id(schedule_id);
+    };
+
+    public Schedule getScheduleByDevice(long id, long user_id)
+    {
+        return deviceRepository.findByIdAndUser_id(id, user_id).getSchedule();
     };
 }

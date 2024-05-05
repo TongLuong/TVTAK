@@ -14,10 +14,9 @@ public interface DeviceRepository extends JpaRepository<Device, Long>
 
     List<Device> findBySchedule_id(long schedule_id);
 
-    Device findByIdAndUserId(Long id, Long user_id);
+    Device findByIdAndUserId(long id, long user_id);
 
-    List<Device> findByUserId(Long userId);
+    List<Device> findByUserId(long userId);
 
-
-
+    Device findByIdAndUser_id(long id, long user_id);
 }

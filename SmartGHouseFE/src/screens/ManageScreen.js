@@ -18,11 +18,11 @@ export default function App() {
       <Stack.Screen
         name="Methodop"
         component={MethodOptionScreen}
-        options={{ headerShown: false }}
+        options={{ title: "Chọn phương thức điều khiển" }}
       />
-      <Stack.Screen name="Manuallight" component={ManualLightScreen} />
-      <Stack.Screen name="Manualwater" component={ManualWaterScreen} />
-      <Stack.Screen name="Auto" component={AutoScreen} />
+      <Stack.Screen name="Manuallight" component={ManualLightScreen} options={{ title: "Thủ công" }}/>
+      <Stack.Screen name="Manualwater" component={ManualWaterScreen} options={{ title: "Thủ công" }}/>
+      <Stack.Screen name="Auto" component={AutoScreen} options={{ title: "Đặt lịch biểu tự động" }}/>
     </Stack.Navigator>
   );
 }

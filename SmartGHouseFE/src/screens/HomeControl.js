@@ -18,7 +18,7 @@ export default function App() {
         name={path.CHART}
         component={ChartScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name={"DeviceAddtion"}
         component={DeviceAddition}
