@@ -67,7 +67,7 @@ public class DeviceController
 
     @PostMapping("/toggle-device")
     public ResponseEntity<Object> toggleDevice(
-            @RequestParam int status,
+            @RequestParam("status") int status,
             @RequestParam("device_id") Long device_id,
             @RequestParam("user_id") Long user_id)
     {
@@ -75,6 +75,18 @@ public class DeviceController
         {
             String response = this.deviceService.toggleStatus(device_id, user_id,status);
             return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-device-by-schedule")
+    public ResponseEntity<Object> getDeviceBySchedule(@RequestParam("schedule_id") Long schedule_id){
+        try
+        {
+            List<Device> devices = deviceService.getDeviceBySchedule(schedule_id);
+            return new ResponseEntity<>(devices, HttpStatus.OK);
         }
         catch (Exception e)
         {
