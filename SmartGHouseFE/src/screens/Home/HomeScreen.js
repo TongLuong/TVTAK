@@ -7,6 +7,10 @@ import { getRecordLast } from "../../services/userService";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import { path } from "../../utils/constants";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
+import { getAllDevice } from '../../services/userService';
+
 const AppButton = ({ onPress, title }) => (
   <TouchableOpacity
     onPress={onPress}
@@ -102,6 +106,10 @@ export default function HomeScreen({ navigation }) {
   const [humidity, setHumidity] = useState("0");
   const [temp, setTemp] = useState("0");
   const [light, setLight] = useState("0");
+  const [flag, setFlag] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -118,6 +126,35 @@ export default function HomeScreen({ navigation }) {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const getAllDevices = async () => {
+      var userData = null;
+      if (user == null)
+      {
+        const userRes = await AsyncStorage.getItem("User");
+        userData = JSON.parse(userRes);
+        setUser(userData);
+      }
+
+      var temp = user;
+      if (user == null)
+        temp = userData;
+
+      const res = await getAllDevice(temp?.id);
+      setDevices(
+        JSON.parse(JSON.stringify(res.data)).map((item) => {
+          return {
+            id: item.id,
+            name: item.name,
+            status: item.status,
+            type: item.type
+          };
+        })
+      );
+    };
+    getAllDevices();
+  }, [useIsFocused(), flag]);
 
   return (
     <View style={{ paddingTop: "5%" }}>
@@ -220,17 +257,43 @@ export default function HomeScreen({ navigation }) {
             </DataTable.Cell>
           </DataTable.Row>
           <DataTable.Header>
-            <DataTable.Cell style={{ flex: 3 }}>
+            <DataTable.Cell style={{ flex: 2 }}>
               <Text style={{ color: "#3CAF58" }}>Tên thiết bị</Text>
             </DataTable.Cell>
             <DataTable.Title style={{ flex: 2 }}>
-              <Text style={{ color: "#3CAF58" }}>Chế độ</Text>
+              <Text style={{ color: "#3CAF58" }}>Loại</Text>
             </DataTable.Title>
             <DataTable.Title style={{ flex: 1 }}>
               <Text style={{ color: "#3CAF58" }}>Trạng thái</Text>
             </DataTable.Title>
           </DataTable.Header>
-          <DataTable.Row>
+          {
+            devices.map((item, index) => {
+              return (
+                <DataTable.Row key={index}>
+                  <DataTable.Cell
+                    style={{ flex: 2 }}
+                    textStyle={{ color: "#3CAF58" }}
+                  >
+                    {item.name}
+                  </DataTable.Cell>
+                  <DataTable.Cell
+                    style={{ flex: 2 }}
+                    textStyle={{ color: "#3CAF58" }}
+                  >
+                    {item.type == "sensor"? "Cảm biến" : "Thiết bị khác"}
+                  </DataTable.Cell>
+                  <DataTable.Cell
+                    style={{ flex: 1 }}
+                    textStyle={{ color: "#3CAF58" }}
+                  >
+                    {item.status == 0? "Tắt" : "Bật"}
+                  </DataTable.Cell>
+                </DataTable.Row>
+              )
+            })
+          }
+          {/* <DataTable.Row>
             <DataTable.Cell
               style={{ flex: 3 }}
               textStyle={{ color: "#3CAF58" }}
@@ -250,7 +313,6 @@ export default function HomeScreen({ navigation }) {
               Tắt
             </DataTable.Cell>
           </DataTable.Row>
-
           <DataTable.Row>
             <DataTable.Cell
               style={{ flex: 3 }}
@@ -310,14 +372,18 @@ export default function HomeScreen({ navigation }) {
             >
               Bật
             </DataTable.Cell>
-          </DataTable.Row>
+          </DataTable.Row> */}
 
           <DataTable.Row style={{ padding: "3%" }}>
             <DataTable.Cell
               style={{ position: "absolute", left: "10%" }}
               textStyle={{ color: "#3CAF58" }}
             >
-              <AppButton2 title={"Cài đặt"} onPress={() => {navigation.navigate("DeviceList")}} />
+              <AppButton2 title={"Cài đặt"} 
+                onPress={() => {
+                  navigation.navigate("DeviceList")
+                }}
+              />
             </DataTable.Cell>
             <DataTable.Cell style={{ position: "absolute", right: "10%" }}>
               <AppButton4

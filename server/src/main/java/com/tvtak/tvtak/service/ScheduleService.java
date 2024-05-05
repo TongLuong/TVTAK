@@ -126,8 +126,7 @@ public class ScheduleService
 
     public List<Schedule> getAllSchedules()
     {
-        List<Schedule> schedules = schedRepository.findAll();
-        return schedules;
+        return schedRepository.findAll();
     }
 
     public void delete(Schedule schedule)

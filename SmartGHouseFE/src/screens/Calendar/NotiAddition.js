@@ -225,10 +225,12 @@ export default function NotiAddition({ navigation }) {
                 onPress={() => 
                 {
                   if (sendNewNoti())
-                    navigation.navigate("CalendarScreen");
+                  {
+                    Alert.alert("Thành công", "Thông báo đã được thêm", [{text: "OK", onPress: () => navigation.navigate("CalendarScreen")}]);
+                  }
                   else
                   {
-                    Alert.alert("Error", "Server side error!");
+                    Alert.alert("Lỗi", "Lỗi máy chủ");
                   }
                 }}/>
                 <AppButton title={"Hủy"} titleStyle={{color: 'red'}} onPress={() => navigation.navigate("CalendarScreen")}/>

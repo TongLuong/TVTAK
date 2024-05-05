@@ -112,7 +112,7 @@ export default function NoteAddition({ route, navigation }) {
                           }
                           else
                           {
-                            Alert.alert("Lỗi", "Lỗi server!");
+                            Alert.alert("Lỗi", "Lỗi máy chủ!");
                           }
                         }
                       }

@@ -23,8 +23,9 @@ const getAllSchedule = async (user_id) => {
 };
 const deleteSchedule = async (user_id, schedule_id) => {
   return await axiosInst.delete(
-    `/api/schedule/delete-schedule?user_id=${user_id}&schedule_id=${schedule_id}`
-  );
+    `/api/schedule/delete-schedule?schedule_id=${schedule_id}&user_id=${user_id}`
+  )
+  .catch((e) => console.log(e));
 };
 const updateSchedule = async (user_id, schedule_id, schedule) => {
   return await axiosInst.post(
@@ -84,17 +85,26 @@ const addDevice = async (user_id, device) => {
   );
 };
 const getAllDevice = async (user_id) => {
-  return await axiosInst.get(`/api/device/get-all-devices?user_id=${user_id}`);
+  return await axiosInst.get(`/api/device/get-all-devices?user_id=${user_id}`)
+                        .catch(e => console.log(e));
 };
 const deleteDevice = async (user_id, device_id) => {
   return await axiosInst.delete(
     `api/device/delete-device?user_id=${user_id}&device_id=${device_id}`
-  );
+  )
+  .catch((e) => console.log(e));
 };
 const toggleDevice = async (user_id, device_id, status) => {
   return await axiosInst.post(
     `api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`
-  );
+  )
+  .catch((e) => console.log(e));
+};
+const getSchedsByDevice = async (user_id, device_id) => {
+  return await axiosInst.get(
+    `api/device/get-schedule-by-device?user_id=${user_id}&device_id=${device_id}`
+  )
+  .catch((e) => console.log(e));
 };
 
 const getRecord = async (device_name) => {
@@ -154,4 +164,5 @@ export {
   getDeviceByScheduleId,
   getUserFromStorage,
   setUserToStorage,
+  getSchedsByDevice,
 };

@@ -62,47 +62,7 @@ export default function NoteList({ navigation }) {
                   }
                 }
               >
-                <Text style={styles.title}>{item}</Text>
-                {/* <MaterialCommunityIcons
-                  name="note-edit"
-                  size={20}
-                  color="black"
-                  style={{flex: 1}}
-                  onPress={() => {
-                    navigation.navigate("NoteAddition", {id: idNote[index], content: data[0].data[index]});
-                  }}
-                />
-                <Text> | </Text>
-                <MaterialCommunityIcons
-                  name="delete"
-                  size={20}
-                  color="black"
-                  style={{flex: 1}}
-                  onPress={() => {
-                    Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
-                      [
-                        {
-                          text: "Hủy bỏ",
-                          onPress: () => console.log("Canceled"),
-                          style: "cancel"
-                        },
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            if(_deleteNote(index))
-                            {
-                              Alert.alert("Thành công", "Bạn đã xóa ghi chú!");
-                            }
-                            else
-                            {
-                              Alert.alert("Lỗi", "Lỗi server!");
-                            }
-                          }
-                        }
-                      ]
-                    )
-                  }}
-                /> */}
+              <Text style={styles.title}>{item}</Text>
               </TouchableOpacity>
             )}
           />

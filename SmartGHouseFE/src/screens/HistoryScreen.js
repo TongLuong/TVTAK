@@ -49,6 +49,7 @@ export default function HistoryScreen() {
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [selectedYear, setSelectedYear] = useState(getCurrentYear());
   const [isVisible, setIsVisible] = useState(false);
+  const [maxPage, setMaxPage] = useState(0);
 
   const itemsPerPage = 8; // Define the number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,22 +66,20 @@ export default function HistoryScreen() {
   const prevPage = () => {
     setCurrentPage(currentPage - 1);
   };
-  const segmentedPicker = useRef(null);
-  useEffect(() => {
-    if (isVisible && segmentedPicker.current) {
-      segmentedPicker.current.show();
-    }
-  }, [isVisible]);
+
   const onConfirm = (selections) => {
-    console.info(selections);
+    //console.info(selections);
     setIsVisible(false);
     setSelectedValue(selections?.col_1);
     setSelectedMonth(parseInt(selections?.col_2));
     setSelectedYear(parseInt(selections?.col_3));
   };
 
+  const segmentedPicker = useRef(null);
   const togglePicker = () => {
     setIsVisible(!isVisible); // Toggle the visibility state
+    segmentedPicker.current.show();
+    setCurrentPage(0);
   };
 
   const fetchData = async () => {
@@ -91,13 +90,22 @@ export default function HistoryScreen() {
         selectedYear
       );
       setLogDevice(res.data);
+
+      const temp = Math.ceil(res.data.length / itemsPerPage);
+      setMaxPage(temp);
+      if (temp > 0)
+        setCurrentPage(1);
+      else
+        setCurrentPage(0);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
     fetchData();
   }, [selectedValue, selectedMonth, selectedYear]);
@@ -173,9 +181,8 @@ export default function HistoryScreen() {
           top: "12%"
         }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {/* Example usage of MaterialIcons */}
             {selectedValue == "manual-pump" ? (
-              <Ionicons name="water-outline" size={24} color="white" />
+              <Ionicons name="water-outline" size={24} color="blue" />
             ) : (
               <FontAwesome5 name="lightbulb" size={24} color="black" />
             )}
@@ -193,40 +200,20 @@ export default function HistoryScreen() {
               marginRight: 10,
             }}
           >
-            {/* Example usage of MaterialIcons */}
-            <MaterialIcons name="access-time" size={24} color="black" />
+            <MaterialIcons name="access-time" size={24} color="#FAA220" />
             <Text style={{ marginLeft: 5 }}>
               {"Tháng " + selectedMonth + " Năm " + selectedYear}
             </Text>
           </View>
-          {/* <MaterialCommunityIcons
-            name="filter"
-            size={24}
-            color="black"
-            onPress={togglePicker}
-          /> */}
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: 'center'
-          }}
-        >
-          {/* <Button
-            onPress={togglePicker}
-            title="Lọc dữ liệu"
-          /> */}
-          <AppButton title={"Lọc dữ liệu"}
-          onPress={togglePicker} 
-          style={{ width: '50%'}}/>
         </View>
         
         <DataTable 
           style={{ 
           justifyContent: "space-evenly", 
           marginLeft: "5%",
-          marginTop: "6%"
+          marginTop: "0%",
+          position: "absolute",
+          top: "12%"
         }}
         >
           <DataTable.Row style={{ flex: 1 }}>
@@ -245,75 +232,103 @@ export default function HistoryScreen() {
               <Text style={{ color: "#3CAF58" }}>Hoạt động</Text>
             </DataTable.Title>
           </DataTable.Header>
-          {paginatedData.map((item, index) => {
-            // Create a new Date object from the timestamp
-            const date = new Date(item.created_at);
+          {/* {
+            paginatedData.length <= 0 &&
+            // <DataTable.Row>
+            //   <DataTable.Cell
+            //     style={{ marginLeft: "5%" }}
+            //     textStyle={{ color: "black" }}
+            //   >
+            //     Không có dữ liệu
+            //   </DataTable.Cell>
+            // </DataTable.Row>
+            <Text style={{ marginLeft: "5%", marginTop: "5%" }} textStyle={{ color: "black" }}>Không có dữ liệu</Text>
+          } */}
+          {
+            paginatedData.map((item, index) => {
+              // Create a new Date object from the timestamp
+              const date = new Date(item.created_at);
 
-            // Format the date and time as desired
-            const formattedDate = date.toLocaleDateString([], {
-              day: "2-digit",
-              month: "2-digit",
-              year: "2-digit"
-            }); // Example: "4/25/2024"
-            const formattedTime = date.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: false,
-            }); // Example: "3:00:53 PM"
+              // Format the date and time as desired
+              const formattedDate = date.toLocaleDateString([], {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit"
+              }); // Example: "4/25/2024"
+              const formattedTime = date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+              }); // Example: "3:00:53 PM"
 
-            return (
-              <DataTable.Row key={index}>
-                <DataTable.Cell
-                  style={{ marginLeft: "5%" }}
-                  textStyle={{ color: "black" }}
-                >
-                  {formattedDate}
-                </DataTable.Cell>
-                <DataTable.Cell
-                  style={{ }}
-                  textStyle={{ color: "black" }}
-                >
-                  {formattedTime}
-                </DataTable.Cell>
+              return (
+                <DataTable.Row key={index}>
+                  <DataTable.Cell
+                    style={{ marginLeft: "5%" }}
+                    textStyle={{ color: "black" }}
+                  >
+                    {formattedDate}
+                  </DataTable.Cell>
+                  <DataTable.Cell
+                    style={{ }}
+                    textStyle={{ color: "black" }}
+                  >
+                    {formattedTime}
+                  </DataTable.Cell>
 
-                <DataTable.Cell
-                  style={{ }}
-                  textStyle={{ color: "black" }}>
-                  {item.value == 1 ? "Bật" : "Tắt"}
-                </DataTable.Cell>
-              </DataTable.Row>
-            );
-          })}
+                  <DataTable.Cell
+                    style={{ }}
+                    textStyle={{ color: "black" }}>
+                    {item.value == 1 ? "Bật" : "Tắt"}
+                  </DataTable.Cell>
+                </DataTable.Row>
+              );
+            })
+          }
         </DataTable>
 
         <View
           style={{
             flexDirection: "row",
-            marginTop: "5%",
+            //marginTop: "5%",
             justifyContent: "center",
             alignItems: "center",
+            position: "absolute",
+            top: "80%"
           }}
         >
-          <Button
+          <Button title={"Lọc dữ liệu"}
+            onPress={() => {
+              togglePicker();
+            }} 
+          />
+          <Text
+            style={{ marginLeft: 10, marginRight: 10 }}
+          ></Text>
+          {/* <Button
             onPress={prevPage}
             title="Previous"
             disabled={currentPage === 1}
             color={"#0a5962"}
-          />
+          /> */}
+          <MaterialCommunityIcons name="arrow-left" size={24} color="blue" onPress={() => {
+            if (currentPage != 1)
+              prevPage();
+          }}/>
           <Text
             style={{ marginLeft: 10, marginRight: 10 }}
-          >{`Page ${currentPage}`}</Text>
-          <Button
+          >{`Page ${currentPage} of ${maxPage}`}</Text>
+          {/* <Button
             onPress={nextPage}
             title="Next"
             color={"#0a5962"}
             disabled={endIndex >= logDevice.length}
-          />
-          {/* <AppButton title="Trang kế tiếp"
-            onPress = {nextPage}
-            disabledCondition={endIndex >= logDevice.length} */}
-           {/* /> */}
+          /> */}
+          <MaterialCommunityIcons name="arrow-right" size={24} color="blue" onPress={() => {
+            if (currentPage < maxPage)
+              nextPage();
+          }}/>
         </View>
       </View>
     </>
