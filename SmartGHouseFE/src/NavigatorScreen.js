@@ -9,10 +9,66 @@ import CalendarControl from "./screens/CalendarControl";
 import HistoryScreen from "./screens/HistoryScreen";
 import AuthOptionScreen from "./screens/Authen/AuthOptionScreen";
 import { path } from "../src/utils/constants";
+import { useState, useEffect } from "react";
+import {
+  getAllSchedule,
+  getUserFromStorage,
+  getDeviceByScheduleId,
+  toggleDevice,
+} from "./services/userService";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [activeDevice_id, setActiveDevice_id] = useState(null);
+  useEffect(() => {
+    const checkStartTime = async () => {
+      const user = await getUserFromStorage();
+      if (!user) {
+        navigator.navigate("AuthenScreen");
+      }
+      const now = new Date();
+
+      const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+      const today = now
+        .toLocaleDateString("en-GB", options)
+        .split("/")
+        .join("-");
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+      const response = await getAllSchedule(user.id);
+      const schedules = response.data;
+      let isActive = false;
+      if (schedules && schedules.length > 0) {
+        schedules.forEach(async (schedule) => {
+          if (schedule.date === today) {
+            const startTime = schedule.start_time.split(":");
+            const startMinutes =
+              parseInt(startTime[0]) * 60 + parseInt(startTime[1]);
+            const endTime = schedule.end_time.split(":");
+            const endMinutes = parseInt(endTime[0]) * 60 + parseInt(endTime[1]);
+            if (currentTime >= startMinutes && currentTime < endMinutes) {
+              console.log("Device is active");
+              isActive = true;
+              const responseDevice = await getDeviceByScheduleId(schedule.id);
+              if (responseDevice.data.length > 0) {
+                // console.log("Turning on device");
+                await toggleDevice(user.id, responseDevice.data[0].id, 1);
+              }
+            } else {
+              const responseDevice = await getDeviceByScheduleId(schedule.id);
+              if (responseDevice.data.length > 0) {
+                // console.log("Turning off device");
+                await toggleDevice(user.id, responseDevice.data[0].id, 0);
+              }
+            }
+          }
+        });
+      }
+    };
+    // checkStartTime();
+    const interval = setInterval(checkStartTime, 60000); // Check every minute
+  }, []);
+
   return (
     <Tab.Navigator
       initialRouteName={path.HOME}
@@ -42,7 +98,7 @@ export default function App() {
             iconName = focused ? "home" : "home-outline";
           } else if (rn === path.MANAGE) {
             iconName = focused ? "construct" : "construct-outline";
-          } else if (rn === "CalendarControl") {
+          } else if (rn === /*"CalendarControl"*/ path.CALENDAR) {
             iconName = focused ? "calendar" : "calendar-outline";
           } else if (rn === path.HISTORY) {
             iconName = focused ? "list-circle" : "list-circle-outline";
@@ -65,7 +121,8 @@ export default function App() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name={"CalendarControl"}
+        // name={"CalendarControl"}
+        name={path.CALENDAR}
         component={CalendarControl}
         options={{ headerShown: false }}
       />

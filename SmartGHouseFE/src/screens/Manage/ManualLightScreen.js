@@ -6,10 +6,7 @@ import { toggleDevice } from "../../services/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App() {
   const [checkedItems, setCheckedItems] = useState(Array(8).fill(false));
-  const [isStarted, setIsStarted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [value, setValue] = useState(null);
-  const [isEnded, setIsEnded] = useState(false);
+  const [isStarted, setIsStarted] = useState(true);
   const [user, setUser] = useState({});
   const data = [
     { label: "Màu đỏ", value: "1" },
@@ -33,26 +30,11 @@ export default function App() {
   }, []);
 
   const handleStartStop = async () => {
-    const newStatus = !isStarted ? 1 : 0;
+    const newStatus = isStarted ? 1 : 0;
     setIsStarted(!isStarted);
-    setIsEnded(false);
-    setIsPaused(false);
-    // await toggleDevice(user?.id, 2, newStatus);
-    await toggleDevice(user?.id, 1, newStatus); //id light database host
-  };
-
-  const handlePauseResume = () => {
-    setIsPaused(!isPaused);
-  };
-
-  const handleEnd = async () => {
-    const newStatus = !isStarted ? 1 : 0;
-    setIsEnded(true);
-    setIsStarted(false);
-    setIsPaused(false);
-    // await toggleDevice(user?.id, 2, newStatus);
     await toggleDevice(user?.id, 1, newStatus);
   };
+
   const handleCheckboxChange = (index) => {
     const newCheckedItems = [...checkedItems];
     newCheckedItems[index] = !checkedItems[index];
@@ -107,43 +89,14 @@ export default function App() {
           </DataTable.Row>
         ))}
       </DataTable>
-      {/* <View style={manuallightStyle.selectView}>
-        <Text style={manuallightStyle.dropText}>Chọn màu đèn:</Text>
-        <Dropdown
-          style={manuallightStyle.dropdown}
-          placeholderStyle={manuallightStyle.placeholderStyle}
-          selectedTextStyle={manuallightStyle.dropText}
-          data={data}
-          search
-          labelField="label"
-          valueField="value"
-          placeholder=""
-          value={value}
-          onChange={item => {
-            setValue(item.value);
-          }}
-        />
-      </View> */}
       <View style={manuallightStyle.actionButton}>
-        {!isStarted && !isEnded && (
-          <Button title="Bắt đầu" color="#3CAF58" onPress={handleStartStop} />
-        )}
-
-        {isStarted && !isEnded && (
-          <View style={manuallightStyle.actionButton}>
-            <Button
-              title={isPaused ? "Tiếp tục" : "Tạm dừng"}
-              color="#3CAF58"
-              onPress={handlePauseResume}
-            />
-            <Text style={{ flex: 1 }}> </Text>
-            <Button title="Kết thúc" color="#3CAF58" onPress={handleEnd} />
-          </View>
-        )}
-
-        {isEnded && (
-          <Button title="Bắt đầu" color="#3CAF58" onPress={handleStartStop} />
-        )}
+        {
+          <Button
+            title={isStarted ? "Bắt đầu" : "Kết thúc"}
+            color="#3CAF58"
+            onPress={handleStartStop}
+          />
+        }
       </View>
     </View>
   );
@@ -185,6 +138,8 @@ const manuallightStyle = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+    marginTop: 10,
+    marginRight: 10,
   },
   selectView: {
     marginBottom: 10,

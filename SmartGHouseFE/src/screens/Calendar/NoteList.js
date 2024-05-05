@@ -1,37 +1,112 @@
-import { View, Text, SectionList, StyleSheet, StatusBar, SafeAreaView } from "react-native";
+import { View, Text, SectionList, StyleSheet, StatusBar, SafeAreaView, Alert } from "react-native";
+import { getAllNote, deleteNote, editNote } from '../../services/userService';
+import { useState, useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useIsFocused } from '@react-navigation/native';
 
-const DATA = [
-    {
-      date: 'Main dishes',
-      data: ['Ngày biệt ly người đi chẳng nói nên câu, Dẫu em còn níu lại vài câu ướt mi'],
-    },
-    {
-      date: 'Sides',
-      data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-    },
-    {
-      date: 'Drinks',
-      data: ['Water', 'Coke', 'Beer'],
-    },
-    {
-      date: 'Desserts',
-      data: ['Cheese Cake', 'Ice Cream'],
-    },
-  ];
+export default function NoteList({ navigation }) {
+    const [data, setData] = useState([{data: ["Loading..."]}]);
+    const [idNote, setIdNote] = useState([-1]);
+    const [update, setUpdate] = useState(false);
+    const [user, setUser] = useState({});
 
-export default function NoteList() {
+    useEffect(() => {
+      const getAllNotes = async () => {
+        try {
+          const user = await AsyncStorage.getItem("User");
+          const userData = JSON.parse(user);
+          setUser(userData);
+
+          const res = await getAllNote(userData?.id);
+          setData([{data: JSON.parse(JSON.stringify(res.data)).map((item) => {
+                return item.content;
+              })
+          }]);
+          
+          setIdNote(JSON.parse(JSON.stringify(res.data)).map((item) => {
+            return item.id;
+          })
+        );
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getAllNotes();
+    }, [update, useIsFocused()]);
+
+    const _deleteNote = async (i) => {
+      const res = await deleteNote(user?.id, idNote[i]);
+      setUpdate(!update);
+      if (res.status == 200)
+      {
+        setIdNote(idNote.filter((_, ind) => ind != i));
+        return true;
+      }
+      return false;
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => (
-            <View style={styles.item}>
-              <Text style={styles.title}>{item}</Text>
-            </View>
-          )}
-        />
-      </SafeAreaView>
+          <SectionList
+            sections={data}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({item, index}) => (
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => {
+                    navigation.navigate("NoteAddition", {id: idNote[index], content: data[0].data[index]});
+                  }
+                }
+              >
+                <Text style={styles.title}>{item}</Text>
+                {/* <MaterialCommunityIcons
+                  name="note-edit"
+                  size={20}
+                  color="black"
+                  style={{flex: 1}}
+                  onPress={() => {
+                    navigation.navigate("NoteAddition", {id: idNote[index], content: data[0].data[index]});
+                  }}
+                />
+                <Text> | </Text>
+                <MaterialCommunityIcons
+                  name="delete"
+                  size={20}
+                  color="black"
+                  style={{flex: 1}}
+                  onPress={() => {
+                    Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
+                      [
+                        {
+                          text: "Hủy bỏ",
+                          onPress: () => console.log("Canceled"),
+                          style: "cancel"
+                        },
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            if(_deleteNote(index))
+                            {
+                              Alert.alert("Thành công", "Bạn đã xóa ghi chú!");
+                            }
+                            else
+                            {
+                              Alert.alert("Lỗi", "Lỗi server!");
+                            }
+                          }
+                        }
+                      ]
+                    )
+                  }}
+                /> */}
+              </TouchableOpacity>
+            )}
+          />
+        </SafeAreaView>
     )
 }
 
@@ -44,8 +119,10 @@ const styles = StyleSheet.create({
     },
     item: {
       backgroundColor: '#f9c2ff',
-      padding: 20,
-      marginVertical: 8,
+      padding: "5%",
+      marginVertical: "3%",
+      flexDirection: "row",
+      alignItems: "center"
     },
     header: {
       fontSize: 32,
@@ -53,5 +130,6 @@ const styles = StyleSheet.create({
     },
     title: {
       fontSize: 24,
+      flex: 12
     },
   });

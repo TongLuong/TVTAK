@@ -1,5 +1,7 @@
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { useState } from "react";
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { useState, useEffect } from "react";
+import { createNewNote, editNote, deleteNote } from '../../services/userService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppButton = ({ onPress, title, style, titleStyle }) => (
     <TouchableOpacity
@@ -20,8 +22,42 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
     </TouchableOpacity>
   );
 
-export default function NoteAddition() {
-    const [value, onChangeText] = useState('');
+export default function NoteAddition({ route, navigation }) {
+    const [value, onChangeText] = useState(route.params.content? route.params.content : "");
+    const [user, setUser] = useState({});
+    const currNoteId = route.params.id;
+
+    useEffect(() => {
+      const fetchUser = async () => {
+        try {
+          const user = await AsyncStorage.getItem("User");
+          const userData = JSON.parse(user);
+          setUser(userData);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchUser();
+    }, []);
+
+    useEffect(() => {
+      onChangeText(route.params.content? route.params.content : "");
+    }, [route.params.content]);
+
+    const sendNewNote = async () => {
+      const note = {
+        content: value
+      };
+      
+      const res = currNoteId? await editNote(user?.id, currNoteId, note) : await createNewNote(user?.id, note);
+      return res.status;
+    };
+
+    const _deleteNote = async () => {
+      const res = await deleteNote(user?.id, currNoteId);
+      return res.status == 200;
+    };
+
     return (
         <ScrollView style={{marginBottom: 65}}>
             <View>
@@ -50,9 +86,39 @@ export default function NoteAddition() {
                 </View>
             </View>
             <View style = {{ alignItems: 'center', marginTop: "5%"}}>
-                <AppButton title={"Lưu ghi chú"} />
-                <AppButton title={"Hủy"} titleStyle={{color: 'red'}}/>
-                <AppButton title={"Xóa tất cả"} titleStyle={{color: 'black'}} onPress={() => {onChangeText('')}}/>
+                <AppButton title={"Lưu ghi chú"} onPress={() => {
+                  if (sendNewNote())
+                    navigation.navigate("CalendarScreen");
+                  else
+                  {
+                    Alert.alert("Lỗi", "Lỗi server!");
+                  }
+                }}/>
+                <AppButton title={"Hủy"} titleStyle={{color: 'red'}} onPress={() => navigation.navigate("CalendarScreen")}/>
+                {currNoteId && <AppButton title={"Xóa ghi chú"} titleStyle={{color: 'black'}} onPress={() => {
+                  Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
+                    [
+                      {
+                        text: "Hủy bỏ",
+                        onPress: () => console.log("Canceled"),
+                        style: "cancel"
+                      },
+                      {
+                        text: "OK",
+                        onPress: () => {
+                          if(_deleteNote())
+                          {
+                            Alert.alert("Thành công", "Bạn đã xóa ghi chú!", [{text: "OK", onPress: () => navigation.navigate("NoteList")}]);
+                          }
+                          else
+                          {
+                            Alert.alert("Lỗi", "Lỗi server!");
+                          }
+                        }
+                      }
+                    ]
+                  )
+                }}/>}
             </View> 
         </ScrollView>        
     )
