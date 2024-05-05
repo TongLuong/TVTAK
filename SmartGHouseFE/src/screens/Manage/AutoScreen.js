@@ -97,12 +97,14 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
       <Pressable onPress={() => {
         setOpenStart(true);
       }}>
-        <TextInput
-          editable={false}
-          style={styles.input}
-          placeholder="Giờ bắt đầu"
-          value={startTime}
-        />
+        <View style={{flexDirection:'row'}}>
+          <Text style={{ color: "#3CAF58" , marginTop:"1%"}}>Giờ bắt đầu:</Text>
+          <TextInput
+            editable={false}
+            style={styles.input}
+            value={startTime}
+          />
+        </View>
       </Pressable>
       {
         openEnd &&
@@ -117,12 +119,14 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
       <Pressable onPress={() => {
         setOpenEnd(true);
       }}>
-        <TextInput
-          editable={false}
-          style={styles.input}
-          placeholder="Giờ kết thúc"
-          value={endTime}
-        />
+        <View style={{flexDirection:'row'}}>
+          <Text style={{ color: "#3CAF58" , marginTop:"1%"}}>Giờ kết thúc:</Text>
+          <TextInput
+            editable={false}
+            style={styles.input}
+            value={endTime}
+          />
+        </View>
       </Pressable>
       {
         openDate &&
@@ -137,19 +141,23 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
       <Pressable onPress={() => {
         setOpenDate(true);
       }}>
-        <TextInput
-          editable={false}
-          style={styles.input}
-          placeholder="Ngày thực hiện"
-          value={selectedDate}
-        />
+       <View style={{flexDirection:'row'}}>
+          <Text style={{ color: "#3CAF58" , marginTop:"1%"}}>Ngày thực hiện:</Text>
+          <TextInput
+            editable={false}
+            style={styles.input}
+            value={selectedDate}
+          />
+        </View>
       </Pressable>
-      <TextInput
-        style={styles.input}
-        placeholder="Loại thiết bị"
-        value={type}
-        onChangeText={setType}
-      />
+      <View style={{flexDirection:'row'}}>
+        <Text style={{ color: "#3CAF58" , marginTop:"1%"}}>Loại thiết bị:</Text>
+        <TextInput
+          style={styles.input}
+          value={type}
+          onChangeText={setType}
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <Button title="Hủy" onPress={handleCancel} color="red"/>
         <Button title="Đồng ý" onPress={handleConfirm} />
@@ -435,7 +443,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     top: "70%",
-    left: "35%",
+    alignSelf:'center',
     position: "absolute",
   },
   hidden: {
@@ -445,15 +453,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10,
     color: "#3CAF58",
+    alignSelf:'center',
+    flex:0.5
   },
   input: {
-    height: 40,
+    height: 30,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     borderRadius: 5,
     paddingLeft: 10,
-    color: "black"
+    color: "black",
+    marginLeft:'auto',
+    width: 100,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -472,6 +484,5 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontSize: 14,
     color: "#3CAF58",
-    width: 65
   },
 });
