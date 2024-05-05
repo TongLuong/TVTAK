@@ -184,7 +184,7 @@ export default function HistoryScreen() {
             {selectedValue == "manual-pump" ? (
               <Ionicons name="water-outline" size={24} color="blue" />
             ) : (
-              <FontAwesome5 name="lightbulb" size={24} color="black" />
+              <FontAwesome5 name="lightbulb" size={24} color="#FCC460" />
             )}
             <Text style={{ marginLeft: 5 }}>
               {selectedValue == "manual-light"

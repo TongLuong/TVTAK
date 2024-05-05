@@ -226,7 +226,7 @@ export default function HomeScreen({ navigation }) {
         style={{
           margin: 10,
           marginTop: "0%",
-          height: "100%",
+          height: "52%",
           backgroundColor: "#EFF9F1",
           borderRadius: 45,
           paddingTop: 10,

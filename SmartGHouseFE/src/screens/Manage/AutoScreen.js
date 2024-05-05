@@ -161,7 +161,6 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
 export default function App({ navigation, route }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isTimeFormVisible, setIsTimeFormVisible] = useState(false);
-  const [isScheduleFormVisible, setIsScheduleFormVisible] = useState(false);
 
   const [user, setUser] = useState(null);
   const [scheds, setScheds] = useState([]);
@@ -273,8 +272,14 @@ export default function App({ navigation, route }) {
             <DataTable.Cell>
               <View style={{ justifyContent: "center", paddingRight: 10 }}>
                 <TouchableOpacity
+                  //disabled={scheds.length >= 1}
                   style={styles.addButton}
-                  onPress={toggleTimeFormVisibility}
+                  onPress={() => {
+                    if (scheds.length < 1)
+                      toggleTimeFormVisibility();
+                    else
+                      Alert.alert("Lỗi", "Chỉ có thể đặt một lịch biểu!");
+                  }}
                 >
                   <Text style={styles.addButtonText}>
                     <Ionicons name="timer-outline" size={14} />
