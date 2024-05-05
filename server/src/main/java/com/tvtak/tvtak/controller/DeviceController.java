@@ -1,6 +1,7 @@
 package com.tvtak.tvtak.controller;
 
 import com.tvtak.tvtak.model.Device.Device;
+import com.tvtak.tvtak.model.Schedule.Schedule;
 import com.tvtak.tvtak.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,23 @@ public class DeviceController
         {
             List<Device> devices = deviceService.getDeviceBySchedule(schedule_id);
             return new ResponseEntity<>(devices, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get-schedule-by-device")
+    public ResponseEntity<Object> getScheduleByDevice(
+        @RequestParam long user_id,
+        @RequestParam long device_id
+    )
+    {
+        try
+        {
+            Schedule scheds = deviceService.getScheduleByDevice(device_id, user_id);
+            return new ResponseEntity<>(scheds, HttpStatus.OK);
         }
         catch (Exception e)
         {

@@ -100,6 +100,12 @@ const toggleDevice = async (user_id, device_id, status) => {
   )
   .catch((e) => console.log(e));
 };
+const getSchedsByDevice = async (user_id, device_id) => {
+  return await axiosInst.get(
+    `api/device/get-schedule-by-device?user_id=${user_id}&device_id=${device_id}`
+  )
+  .catch((e) => console.log(e));
+};
 
 const getRecord = async (device_name) => {
   console.log(device_name);
@@ -158,4 +164,5 @@ export {
   getDeviceByScheduleId,
   getUserFromStorage,
   setUserToStorage,
+  getSchedsByDevice,
 };

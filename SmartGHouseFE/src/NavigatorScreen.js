@@ -31,33 +31,36 @@ export default function App() {
 
       const options = { day: "2-digit", month: "2-digit", year: "numeric" };
       const today = now
-        .toLocaleDateString("en-GB", options)
-        .split("/")
-        .join("-");
+        .toLocaleDateString("en-GB", options);
+        // .split("/")
+        // .join("-");
       const currentTime = now.getHours() * 60 + now.getMinutes();
       const response = await getAllSchedule(user.id);
       const schedules = response.data;
       let isActive = false;
+      
       if (schedules && schedules.length > 0) {
         schedules.forEach(async (schedule) => {
           if (schedule.date === today) {
             const startTime = schedule.start_time.split(":");
-            const startMinutes =
-              parseInt(startTime[0]) * 60 + parseInt(startTime[1]);
+            const startMinutes = parseInt(startTime[0]) * 60 + parseInt(startTime[1]);
             const endTime = schedule.end_time.split(":");
             const endMinutes = parseInt(endTime[0]) * 60 + parseInt(endTime[1]);
-            if (currentTime >= startMinutes && currentTime < endMinutes) {
-              console.log("Device is active");
+            
+            if (currentTime >= startMinutes && currentTime < endMinutes)
+            {
               isActive = true;
               const responseDevice = await getDeviceByScheduleId(schedule.id);
-              if (responseDevice.data.length > 0) {
-                // console.log("Turning on device");
+
+              if (responseDevice.data.length > 0)
+              {
                 await toggleDevice(user.id, responseDevice.data[0].id, 1);
               }
-            } else {
+            }
+            else 
+            {
               const responseDevice = await getDeviceByScheduleId(schedule.id);
               if (responseDevice.data.length > 0) {
-                // console.log("Turning off device");
                 await toggleDevice(user.id, responseDevice.data[0].id, 0);
               }
             }
@@ -65,8 +68,8 @@ export default function App() {
         });
       }
     };
-    // checkStartTime();
-    const interval = setInterval(checkStartTime, 60000); // Check every minute
+
+    setInterval(checkStartTime, 60000); // Check every minute
   }, []);
 
   return (

@@ -6,30 +6,36 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
+  Pressable
 } from "react-native";
 import CalendarStrip from "react-native-calendar-strip";
 import { DataTable } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { createSchedule, getAllSchedule, deleteSchedule, getDeviceByScheduleId } from "../../services/userService";
+import { createSchedule, getAllSchedule, deleteSchedule, getSchedsByDevice } from "../../services/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from '@react-navigation/native';
 import moment from 'moment';
 import {
   MaterialCommunityIcons
 } from "@expo/vector-icons";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const TimeForm = ({ isVisible, onClose, deviceOption }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  //const [dateTime, setDateTime] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [type, setType] = useState("");
 
+  const [openStart, setOpenStart] = useState(false);
+  const [openEnd, setOpenEnd] = useState(false);
+  const [openDate, setOpenDate] = useState(false);
+  const [start_time, setStart_time] = useState(new Date());
+  const [end_time, setEnd_time] = useState(new Date());
+  const [selected_date, setSelected_date] = useState(new Date());
+
   const handleConfirm = async () => {
-    // console.log("Start Time:", startTime);
-    // console.log("End Time:", endTime);
-    // console.log("Selected Date:", selectedDate);
-    // console.log("Type:", type);
     const schedule = {
       type: type,
       date: selectedDate,
@@ -42,6 +48,10 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
       const user = await AsyncStorage.getItem("User");
       const userData = JSON.parse(user);
       const res = await createSchedule(userData?.id, device_id, schedule);
+      if (res.status == 200)
+        Alert.alert("Thành công", "Thời gian biểu đã được thêm");
+      else
+        Alert.alert("Lỗi", "Lỗi máy chú");
     } catch (error) {
       console.log(error);
     }
@@ -53,27 +63,87 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
     onClose();
   };
 
+  const onChangeStart = ({type}, selected) => {
+    setOpenStart(false);
+    setStartTime(moment(new Date(selected)).format("HH:mm:ss"));
+    setStart_time(selected);
+  };
+
+  const onChangeEnd = ({type}, selected) => {
+    setOpenEnd(false);
+    setEndTime(moment(new Date(selected)).format("HH:mm:ss"));
+    setEnd_time(selected);
+  };
+
+  const onChangeDate = ({type}, selected) => {
+    setOpenDate(false);
+    setSelectedDate(moment(new Date(selected)).format("DD/MM/YYYY"));
+    setSelected_date(selected);
+  };
+
   return (
     <View style={isVisible ? styles.formContainer : styles.hidden}>
       <Text style={styles.title}>Đặt thời gian</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Giờ bắt đầu"
-        value={startTime}
-        onChangeText={setStartTime}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Giờ kết thúc"
-        value={endTime}
-        onChangeText={setEndTime}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Ngày thực hiện"
-        value={selectedDate}
-        onChangeText={setSelectedDate}
-      />
+      {
+        openStart &&
+        <DateTimePicker
+          mode="time"
+          display="spinner"
+          is24Hour={true}
+          value={start_time}
+          onChange={onChangeStart}
+        />
+      }
+      <Pressable onPress={() => {
+        setOpenStart(true);
+      }}>
+        <TextInput
+          editable={false}
+          style={styles.input}
+          placeholder="Giờ bắt đầu"
+          value={startTime}
+        />
+      </Pressable>
+      {
+        openEnd &&
+        <DateTimePicker
+          mode="time"
+          display="spinner"
+          is24Hour={true}
+          value={end_time}
+          onChange={onChangeEnd}
+        />
+      }
+      <Pressable onPress={() => {
+        setOpenEnd(true);
+      }}>
+        <TextInput
+          editable={false}
+          style={styles.input}
+          placeholder="Giờ kết thúc"
+          value={endTime}
+        />
+      </Pressable>
+      {
+        openDate &&
+        <DateTimePicker
+          mode="date"
+          display="spinner"
+          is24Hour={true}
+          value={selected_date}
+          onChange={onChangeDate}
+        />
+      }
+      <Pressable onPress={() => {
+        setOpenDate(true);
+      }}>
+        <TextInput
+          editable={false}
+          style={styles.input}
+          placeholder="Ngày thực hiện"
+          value={selectedDate}
+        />
+      </Pressable>
       <TextInput
         style={styles.input}
         placeholder="Loại thiết bị"
@@ -81,69 +151,8 @@ const TimeForm = ({ isVisible, onClose, deviceOption }) => {
         onChangeText={setType}
       />
       <View style={styles.buttonContainer}>
+        <Button title="Hủy" onPress={handleCancel} color="red"/>
         <Button title="Đồng ý" onPress={handleConfirm} />
-        <Button title="Hủy" onPress={handleCancel} />
-      </View>
-    </View>
-  );
-};
-
-const ScheduleForm = ({ isVisible, onClose }) => {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [dayOfWeek, setDayOfWeek] = useState("");
-  const [repeat, setRepeat] = useState("");
-  const [content, setContent] = useState("");
-
-  const handleConfirm = () => {
-    console.log("Start Time:", startTime);
-    console.log("End Time:", endTime);
-    console.log("Day of Week:", dayOfWeek);
-    console.log("Repeat:", repeat);
-    console.log("Content:", content);
-    onClose();
-  };
-
-  const handleCancel = () => {
-    onClose();
-  };
-
-  return (
-    <View style={isVisible ? styles.formContainer : styles.hidden}>
-      <Text style={styles.title}>Đặt lịch biểu</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Giờ bắt đầu"
-        value={startTime}
-        onChangeText={setStartTime}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Giờ kết thúc"
-        value={endTime}
-        onChangeText={setEndTime}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Thứ"
-        value={dayOfWeek}
-        onChangeText={setDayOfWeek}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Lặp lại"
-        value={repeat}
-        onChangeText={setRepeat}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Nội dung"
-        value={content}
-        onChangeText={setContent}
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Đồng ý" onPress={handleConfirm} />
-        <Button title="Hủy" onPress={handleCancel} />
       </View>
     </View>
   );
@@ -159,6 +168,7 @@ export default function App({ navigation, route }) {
   const [flag, setFlag] = useState(false);
 
   const option = route.params;
+  const deviceId = option.func === "light" ? 1 : 3;
 
   useEffect(() => {
     const getAllSchedules = async () => {
@@ -167,20 +177,19 @@ export default function App({ navigation, route }) {
         const userData = JSON.parse(user);
         setUser(userData);
 
-        const res = await getAllSchedule(userData?.id);
-        if (res.data.length > 0)
+        //const res = await getAllSchedule(userData?.id);
+        const res = await getSchedsByDevice(userData?.id, deviceId);
+        if (res.data)
         {
-          const temp = JSON.parse(JSON.stringify(res.data));
+          const item = JSON.parse(JSON.stringify(res.data));
           
-          setScheds(temp.map((item) => {
-              return {
+          setScheds([{
                 id: item.id,
                 start_time: item.start_time,
                 end_time: item.end_time,
                 date: item.date,
                 type: item.type
-              };
-            })
+            }]
           );
         }
         else
@@ -192,14 +201,9 @@ export default function App({ navigation, route }) {
     getAllSchedules();
   }, [useIsFocused(), flag]);
 
-  //console.log(option);
   const toggleTimeFormVisibility = () => {
     setIsTimeFormVisible(!isTimeFormVisible);
     setFlag(!flag);
-  };
-
-  const toggleScheduleFormVisibility = () => {
-    setIsScheduleFormVisible(!isScheduleFormVisible);
   };
 
   const handleDateSelected = (date) => {
@@ -228,6 +232,18 @@ export default function App({ navigation, route }) {
           style={styles.calendar}
           selectedDate={selectedDate}
           onDateSelected={handleDateSelected}
+          markedDates={
+            scheds.map((item) => {
+              return {
+                date: moment(item.date, "DD/MM/YYYY"),
+                dots: [
+                  {
+                    color: "#000000"
+                  }
+                ]
+              }
+            })
+          }
           calendarAnimation={{ type: "sequence", duration: 30 }}
           daySelectionAnimation={{
             type: "border",
@@ -273,10 +289,10 @@ export default function App({ navigation, route }) {
               <Text style={{ color: "#3CAF58" }}>Ngày</Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ flex: 1 }}>
-              <Text style={{ color: "#3CAF58" }}>Giờ</Text>
+              <Text style={{ color: "#3CAF58" }}>Giờ bắt đầu</Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ flex: 1 }}>
-              <Text style={{ color: "#3CAF58" }}>Thời gian</Text>
+              <Text style={{ color: "#3CAF58" }}>Giờ kết thúc</Text>
               <Text></Text>
             </DataTable.Cell>
             <DataTable.Cell style={{ flex: 0.3 }}>
@@ -301,10 +317,11 @@ export default function App({ navigation, route }) {
                     <Text style={{ color: "black" }}>{moment(item.start_time, "HH:mm:ss").format("HH:mm:ss")}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell style={{ flex: 1 }}>
-                    {
+                    <Text style={{ color: "black" }}>{moment(item.end_time, "HH:mm:ss").format("HH:mm:ss")}</Text>
+                    {/* {
                       true &&
                       <Text style={{ color: "black" }}>{handleDuration(item)}</Text>
-                    }
+                    } */}
                   </DataTable.Cell>
                   <DataTable.Cell style={{flex: 0.3}}>
                     <MaterialCommunityIcons
@@ -431,6 +448,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
     paddingLeft: 10,
+    color: "black"
   },
   buttonContainer: {
     flexDirection: "row",
