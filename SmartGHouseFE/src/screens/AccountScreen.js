@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUserFromStorage } from "../services/userService";
 
 export default function AccountScreen({ navigation }) {
   const [user, setUser] = useState({});
@@ -10,8 +10,7 @@ export default function AccountScreen({ navigation }) {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const user = await AsyncStorage.getItem("User");
-        const userData = JSON.parse(user);
+        const userData = await getUserFromStorage();
         if (!userData) {
           navigation.navigate("AuthenScreen");
         }

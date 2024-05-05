@@ -14,7 +14,7 @@ export default function App() {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name={path.CHART}
         component={ChartScreen}
         options={{ headerShown: false }}

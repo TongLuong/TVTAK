@@ -142,4 +142,9 @@ public class DeviceService
     {
         deviceRepository.deleteAll();
     }
+
+    @Transactional
+    public List<Device> getDeviceBySchedule(Long schedule_id){
+        return deviceRepository.findBySchedule_id(schedule_id);
+    };
 }

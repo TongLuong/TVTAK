@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { signIn } from "../../services/userService";
+import { signIn, setUserToStorage } from "../../services/userService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App({ navigation }) {
   const [username, setUsername] = useState("");
@@ -27,8 +27,7 @@ export default function App({ navigation }) {
       if (res.status === 200) {
         setLoginStatus(1);
         navigation.navigate("HomeScreen");
-        const userDataString = JSON.stringify(res.data);
-        await AsyncStorage.setItem("User", userDataString);
+        await setUserToStorage(res.data);
       }
     } catch (error) {
       console.log(error);
