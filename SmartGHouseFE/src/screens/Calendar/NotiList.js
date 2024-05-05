@@ -55,10 +55,8 @@ const DATA = [
   );
 
 export default function NotiList() {
-    const [flag, setFlag] = useState(false);
     return (
         <SafeAreaView style={styles.container}>
-          {/* <Text style={{ fontSize: 26, textAlign: 'center'}}>Danh sách thông báo</Text> */}
         <SectionList
           sections={DATA}
           keyExtractor={(item, index) => item.id + index}
@@ -67,7 +65,6 @@ export default function NotiList() {
               <Text style={styles.title}>Thời gian: {item.time}</Text>
               <Text style={styles.title}>Nội dung: {item.content}</Text>
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: '3%' }} >
-                {/* <AppButton title={"Sửa"} style={{ borderWidth: 1, borderColor: '#3CAF58' }} /> */}
                 <AppButton title={"Xóa"} style={{ borderWidth: 1, borderColor: 'red' }} titleStyle={{ color: 'red'}}/>
               </View>
             </View>

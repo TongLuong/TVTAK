@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { DataTable, Checkbox } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { toggleDevice } from '../../services/userService';
+import { ScrollView } from 'react-native-gesture-handler';
 export default function App() {
   const [checkedItems, setCheckedItems] = useState(Array(8).fill(false));
   const [isStarted, setIsStarted] = useState(false);
@@ -58,93 +59,95 @@ export default function App() {
   };
 
   return (
-    <View style={manualwaterStyle.manualwaterMain}>
-      <Text>
-        <View>
-          <Text style = {manualwaterStyle.titleText}>Chọn khu vực:</Text>
-        </View>
-      </Text>
-      <DataTable style = {manualwaterStyle.optionTable}>
-        <DataTable.Header style = {manualwaterStyle.headerTable}>
-          <DataTable.Cell>
-            <Text style = {manualwaterStyle.tableText}>STT</Text>
-          </DataTable.Cell>
-          <DataTable.Title>
-            <Text style = {manualwaterStyle.tableText}>Cây trong khu vực</Text>
-          </DataTable.Title>
-          <DataTable.Title >
-            <Text></Text>
-          </DataTable.Title>
-        </DataTable.Header>
-
-        {[...Array(8).keys()].map((index) => (
-          <DataTable.Row style = {manualwaterStyle.rowsTable} key={index}>
-            <DataTable.Cell textStyle={{ color: '#3CAF58' }}>
-              {index + 1}
-            </DataTable.Cell>
-            <DataTable.Cell textStyle={manualwaterStyle.tableText}>
-              {['Cải bó xôi', 'Cà chua', 'Cà rốt', 'Dâu tây', 'Dưa chuột', 'Dưa lưới', 'Ớt chuông', 'Rau cải ngọt'][index]}
-            </DataTable.Cell>
+    <ScrollView style={{marginBottom: 65}}>
+      <View style={manualwaterStyle.manualwaterMain}>
+        <Text>
+          <View>
+            <Text style = {manualwaterStyle.titleText}>Chọn khu vực:</Text>
+          </View>
+        </Text>
+        <DataTable style = {manualwaterStyle.optionTable}>
+          <DataTable.Header style = {manualwaterStyle.headerTable}>
             <DataTable.Cell>
-              <Checkbox
-                status={checkedItems[index] ? 'checked' : 'unchecked'}
-                onPress={() => handleCheckboxChange(index)}
-              />
+              <Text style = {manualwaterStyle.tableText}>STT</Text>
             </DataTable.Cell>
-          </DataTable.Row>
-        ))}
-      </DataTable>
-      <View style={manualwaterStyle.selectView}>
-        <Text style={manualwaterStyle.dropText}>Chọn cách tưới:</Text>
-        <Dropdown
-          style={manualwaterStyle.dropdown}
-          placeholderStyle={manualwaterStyle.placeholderStyle}
-          selectedTextStyle={manualwaterStyle.dropText}
-          data={data}
-          search
-          labelField="label"
-          valueField="value"
-          placeholder=""
-          value={value}
-          onChange={item => {
-            setValue(item.value);
-          }}
-        />
-      </View>
-      <View style={manualwaterStyle.actionButton}>
-      {!isStarted && !isEnded && (
-        <Button
-          title="Bắt đầu"
-          color="#3CAF58"
-          onPress={handleStartStop}
-        />
-      )}
+            <DataTable.Title>
+              <Text style = {manualwaterStyle.tableText}>Cây trong khu vực</Text>
+            </DataTable.Title>
+            <DataTable.Title >
+              <Text></Text>
+            </DataTable.Title>
+          </DataTable.Header>
 
-      {isStarted && !isEnded && (
-        <View style={manualwaterStyle.actionButton}>
-          <Button 
-            title={isPaused ? "Tiếp tục" : "Tạm dừng"}
-            color="#3CAF58"
-            onPress={handlePauseResume}
-          />
-          <Text style={{flex:1}}> </Text>
-          <Button
-            title="Kết thúc"
-            color="#3CAF58"
-            onPress={handleEnd}
+          {[...Array(8).keys()].map((index) => (
+            <DataTable.Row style = {manualwaterStyle.rowsTable} key={index}>
+              <DataTable.Cell textStyle={{ color: '#3CAF58' }}>
+                {index + 1}
+              </DataTable.Cell>
+              <DataTable.Cell textStyle={manualwaterStyle.tableText}>
+                {['Cải bó xôi', 'Cà chua', 'Cà rốt', 'Dâu tây', 'Dưa chuột', 'Dưa lưới', 'Ớt chuông', 'Rau cải ngọt'][index]}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Checkbox
+                  status={checkedItems[index] ? 'checked' : 'unchecked'}
+                  onPress={() => handleCheckboxChange(index)}
+                />
+              </DataTable.Cell>
+            </DataTable.Row>
+          ))}
+        </DataTable>
+        <View style={manualwaterStyle.selectView}>
+          <Text style={manualwaterStyle.dropText}>Chọn cách tưới:</Text>
+          <Dropdown
+            style={manualwaterStyle.dropdown}
+            placeholderStyle={manualwaterStyle.placeholderStyle}
+            selectedTextStyle={manualwaterStyle.dropText}
+            data={data}
+            search
+            labelField="label"
+            valueField="value"
+            placeholder=""
+            value={value}
+            onChange={item => {
+              setValue(item.value);
+            }}
           />
         </View>
-      )}
+        <View style={manualwaterStyle.actionButton}>
+        {!isStarted && !isEnded && (
+          <Button
+            title="Bắt đầu"
+            color="#3CAF58"
+            onPress={handleStartStop}
+          />
+        )}
 
-      {isEnded && (
-        <Button
-          title="Bắt đầu"
-          color="#3CAF58"
-          onPress={handleStartStop}
-        />
-      )}
-    </View>
-    </View>
+        {isStarted && !isEnded && (
+          <View style={manualwaterStyle.actionButton}>
+            <Button 
+              title={isPaused ? "Tiếp tục" : "Tạm dừng"}
+              color="#3CAF58"
+              onPress={handlePauseResume}
+            />
+            <Text style={{flex:1}}> </Text>
+            <Button
+              title="Kết thúc"
+              color="#3CAF58"
+              onPress={handleEnd}
+            />
+          </View>
+        )}
+
+        {isEnded && (
+          <Button
+            title="Bắt đầu"
+            color="#3CAF58"
+            onPress={handleStartStop}
+          />
+        )}
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 

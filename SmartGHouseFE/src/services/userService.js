@@ -84,17 +84,20 @@ const addDevice = async (user_id, device) => {
   );
 };
 const getAllDevice = async (user_id) => {
-  return await axiosInst.get(`/api/device/get-all-devices?user_id=${user_id}`);
+  return await axiosInst.get(`/api/device/get-all-devices?user_id=${user_id}`)
+                        .catch(e => console.log(e));
 };
 const deleteDevice = async (user_id, device_id) => {
   return await axiosInst.delete(
     `api/device/delete-device?user_id=${user_id}&device_id=${device_id}`
-  );
+  )
+  .catch((e) => console.log(e));
 };
 const toggleDevice = async (user_id, device_id, status) => {
   return await axiosInst.post(
     `api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`
-  );
+  )
+  .catch((e) => console.log(e));
 };
 
 const getRecord = async (device_name) => {

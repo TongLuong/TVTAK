@@ -16,13 +16,11 @@ import {
   MaterialCommunityIcons
 } from "@expo/vector-icons";
 import { DataTable } from 'react-native-paper';
-import NoteAddition from './NoteAddition';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAllNote, getAllNotification, deleteNotification } from '../../services/userService';
 import CalendarStrip from 'react-native-calendar-strip';
 import { useIsFocused } from '@react-navigation/native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const { width } = Dimensions.get('window');
 
@@ -56,9 +54,9 @@ export default function App({ navigation }) {
   const [notiList, setNotiList] = useState([]);
   const [cur, setCur] = useState(false);
 
-  const [notes, setNotes] = useState(["Loading..."]);
-  const [noti, setNoti] = useState([{id: -1, time: "00:00", content: "Loading..."}]);
-  const [user, setUser] = useState({});
+  const [notes, setNotes] = useState(["Không có ghi chú"]);
+  const [noti, setNoti] = useState([]);
+  const [user, setUser] = useState(null);
 
   const [timer, setTimer] = useState(0);
 
@@ -70,23 +68,32 @@ export default function App({ navigation }) {
         setUser(userData);
 
         const res = await getAllNote(userData?.id);
-        setNotes(JSON.parse(JSON.stringify(res.data)).map((item, _) => {
-            return item.content;
-          })
-        );
+        if (res.data.length > 0)
+        {
+          setNotes(JSON.parse(JSON.stringify(res.data)).map((item, _) => {
+              return item.content;
+            })
+          );
+        }
+        else
+          setNotes(["Không có ghi chú"]);
 
         const res2 = await getAllNotification(userData?.id);
-        const tempNoti = JSON.parse(JSON.stringify(res2.data)).map((item, _) => {
-          return {id: item.id, time: item.time, content: item.content};
-        });
-        setNoti(tempNoti);
-        const sortedNoti = [...tempNoti].sort((a, b) => {
-          if ((new Date(a.time)).valueOf() < (new Date(b.time)).valueOf())
-            return -1;
-          else
-            return 1;
-        });
-        setNoti(sortedNoti);
+        if (res2.data.length > 0)
+        {
+          const tempNoti = JSON.parse(JSON.stringify(res2.data)).map((item, _) => {
+            return {id: item.id, time: item.time, content: item.content};
+          });
+          const sortedNoti = [...tempNoti].sort((a, b) => {
+            if ((new Date(a.time)).valueOf() < (new Date(b.time)).valueOf())
+              return -1;
+            else
+              return 1;
+          });
+          setNoti(sortedNoti);
+        }
+        else
+          setNoti([]);
       } catch (error) {
         console.log(error);
       }
@@ -95,11 +102,18 @@ export default function App({ navigation }) {
   }, [useIsFocused()]);
 
   useEffect(() => {
-    const today = new Date();
-    const todayTime = moment(today).format("DD/MM/YYYY") + " " + moment(today).format("HH:mm");
-    const nextNoti = moment(new Date(noti[0].time)).format("DD/MM/YYYY") + " " + moment(new Date(noti[0].time)).format("HH:mm");
-    if (todayTime === nextNoti)
-      Alert.alert("Thông báo!", noti[0].content);
+    if (noti.length > 0)
+    {
+      const today = new Date();
+      const todayTime = moment(today).format("DD/MM/YYYY") + " " + moment(today).format("HH:mm");
+      const nextNoti = moment(new Date(noti[0].time)).format("DD/MM/YYYY") + " " + moment(new Date(noti[0].time)).format("HH:mm");
+      if (todayTime === nextNoti)
+      {
+        Alert.alert("Thông báo!", noti[0].content);
+        if (!delNoti(noti[0].id))
+          Alert.alert("Lỗi", "Lỗi máy chủ!");
+      }
+    }
 
     // update every 60 seconds
     setTimeout(() => {
@@ -120,203 +134,164 @@ export default function App({ navigation }) {
     return false;
   };
 
-  // const weeks = React.useMemo(() => {
-  //   const start = moment().add(week, 'weeks').startOf('isoWeek');
-    
-  //   return [-1, 0, 1].map(adj => {
-  //     return Array.from({ length: 7 }).map((_, index) => {
-  //       const date = moment(start).add(adj, 'week').add(index, 'day');
-        
-  //       let marked = false;
-  //       let noti = false;
-  //       for (let i in markedList){
-  //         //date.toDate().toISOString().slice(0,10)
-  //         if (!(markedList[i].getTime() < date.toDate().getTime()) && !(markedList[i].getTime() > date.toDate().getTime())) {
-  //           marked = true;
-  //         }
-  //       }
-  //       for (let i in notiList){
-  //         if (!(notiList[i].getTime() < date.toDate().getTime()) && !(notiList[i].getTime() > date.toDate().getTime())) {
-  //           noti = true;
-  //         }
-  //       }
-
-  //       return {
-  //         weekday: date.format('ddd'),
-  //         date: date.toDate(),
-  //         isMarked: marked, 
-  //         haveNoti: noti
-  //       };
-  //     });
-  //   });
-  // }, [week, markedList, notiList]);
-
   return (
     <ScrollView style={{marginBottom: 65}}>
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <CalendarStrip
-          style={styles.calendar}
-          selectedDate={value}
-          markedDates={
-            noti.map((item) => {
-              return {
-                date: moment(new Date(item.time)),
-                dots: [
-                  {
-                    color: "#000000"
-                  }
-                ]
-              }
-            })
-          }
-          calendarAnimation={{ type: 'sequence', duration: 30 }}
-          daySelectionAnimation={{
-            type: 'border',
-            borderWidth: 1,
-            borderHighlightColor: '#EFF9F1',
-          }}
-          calendarHeaderStyle={{ color: 'black' }}
-          calendarColor={'white'}
-          iconContainer={{ flex: 0.1 }}
-          dateContainerStyle={{ borderRadius: 20 }}
-          highlightDateContainerStyle={{ backgroundColor: '#9CDD9B', borderRadius: 20 }}
-        />
-
-        {/* <View style={{flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#EFF9F1'}}>      
-          <AppButton title={"Đánh dấu"} onPress={ 
-            () => {
-                const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-                setMarkedList(markedList => [...markedList, selectedDate]);
-
-                // remove noti
-                setNotiList(notiList.filter(item => {
-                  return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
-                }));
-          }}/>
-          <AppButton title={"Hủy đánh dấu"} titleStyle={{ color: 'red'}} onPress={
-            () => {
-              const selectedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-              setMarkedList(markedList.filter(item => {
-                return (item.getTime() < selectedDate.getTime()) || (item.getTime() > selectedDate.getTime());
-              }));
-            }}/>
-        </View> */}
-
-        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-            <Text
-              style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}
-            >Thông báo tiếp theo</Text>
-          </View>
-          <View style={{justifyContent: "center", alignItems: "center"}}>
-            <Text style={{fontSize: 14, color: '#3CAF58', marginVertical: '2%'}}>
-              {noti.length <= 0? "Không có thông báo nào" : "Ngày " + moment(new Date(noti[0].time)).format("DD/MM/YYYY") + ", vào lúc " + moment(new Date(noti[0].time)).format("HH:mm")}
-            </Text>
-          </View>
-        </View>
-
-        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-            <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
-            <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} onPress={() => {
-              navigation.navigate("NotiAddition");
-            }}/>
-          </View>
-          <View style={{marginLeft: "3%", maxHeight: 230}}>
-            <ScrollView>
-              <DataTable>
-                <DataTable.Row>
-                  <DataTable.Title style={{flex: 2}}>
-                    <View>
-                      <Text style={{color: '#3CAF58'}}>Ngày</Text>
-                    </View>
-                  </DataTable.Title>
-                  <DataTable.Title style={{flex: 1}}>
-                    <View>
-                      <Text style={{color: '#3CAF58'}}>Giờ</Text>
-                    </View>
-                  </DataTable.Title>
-                  <DataTable.Title style={{flex: 2.5}}>
-                    <View>
-                      <Text style={{color: '#3CAF58'}}>Nội dung</Text>
-                    </View>
-                  </DataTable.Title>
-                  <DataTable.Title style={{flex: 0.3}}>
-                    <View>
-                      <Text style={{color: '#3CAF58'}}></Text>
-                    </View>
-                  </DataTable.Title>
-                </DataTable.Row>
-                {
-                  noti.map((item, index) => {
-                    return (
-                      <DataTable.Row key={index}>
-                        <DataTable.Cell style={{flex: 2}}>
-                          <Text style={{color: '#3CAF58'}}>{moment(new Date(item.time)).format("DD/MM/YYYY")}</Text>
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{flex: 1}}>
-                          <Text style={{color: '#3CAF58'}}>{moment(new Date(item.time)).format("HH:mm")}</Text>
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{flex: 2.5}}>
-                          <Text style={{color: '#3CAF58'}}>{item.content}</Text>
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{flex: 0.3}}>
-                            <MaterialCommunityIcons
-                              name="delete"
-                              size={20}
-                              color="black"
-                              style={{flex: 1}}
-                              onPress={() => {
-                                Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
-                                  [
-                                    {
-                                      text: "Hủy bỏ",
-                                      onPress: () => console.log("Canceled"),
-                                      style: "cancel"
-                                    },
-                                    {
-                                      text: "OK",
-                                      onPress: () => {
-                                        if (delNoti(index))
-                                          Alert.alert("Thành công", "Bạn đã xóa thông báo!");
-                                        else
-                                          Alert.alert("Lỗi", "Lỗi server!");
-                                      }
-                                    }
-                                  ]
-                                );
-                              }}
-                            />
-                        </DataTable.Cell>
-                      </DataTable.Row>
-                    );
-                  })
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <CalendarStrip
+            style={styles.calendar}
+            selectedDate={value}
+            markedDates={
+              noti.map((item) => {
+                return {
+                  date: moment(new Date(item.time)),
+                  dots: [
+                    {
+                      color: "#000000"
+                    }
+                  ]
                 }
-              </DataTable>
-            </ScrollView>
-          </View>
-        </View>
+              })
+            }
+            calendarAnimation={{ type: 'sequence', duration: 30 }}
+            daySelectionAnimation={{
+              type: 'border',
+              borderWidth: 1,
+              borderHighlightColor: '#EFF9F1',
+            }}
+            calendarHeaderStyle={{ color: 'black' }}
+            calendarColor={'white'}
+            iconContainer={{ flex: 0.1 }}
+            dateContainerStyle={{ borderRadius: 20 }}
+            highlightDateContainerStyle={{ backgroundColor: '#9CDD9B', borderRadius: 20 }}
+          />
 
-        <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
-            <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú gần đây</Text>
-            <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {
-                navigation.navigate("NoteAddition", {});
-            }}/>
+          <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+              <Text
+                style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}
+              >Thông báo tiếp theo</Text>
+            </View>
+            <View style={{justifyContent: "center", alignItems: "center"}}>
+              <Text style={{fontSize: 14, color: '#3CAF58', marginVertical: '2%'}}>
+                {
+                  noti.length <= 0?
+                  "Không có thông báo" :
+                  "Ngày " + moment(new Date(noti[0].time)).format("DD/MM/YYYY") + ", vào lúc " + moment(new Date(noti[0].time)).format("HH:mm")
+                }
+              </Text>
+            </View>
           </View>
-          
-          <View style={{marginTop: 5, maxHeight: 230}}>
-            <Text style={{color: '#3CAF58', fontSize: 14, marginHorizontal: '5%', marginLeft: "8%"}}>
-              {notes[0]}
-            </Text>
+
+          <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', marginHorizontal: '2%', borderRadius: 20 }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+              <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '2%'}}>Thông báo đã đặt</Text>
+              <AppButton title={"Đặt thông báo"} style={{marginTop: '2%'}} onPress={() => {
+                navigation.navigate("NotiAddition");
+              }}/>
+            </View>
+            <View style={{marginLeft: "3%", maxHeight: 230}}>
+              <ScrollView>
+                <DataTable>
+                  {
+                    noti.length > 0?
+                    <DataTable.Row>
+                    <DataTable.Title style={{flex: 2}}>
+                      <View>
+                        <Text style={{color: '#3CAF58'}}>Ngày</Text>
+                      </View>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 1}}>
+                      <View>
+                        <Text style={{color: '#3CAF58'}}>Giờ</Text>
+                      </View>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 2.5}}>
+                      <View>
+                        <Text style={{color: '#3CAF58'}}>Nội dung</Text>
+                      </View>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 0.3}}>
+                      <View>
+                        <Text style={{color: '#3CAF58'}}></Text>
+                      </View>
+                    </DataTable.Title>
+                    </DataTable.Row>
+                    :
+                    <DataTable.Row>
+                      <DataTable.Cell style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        <Text style={{color: '#3CAF58'}}>Không có thông báo</Text>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  }
+                  {
+                    noti.map((item, index) => {
+                      return (
+                        <DataTable.Row key={index}>
+                          <DataTable.Cell style={{flex: 2}}>
+                            <Text style={{color: '#3CAF58'}}>{moment(new Date(item.time)).format("DD/MM/YYYY")}</Text>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 1}}>
+                            <Text style={{color: '#3CAF58'}}>{moment(new Date(item.time)).format("HH:mm")}</Text>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 2.5}}>
+                            <Text style={{color: '#3CAF58'}}>{item.content}</Text>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 0.3}}>
+                              <MaterialCommunityIcons
+                                name="delete"
+                                size={20}
+                                color="black"
+                                style={{flex: 1}}
+                                onPress={() => {
+                                  Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
+                                    [
+                                      {
+                                        text: "Hủy bỏ",
+                                        style: "cancel"
+                                      },
+                                      {
+                                        text: "OK",
+                                        onPress: () => {
+                                          if (delNoti(index))
+                                            Alert.alert("Thành công", "Bạn đã xóa thông báo!");
+                                          else
+                                            Alert.alert("Lỗi", "Lỗi máy chủ!");
+                                        }
+                                      }
+                                    ]
+                                  );
+                                }}
+                              />
+                          </DataTable.Cell>
+                        </DataTable.Row>
+                      );
+                    })
+                  }
+                </DataTable>
+              </ScrollView>
+            </View>
           </View>
-          <AppButton title={"Xem tất cả"} 
-            style={{width: '40%', paddingHorizontal: '2%', marginTop: "5%"}}
-            onPress={() => { navigation.navigate("NoteList"); }}/>
+
+          <View style = {{ backgroundColor: '#EFF9F1', marginTop:'3%', paddingBottom: '3%', marginHorizontal: '2%', borderRadius: 20 }}>
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems:'center', justifyContent: 'space-around'}}>
+              <Text style={{color: '#3CAF58', fontSize: 16, fontWeight: 'bold', borderBottomColor: '#3CAF58', borderBottomWidth: 1, paddingBottom: '1%'}}>Ghi chú gần đây</Text>
+              <AppButton title={"Thêm ghi chú"} style={{marginTop: '2%'}} onPress={() => {
+                  navigation.navigate("NoteAddition", {});
+              }}/>
+            </View>
+            
+            <View style={{marginTop: 5, maxHeight: 230}}>
+              <Text style={{color: '#3CAF58', fontSize: 14, marginHorizontal: '5%', marginLeft: "8%"}}>
+                {notes[0]}
+              </Text>
+            </View>
+            <AppButton title={"Xem tất cả"} 
+              style={{width: '40%', paddingHorizontal: '2%', marginTop: "5%"}}
+              onPress={() => { navigation.navigate("NoteList"); }}/>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </ScrollView>
   );
   }

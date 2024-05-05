@@ -81,6 +81,7 @@ public class DeviceController
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
     @GetMapping("/get-device-by-schedule")
     public ResponseEntity<Object> getDeviceBySchedule(@RequestParam("schedule_id") Long schedule_id){
         try
