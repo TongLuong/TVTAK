@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="SelectScreen" component={SelectScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="FuncOp"
         component={FuncOptionScreen}
@@ -25,7 +26,6 @@ export default function App() {
       <Stack.Screen name="Manuallight" component={ManualLightScreen} options={{ title: "Thủ công" }}/>
       <Stack.Screen name="Manualwater" component={ManualWaterScreen} options={{ title: "Thủ công" }}/>
       <Stack.Screen name="Auto" component={AutoScreen} options={{ title: "Đặt lịch biểu tự động" }}/>
-      <Stack.Screen name="SelectScreen" component={SelectScreen} options={{ }} />
       <Stack.Screen name="DeviceList" component={DeviceList} options={{ title: "Danh sách thiết bị"}} />
     </Stack.Navigator>
   );

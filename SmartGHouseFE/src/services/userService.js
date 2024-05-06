@@ -22,10 +22,11 @@ const getAllSchedule = async (user_id) => {
   );
 };
 const deleteSchedule = async (user_id, schedule_id) => {
-  return await axiosInst.delete(
-    `/api/schedule/delete-schedule?schedule_id=${schedule_id}&user_id=${user_id}`
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .delete(
+      `/api/schedule/delete-schedule?schedule_id=${schedule_id}&user_id=${user_id}`
+    )
+    .catch((e) => console.log(e));
 };
 const updateSchedule = async (user_id, schedule_id, schedule) => {
   return await axiosInst.post(
@@ -40,10 +41,9 @@ const createNewNote = async (user_id, note) => {
   );
 };
 const deleteNote = async (user_id, note_id) => {
-  return await axiosInst.delete(
-    `/api/note/delete-note?user_id=${user_id}&note_id=${note_id}`
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .delete(`/api/note/delete-note?user_id=${user_id}&note_id=${note_id}`)
+    .catch((e) => console.log(e));
 };
 const getAllNote = async (user_id) => {
   return await axiosInst
@@ -51,11 +51,9 @@ const getAllNote = async (user_id) => {
     .catch((e) => console.log(e));
 };
 const editNote = async (user_id, note_id, note) => {
-  return await axiosInst.post(
-    `/api/note/edit-note?user_id=${user_id}&note_id=${note_id}`,
-    note
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .post(`/api/note/edit-note?user_id=${user_id}&note_id=${note_id}`, note)
+    .catch((e) => console.log(e));
 };
 const createNotification = async (user_id, notification) => {
   return await axiosInst
@@ -66,16 +64,16 @@ const createNotification = async (user_id, notification) => {
     .catch((e) => console.log(e));
 };
 const getAllNotification = async (user_id) => {
-  return await axiosInst.get(
-    `/api/notification/get-all-notifications?user_id=${user_id}`
-  )
-  .catch(e => console.log(e));
+  return await axiosInst
+    .get(`/api/notification/get-all-notifications?user_id=${user_id}`)
+    .catch((e) => console.log(e));
 };
 const deleteNotification = async (user_id, notification_id) => {
-  return await axiosInst.delete(
-    `/api/notification/delete-notification?user_id=${user_id}&notification_id=${notification_id}`
-  )
-  .catch(e => console.log(e));
+  return await axiosInst
+    .delete(
+      `/api/notification/delete-notification?user_id=${user_id}&notification_id=${notification_id}`
+    )
+    .catch((e) => console.log(e));
 };
 
 const addDevice = async (user_id, device) => {
@@ -85,30 +83,33 @@ const addDevice = async (user_id, device) => {
   );
 };
 const getAllDevice = async (user_id) => {
-  return await axiosInst.get(`/api/device/get-all-devices?user_id=${user_id}`)
-                        .catch(e => console.log(e));
+  return await axiosInst
+    .get(`/api/device/get-all-devices?user_id=${user_id}`)
+    .catch((e) => console.log(e));
 };
 const deleteDevice = async (user_id, device_id) => {
-  return await axiosInst.delete(
-    `api/device/delete-device?user_id=${user_id}&device_id=${device_id}`
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .delete(
+      `api/device/delete-device?user_id=${user_id}&device_id=${device_id}`
+    )
+    .catch((e) => console.log(e));
 };
 const toggleDevice = async (user_id, device_id, status) => {
-  return await axiosInst.post(
-    `api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .post(
+      `api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`
+    )
+    .catch((e) => console.log(e));
 };
 const getSchedsByDevice = async (user_id, device_id) => {
-  return await axiosInst.get(
-    `api/device/get-schedule-by-device?user_id=${user_id}&device_id=${device_id}`
-  )
-  .catch((e) => console.log(e));
+  return await axiosInst
+    .get(
+      `api/device/get-schedule-by-device?user_id=${user_id}&device_id=${device_id}`
+    )
+    .catch((e) => console.log(e));
 };
 
 const getRecord = async (device_name) => {
-  console.log(device_name);
   return await axiosInst.get(`api/record/get-data?feed_id=${device_name}`);
 };
 const getRecordLast = async (device_name) => {
@@ -124,6 +125,9 @@ const getDeviceByScheduleId = async (schedule_id) => {
   return await axiosInst.get(
     `api/device/get-device-by-schedule?schedule_id=${schedule_id}`
   );
+};
+const getRecordAvgInDay = async (feed_id) => {
+  return axiosInst.get(`api/record/get-data-avg-each-day?feed_id=${feed_id}`);
 };
 const getUserFromStorage = async () => {
   try {
@@ -165,4 +169,5 @@ export {
   getUserFromStorage,
   setUserToStorage,
   getSchedsByDevice,
+  getRecordAvgInDay,
 };

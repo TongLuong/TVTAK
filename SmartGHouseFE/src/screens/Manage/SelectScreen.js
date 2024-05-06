@@ -126,7 +126,7 @@ export default function SelectScreen( {navigation, route} ) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: '10%',
+      paddingTop: '25%',
       paddingHorizontal: '6%',
       marginBottom: 65, 
       backgroundColor: '#EFF9F1',
