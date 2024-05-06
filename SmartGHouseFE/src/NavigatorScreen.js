@@ -90,7 +90,7 @@ export default function App() {
           // },
           // shadowOpacity: 1,
         },
-        tabBarActiveTintColor: "#0a5962",
+        tabBarActiveTintColor: "#3CAF58",
         tabBarInactiveTintColor: "grey",
         tabBarLabelStyle: { paddingBottom: 8, fontSize: 12 },
         tabBarIcon: ({ focused, color, size }) => {

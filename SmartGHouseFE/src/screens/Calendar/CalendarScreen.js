@@ -34,7 +34,8 @@ const AppButton = ({ onPress, title, style, titleStyle }) => (
       alignSelf: 'center',
       marginBottom: 10,
       maxHeight: 26,
-      borderRadius: 20
+      borderRadius: 20,
+      elevation: 4
     }, style]}
   >
     <Text style={[{ fontSize: 16, fontVariant: 'roboto', color: '#3CAF58', paddingVertical: '1%' }, titleStyle,]}>
@@ -240,8 +241,8 @@ export default function App({ navigation }) {
                           <DataTable.Cell style={{flex: 0.3}}>
                               <MaterialCommunityIcons
                                 name="delete"
-                                size={20}
-                                color="black"
+                                size={22}
+                                color="red"
                                 style={{flex: 1}}
                                 onPress={() => {
                                   Alert.alert("Xác nhận", "Bạn có chắc muốn xóa?",
