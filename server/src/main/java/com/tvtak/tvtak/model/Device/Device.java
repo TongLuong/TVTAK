@@ -23,13 +23,17 @@ public class Device
     @Setter @Getter
     private String switch_name;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Setter @Getter
     private int status; // 0: off, 1: on
 
     @Column(name = "type", nullable = false)
     @Setter @Getter
     private String type; // "sensor" or "mechanical"
+
+    @Column(name = "threshold")
+    @Setter @Getter
+    private Double threshold;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
