@@ -17,7 +17,7 @@ export default function App() {
       <Stack.Screen
         name={path.CHART}
         component={ChartScreen}
-        options={{ headerShown: false }}
+        options={{ title: "Thống kê dữ liệu" }}
       />
       <Stack.Screen
         name={"DeviceAddtion"}
