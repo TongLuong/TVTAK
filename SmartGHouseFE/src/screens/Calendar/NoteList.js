@@ -78,11 +78,15 @@ const styles = StyleSheet.create({
       marginBottom: 65
     },
     item: {
-      backgroundColor: '#f9c2ff',
+      backgroundColor: "#EFF9F1",
       padding: "5%",
       marginVertical: "3%",
       flexDirection: "row",
-      alignItems: "center"
+      alignItems: "center",
+      elevation: 6,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: '#3CAF58'
     },
     header: {
       fontSize: 32,

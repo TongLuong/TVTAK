@@ -182,9 +182,9 @@ export default function HistoryScreen() {
         }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             {selectedValue == "manual-pump" ? (
-              <Ionicons name="water-outline" size={24} color="blue" />
+              <Ionicons name="water-outline" size={24} color='#3CAF58' />
             ) : (
-              <FontAwesome5 name="lightbulb" size={24} color="black" />
+              <FontAwesome5 name="lightbulb" size={24} color='#3CAF58' />
             )}
             <Text style={{ marginLeft: 5 }}>
               {selectedValue == "manual-light"
@@ -200,7 +200,7 @@ export default function HistoryScreen() {
               marginRight: 10,
             }}
           >
-            <MaterialIcons name="access-time" size={24} color="#FAA220" />
+            <MaterialIcons name="access-time" size={24} color='#3CAF58' />
             <Text style={{ marginLeft: 5 }}>
               {"Tháng " + selectedMonth + " Năm " + selectedYear}
             </Text>
@@ -301,7 +301,8 @@ export default function HistoryScreen() {
           <Button title={"Lọc dữ liệu"}
             onPress={() => {
               togglePicker();
-            }} 
+            }}
+            color={'#3CAF58'}
           />
           <Text
             style={{ marginLeft: 10, marginRight: 10 }}
@@ -312,7 +313,7 @@ export default function HistoryScreen() {
             disabled={currentPage === 1}
             color={"#0a5962"}
           /> */}
-          <MaterialCommunityIcons name="arrow-left" size={24} color="blue" onPress={() => {
+          <MaterialCommunityIcons name="arrow-left" size={24} color='#3CAF58' onPress={() => {
             if (currentPage != 1)
               prevPage();
           }}/>
@@ -325,7 +326,7 @@ export default function HistoryScreen() {
             color={"#0a5962"}
             disabled={endIndex >= logDevice.length}
           /> */}
-          <MaterialCommunityIcons name="arrow-right" size={24} color="blue" onPress={() => {
+          <MaterialCommunityIcons name="arrow-right" size={24} color='#3CAF58' onPress={() => {
             if (currentPage < maxPage)
               nextPage();
           }}/>
