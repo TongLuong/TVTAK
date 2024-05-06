@@ -127,6 +127,7 @@ const chartStyle = StyleSheet.create({
   chartContainer: {
     flex: 1,
     backgroundColor: "#EFF9F1",
+    marginBottom: 65
   },
   chartConfig: {
     margin: 10,
