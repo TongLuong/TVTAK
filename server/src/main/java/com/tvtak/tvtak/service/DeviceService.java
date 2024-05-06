@@ -138,6 +138,35 @@ public class DeviceService
             return "Failed to update status";
         }
     }
+
+    @Transactional
+    public String adjustThreshold(long device_id, long user_id, Double threshold)
+    {
+        try
+        {
+            Optional<Device> deviceOptional = Optional.ofNullable(deviceRepository.findByIdAndUserId(device_id, user_id));
+            if (deviceOptional.isPresent())
+            {
+                Device device = deviceOptional.get();
+
+                if (!em.contains(device))
+                    em.merge(device);
+
+                device.setThreshold(threshold);
+                deviceRepository.save(device);
+
+                return "Threshold updated successfully";
+            }
+            else
+            {
+                return "Device not found for the user";
+            }
+        }
+        catch (Exception e)
+        {
+            return "Failed to update threshold";
+        }
+    }
     
     public void deleteAll()
     {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/record")
@@ -47,6 +48,20 @@ public class RecordController {
     {
         try {
             List<FeedData> filterData = recordService.getFeedDataByMonth(month, year, feed_id);
+
+            return new ResponseEntity<>(filterData, HttpStatus.OK);
+
+        } catch (RestClientException e) {
+            return new ResponseEntity<>("Error while fetching data from Adafruit API", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/get-data-avg-each-day")
+    public ResponseEntity<Object> getRecordAvgDate(
+            @RequestParam("feed_id") String feed_id
+    )
+    {
+        try {
+            List<Map<String, Object>>  filterData = recordService.getFeedDataAvgDayInDay(feed_id);
 
             return new ResponseEntity<>(filterData, HttpStatus.OK);
 

@@ -23,21 +23,40 @@ const getCurrentYear = () => {
   return currentYear;
 };
 
-const AppButton = ({ onPress, title, style, titleStyle, disabledCondition }) => (
+const AppButton = ({
+  onPress,
+  title,
+  style,
+  titleStyle,
+  disabledCondition,
+}) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[{
-      width: '60%',
-      backgroundColor: 'white',
-      alignItems: 'center',
-      marginBottom: 10,
-      maxHeight: 35,
-      borderRadius: 20,
-      paddingHorizontal: '10%'
-    }, style]}
-    disabled = {disabledCondition}
+    style={[
+      {
+        width: "60%",
+        backgroundColor: "white",
+        alignItems: "center",
+        marginBottom: 10,
+        maxHeight: 35,
+        borderRadius: 20,
+        paddingHorizontal: "10%",
+      },
+      style,
+    ]}
+    disabled={disabledCondition}
   >
-    <Text style={[{ fontSize: 20, fontVariant: 'roboto', color: '#3CAF58', paddingVertical: '1%' }, titleStyle,]}>
+    <Text
+      style={[
+        {
+          fontSize: 20,
+          fontVariant: "roboto",
+          color: "#3CAF58",
+          paddingVertical: "1%",
+        },
+        titleStyle,
+      ]}
+    >
       {title}
     </Text>
   </TouchableOpacity>
@@ -93,10 +112,8 @@ export default function HistoryScreen() {
 
       const temp = Math.ceil(res.data.length / itemsPerPage);
       setMaxPage(temp);
-      if (temp > 0)
-        setCurrentPage(1);
-      else
-        setCurrentPage(0);
+      if (temp > 0) setCurrentPage(1);
+      else setCurrentPage(0);
     } catch (error) {
       console.log(error);
     }
@@ -107,6 +124,7 @@ export default function HistoryScreen() {
   }, []);
 
   useEffect(() => {
+    console.log(selectedValue, selectedMonth, selectedYear);
     fetchData();
   }, [selectedValue, selectedMonth, selectedYear]);
 
@@ -162,29 +180,33 @@ export default function HistoryScreen() {
           styles.container,
           {
             backgroundColor: "#EFF9F1",
-            borderRadius: 30
+            borderRadius: 30,
           },
         ]}
       >
-        <View style={{ 
-          marginTop: "0%",
-          position: "absolute",
-          top: "7%"
-        }}>
+        <View
+          style={{
+            marginTop: "0%",
+            position: "absolute",
+            top: "7%",
+          }}
+        >
           <Text style={{ fontSize: 23, color: "#3CAF58" }}>
             Lịch sử hoạt động
           </Text>
         </View>
-        <View style={{
-          flexDirection: "row",
-          position: "absolute",
-          top: "12%"
-        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            position: "absolute",
+            top: "12%",
+          }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             {selectedValue == "manual-pump" ? (
-              <Ionicons name="water-outline" size={24} color='#3CAF58' />
+              <Ionicons name="water-outline" size={24} color="#3CAF58" />
             ) : (
-              <FontAwesome5 name="lightbulb" size={24} color='#3CAF58' />
+              <FontAwesome5 name="lightbulb" size={24} color="#3CAF58" />
             )}
             <Text style={{ marginLeft: 5 }}>
               {selectedValue == "manual-light"
@@ -200,21 +222,21 @@ export default function HistoryScreen() {
               marginRight: 10,
             }}
           >
-            <MaterialIcons name="access-time" size={24} color='#3CAF58' />
+            <MaterialIcons name="access-time" size={24} color="#3CAF58" />
             <Text style={{ marginLeft: 5 }}>
               {"Tháng " + selectedMonth + " Năm " + selectedYear}
             </Text>
           </View>
         </View>
-        
-        <DataTable 
-          style={{ 
-          justifyContent: "space-evenly", 
-          marginLeft: "5%",
-          marginTop: "0%",
-          position: "absolute",
-          top: "12%"
-        }}
+
+        <DataTable
+          style={{
+            justifyContent: "space-evenly",
+            marginLeft: "5%",
+            marginTop: "0%",
+            position: "absolute",
+            top: "12%",
+          }}
         >
           <DataTable.Row style={{ flex: 1 }}>
             <DataTable.Cell> </DataTable.Cell>
@@ -224,11 +246,11 @@ export default function HistoryScreen() {
             <DataTable.Title style={{ marginLeft: "5%" }}>
               <Text style={{ color: "#3CAF58" }}>Ngày</Text>
             </DataTable.Title>
-            <DataTable.Title style={{  }}>
+            <DataTable.Title style={{}}>
               <Text style={{ color: "#3CAF58" }}>Giờ</Text>
             </DataTable.Title>
 
-            <DataTable.Title style={{  }}>
+            <DataTable.Title style={{}}>
               <Text style={{ color: "#3CAF58" }}>Hoạt động</Text>
             </DataTable.Title>
           </DataTable.Header>
@@ -244,48 +266,41 @@ export default function HistoryScreen() {
             // </DataTable.Row>
             <Text style={{ marginLeft: "5%", marginTop: "5%" }} textStyle={{ color: "black" }}>Không có dữ liệu</Text>
           } */}
-          {
-            paginatedData.map((item, index) => {
-              // Create a new Date object from the timestamp
-              const date = new Date(item.created_at);
+          {paginatedData.map((item, index) => {
+            // Create a new Date object from the timestamp
+            const date = new Date(item.created_at);
 
-              // Format the date and time as desired
-              const formattedDate = date.toLocaleDateString([], {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit"
-              }); // Example: "4/25/2024"
-              const formattedTime = date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false,
-              }); // Example: "3:00:53 PM"
+            // Format the date and time as desired
+            const formattedDate = date.toLocaleDateString([], {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+            }); // Example: "4/25/2024"
+            const formattedTime = date.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: false,
+            }); // Example: "3:00:53 PM"
 
-              return (
-                <DataTable.Row key={index}>
-                  <DataTable.Cell
-                    style={{ marginLeft: "5%" }}
-                    textStyle={{ color: "black" }}
-                  >
-                    {formattedDate}
-                  </DataTable.Cell>
-                  <DataTable.Cell
-                    style={{ }}
-                    textStyle={{ color: "black" }}
-                  >
-                    {formattedTime}
-                  </DataTable.Cell>
+            return (
+              <DataTable.Row key={index}>
+                <DataTable.Cell
+                  style={{ marginLeft: "5%" }}
+                  textStyle={{ color: "black" }}
+                >
+                  {formattedDate}
+                </DataTable.Cell>
+                <DataTable.Cell style={{}} textStyle={{ color: "black" }}>
+                  {formattedTime}
+                </DataTable.Cell>
 
-                  <DataTable.Cell
-                    style={{ }}
-                    textStyle={{ color: "black" }}>
-                    {item.value == 1 ? "Bật" : "Tắt"}
-                  </DataTable.Cell>
-                </DataTable.Row>
-              );
-            })
-          }
+                <DataTable.Cell style={{}} textStyle={{ color: "black" }}>
+                  {item.value == 1 ? "Bật" : "Tắt"}
+                </DataTable.Cell>
+              </DataTable.Row>
+            );
+          })}
         </DataTable>
 
         <View
@@ -295,28 +310,31 @@ export default function HistoryScreen() {
             justifyContent: "center",
             alignItems: "center",
             position: "absolute",
-            top: "80%"
+            top: "80%",
           }}
         >
-          <Button title={"Lọc dữ liệu"}
+          <Button
+            title={"Lọc dữ liệu"}
             onPress={() => {
               togglePicker();
             }}
-            color={'#3CAF58'}
+            color={"#3CAF58"}
           />
-          <Text
-            style={{ marginLeft: 10, marginRight: 10 }}
-          ></Text>
+          <Text style={{ marginLeft: 10, marginRight: 10 }}></Text>
           {/* <Button
             onPress={prevPage}
             title="Previous"
             disabled={currentPage === 1}
             color={"#0a5962"}
           /> */}
-          <MaterialCommunityIcons name="arrow-left" size={24} color='#3CAF58' onPress={() => {
-            if (currentPage != 1)
-              prevPage();
-          }}/>
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color="#3CAF58"
+            onPress={() => {
+              if (currentPage != 1) prevPage();
+            }}
+          />
           <Text
             style={{ marginLeft: 10, marginRight: 10 }}
           >{`Page ${currentPage} of ${maxPage}`}</Text>
@@ -326,10 +344,14 @@ export default function HistoryScreen() {
             color={"#0a5962"}
             disabled={endIndex >= logDevice.length}
           /> */}
-          <MaterialCommunityIcons name="arrow-right" size={24} color='#3CAF58' onPress={() => {
-            if (currentPage < maxPage)
-              nextPage();
-          }}/>
+          <MaterialCommunityIcons
+            name="arrow-right"
+            size={24}
+            color="#3CAF58"
+            onPress={() => {
+              if (currentPage < maxPage) nextPage();
+            }}
+          />
         </View>
       </View>
     </>

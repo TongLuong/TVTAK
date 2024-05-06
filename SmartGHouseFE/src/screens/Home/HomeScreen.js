@@ -146,16 +146,20 @@ export default function HomeScreen({ navigation }) {
         temp = userData;
 
       const res = await getAllDevice(temp?.id);
-      setDevices(
-        JSON.parse(JSON.stringify(res.data)).map((item) => {
-          return {
-            id: item.id,
-            name: item.name,
-            status: item.status,
-            type: item.type
-          };
-        })
-      );
+      if (res)
+      {
+          setDevices(
+          JSON.parse(JSON.stringify(res.data)).map((item) => {
+            return {
+              id: item.id,
+              name: item.name,
+              status: item.status,
+              type: item.type,
+              threshold: item.threshold
+            };
+          })
+        );
+      }
     };
     getAllDevices();
   }, [useIsFocused(), flag]);
@@ -222,6 +226,12 @@ export default function HomeScreen({ navigation }) {
           title={"Thống kê dữ liệu"}
           onPress={() => {
             navigation.navigate(path.CHART);
+          }}
+        />
+        <AppButton
+          title={"Đặt ngưỡng dữ liệu"}
+          onPress={() => {
+            navigation.navigate(path.THRESHOLD);
           }}
         />
       </View>

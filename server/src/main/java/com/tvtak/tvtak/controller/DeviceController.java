@@ -62,6 +62,7 @@ public class DeviceController
         }
         catch (Exception e)
         {
+            System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,7 +75,25 @@ public class DeviceController
     {
         try
         {
-            String response = this.deviceService.toggleStatus(device_id, user_id,status);
+            String response = this.deviceService.toggleStatus(device_id, user_id, status);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/adjust-threshold")
+    public ResponseEntity<Object> adjustThreshold(
+        @RequestParam Double threshold,
+        @RequestParam Long device_id,
+        @RequestParam Long user_id
+    )
+    {
+        try
+        {
+            String response = this.deviceService.adjustThreshold(device_id, user_id, threshold);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         catch (Exception e)

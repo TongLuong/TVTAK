@@ -11,4 +11,5 @@ export const path = {
   FORGET2: "Forget pass 2",
   HOMECONTROL: "Home",
   CHART: "Chart",
+  THRESHOLD: "Threshold"
 };
