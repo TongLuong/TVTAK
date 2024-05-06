@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./Home/HomeScreen";
+import ThresholdScreen from "./Home/ThresholdScreen";
 import ChartScreen from "./Home/ChartScreen";
 import DeviceAddition from "./Home/DeviceAddition";
 import DeviceList from "./Home/DeviceList";
@@ -17,6 +18,11 @@ export default function App() {
       <Stack.Screen
         name={path.CHART}
         component={ChartScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={path.THRESHOLD}
+        component={ThresholdScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

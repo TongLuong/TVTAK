@@ -19,7 +19,7 @@ public class Device
     @Setter @Getter
     private String name;
 
-    @Column(name = "switch_name", unique = true, nullable = false)
+    @Column(name = "switch_name", unique = true)
     @Setter @Getter
     private String switch_name;
 

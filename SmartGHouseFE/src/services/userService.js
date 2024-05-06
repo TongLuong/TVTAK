@@ -85,7 +85,7 @@ const addDevice = async (user_id, device) => {
 const getAllDevice = async (user_id) => {
   return await axiosInst
     .get(`/api/device/get-all-devices?user_id=${user_id}`)
-    .catch((e) => console.log(e));
+    .catch((e) => console.log("get-all-devices", user_id));
 };
 const deleteDevice = async (user_id, device_id) => {
   return await axiosInst
@@ -98,6 +98,13 @@ const toggleDevice = async (user_id, device_id, status) => {
   return await axiosInst
     .post(
       `api/device/toggle-device?user_id=${user_id}&device_id=${device_id}&status=${status}`
+    )
+    .catch((e) => console.log(e));
+};
+const adjustThreshold = async (user_id, device_id, threshold) => {
+  return await axiosInst
+    .post(
+      `api/device/adjust-threshold?threshold=${threshold}&device_id=${device_id}&user_id=${user_id}`
     )
     .catch((e) => console.log(e));
 };
@@ -170,4 +177,5 @@ export {
   setUserToStorage,
   getSchedsByDevice,
   getRecordAvgInDay,
+  adjustThreshold,
 };
