@@ -23,7 +23,6 @@ export default function App() {
       <Stack.Screen
         name={path.THRESHOLD}
         component={ThresholdScreen}
-        options={{ headerShown: false }}
       />
       <Stack.Screen
         name={"DeviceAddtion"}
