@@ -101,6 +101,7 @@ export default function SelectScreen( {navigation, route} ) {
                         navigation.navigate("Manuallight");
                     } 
                     else if (funcSeclection === 'pump' && type === 'manual') {
+                      navigation.navigate("Manualwater");
                         }
                     else if (funcSeclection === 'light' && type === 'auto') {
                         navigation.navigate("Auto", (data = {func: "light"}));
