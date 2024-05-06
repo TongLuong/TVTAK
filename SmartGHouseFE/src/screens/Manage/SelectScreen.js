@@ -35,10 +35,10 @@ export default function SelectScreen( {navigation, route} ) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ marginBottom: '10%'}}>
+            <View style={{ marginBottom: '15%'}}>
             <Text style={{ fontSize: 25, marginBottom: '4%', fontWeight: '600', color: '#3CAF58', alignSelf: 'center' }}>Chọn chức năng</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={funcSeclection === 'light' && { borderWidth: 2, padding: '3%', borderColor: '#3CAF58'}}>
+            <View style={funcSeclection === 'light' && { borderWidth: 2, padding: '3%', borderColor: '#3CAF58', marginBottom: '-10%'}}>
             <TouchableOpacity
                 onPress={() => {setFuncSelection('light')}}
             >
@@ -55,7 +55,7 @@ export default function SelectScreen( {navigation, route} ) {
                 }
             </TouchableOpacity>
             </View>
-            <View style={funcSeclection === 'pump' && { borderWidth: 2, padding: '3%', borderColor: '#3CAF58'}}>
+            <View style={funcSeclection === 'pump' && { borderWidth: 2, padding: '3%', borderColor: '#3CAF58', marginBottom: '-10%' }}>
             <TouchableOpacity
             onPress={() => {setFuncSelection('pump')}}
             >
@@ -101,6 +101,7 @@ export default function SelectScreen( {navigation, route} ) {
                         navigation.navigate("Manuallight");
                     } 
                     else if (funcSeclection === 'pump' && type === 'manual') {
+                      navigation.navigate("Manualwater");
                         }
                     else if (funcSeclection === 'light' && type === 'auto') {
                         navigation.navigate("Auto", (data = {func: "light"}));
@@ -126,7 +127,7 @@ export default function SelectScreen( {navigation, route} ) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: '10%',
+      paddingTop: '25%',
       paddingHorizontal: '6%',
       marginBottom: 65, 
       backgroundColor: '#EFF9F1',

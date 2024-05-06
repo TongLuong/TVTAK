@@ -38,6 +38,7 @@ class TvtakApplicationTests
 		light.setType("sensor");
 		light.setUser(user);
 		light.setSwitch_name("manual-light");
+		light.setThreshold(1000.0);
 		deviceService.save(light, user.getId(), false);
 
 		Device temp = new Device();
@@ -46,6 +47,7 @@ class TvtakApplicationTests
 		temp.setType("sensor");
 		temp.setUser(user);
 		temp.setSwitch_name("manual-temp");
+		temp.setThreshold(1000.0);
 		deviceService.save(temp, user.getId(), false);
 
 		Device pump = new Device();
