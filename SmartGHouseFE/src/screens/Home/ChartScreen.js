@@ -19,7 +19,7 @@ const Chart = ({
   backgroundGradientFrom,
   backgroundGradientTo,
   labelColor,
-  gridColor
+  gridColor,
 }) => {
   if (data.length === 0) return <View></View>;
   const values = data.map((item) => parseInt(item.value));
@@ -36,7 +36,7 @@ const Chart = ({
             },
           ],
         }}
-      width={(screenWidth/100)*90}
+        width={(screenWidth / 100) * 90}
         height={175}
         yAxisSuffix=""
         yAxisInterval={1}
@@ -47,7 +47,7 @@ const Chart = ({
           decimalPlaces: 0,
           color: (opacity = 1) => gridColor,
           labelColor: (opacity = 1) => labelColor,
-          stroke: "black"
+          stroke: "black",
         }}
         bezier
         style={{
@@ -88,7 +88,9 @@ const ChartScreen = () => {
         {data1.length > 0 && (
           <Text style={chartStyle.title}>Biểu đồ thống kê</Text>
         )}
-        <Text style={[chartStyle.titleChart, {color: "#755A09"}]}>Giá trị ánh sáng (Lux)</Text>
+        <Text style={[chartStyle.titleChart, { color: "#755A09" }]}>
+          Giá trị ánh sáng (Lux)
+        </Text>
         <Chart
           data={data1}
           color={"#755A09"}
@@ -98,7 +100,9 @@ const ChartScreen = () => {
           gridColor={"#755A09"}
         />
         {data2.length > 0 && (
-          <Text style={[chartStyle.titleChart, { color: '#850000'}]}>Giá trị nhiệt độ (°C)</Text>
+          <Text style={[chartStyle.titleChart, { color: "#850000" }]}>
+            Giá trị nhiệt độ (°C)
+          </Text>
         )}
         <Chart
           data={data2}
@@ -109,7 +113,9 @@ const ChartScreen = () => {
           gridColor={"#850000"}
         />
         {data3.length > 0 && (
-          <Text style={[chartStyle.titleChart, { color: "#3e4ca0"}]}>Giá trị độ ẩm (%)</Text>
+          <Text style={[chartStyle.titleChart, { color: "#3e4ca0" }]}>
+            Giá trị độ ẩm (%)
+          </Text>
         )}
         <Chart
           data={data3}
@@ -127,6 +133,7 @@ const chartStyle = StyleSheet.create({
   chartContainer: {
     flex: 1,
     backgroundColor: "#EFF9F1",
+    marginBottom: 65,
   },
   chartConfig: {
     margin: 10,
@@ -134,7 +141,7 @@ const chartStyle = StyleSheet.create({
   titleChart: {
     paddingLeft: 20,
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   title: {
     fontSize: 30,
