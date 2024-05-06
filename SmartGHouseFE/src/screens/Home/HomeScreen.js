@@ -222,6 +222,7 @@ export default function HomeScreen({ navigation }) {
             <Text style={statusStyle.title}>Độ sáng{"\n"}</Text>
           </View>
         </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <AppButton
           title={"Thống kê dữ liệu"}
           onPress={() => {
@@ -234,6 +235,7 @@ export default function HomeScreen({ navigation }) {
             navigation.navigate(path.THRESHOLD);
           }}
         />
+        </View>
       </View>
 
       <View

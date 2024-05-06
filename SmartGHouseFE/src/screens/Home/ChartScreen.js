@@ -11,12 +11,15 @@ import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { getRecordAvgInDay } from "../../services/userService";
 
+const screenWidth = Dimensions.get("window").width;
+
 const Chart = ({
   data,
   color,
   backgroundGradientFrom,
   backgroundGradientTo,
   labelColor,
+  gridColor
 }) => {
   if (data.length === 0) return <View></View>;
   const values = data.map((item) => parseInt(item.value));
@@ -33,8 +36,8 @@ const Chart = ({
             },
           ],
         }}
-        width={350}
-        height={170}
+      width={(screenWidth/100)*90}
+        height={175}
         yAxisSuffix=""
         yAxisInterval={1}
         chartConfig={{
@@ -42,8 +45,9 @@ const Chart = ({
           backgroundGradientFrom: backgroundGradientFrom, // Change gradient start color to yellow
           backgroundGradientTo: backgroundGradientTo,
           decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: (opacity = 1) => gridColor,
           labelColor: (opacity = 1) => labelColor,
+          stroke: "black"
         }}
         bezier
         style={{
@@ -51,6 +55,7 @@ const Chart = ({
           borderRadius: 8,
           paddingLeft: 20,
         }}
+        withVerticalLines
       />
     </View>
   );
@@ -83,33 +88,36 @@ const ChartScreen = () => {
         {data1.length > 0 && (
           <Text style={chartStyle.title}>Biểu đồ thống kê</Text>
         )}
-        <Text style={chartStyle.titleChart}>Cảm biến ánh sáng</Text>
+        <Text style={[chartStyle.titleChart, {color: "#755A09"}]}>Giá trị ánh sáng (Lux)</Text>
         <Chart
           data={data1}
-          color={"black"}
-          backgroundGradientFrom={"#ffd700"}
-          backgroundGradientTo={"#ffec8b"}
-          labelColor={"black"}
+          color={"#755A09"}
+          backgroundGradientFrom={"#ebdeb8"}
+          backgroundGradientTo={"#ebdeb8"}
+          labelColor={"#755A09"}
+          gridColor={"#755A09"}
         />
         {data2.length > 0 && (
-          <Text style={chartStyle.titleChart}>Cảm biến nhiệt độ</Text>
+          <Text style={[chartStyle.titleChart, { color: '#850000'}]}>Giá trị nhiệt độ (°C)</Text>
         )}
         <Chart
           data={data2}
-          color={"white"}
-          backgroundGradientFrom={"#ff0000"}
-          backgroundGradientTo={"#ff6347"}
-          labelColor={"white"}
+          color={"#850000"}
+          backgroundGradientFrom={"#f3cdcc"}
+          backgroundGradientTo={"#f3cdcc"}
+          labelColor={"#850000"}
+          gridColor={"#850000"}
         />
         {data3.length > 0 && (
-          <Text style={chartStyle.titleChart}>Cảm biến độ ẩm</Text>
+          <Text style={[chartStyle.titleChart, { color: "#3e4ca0"}]}>Giá trị độ ẩm (%)</Text>
         )}
         <Chart
           data={data3}
-          color={"white"}
-          backgroundGradientFrom={"#0000ff"}
-          backgroundGradientTo={"#6495ed"}
-          labelColor={"white"}
+          color={"#3e4ca0"}
+          backgroundGradientFrom={"#cfe2e4"}
+          backgroundGradientTo={"#cfe2e4"}
+          labelColor={"#3e4ca0"}
+          gridColor={"#3e4ca0"}
         />
       </ScrollView>
     </SafeAreaView>
@@ -118,23 +126,21 @@ const ChartScreen = () => {
 const chartStyle = StyleSheet.create({
   chartContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    marginTop: 25,
+    backgroundColor: "#EFF9F1",
   },
   chartConfig: {
     margin: 10,
   },
   titleChart: {
     paddingLeft: 20,
-    fontSize: 15,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "bold"
   },
   title: {
     fontSize: 30,
-    color: "#3CAF58",
+    color: "black",
     textAlign: "center",
     fontWeight: "bold",
-    marginTop: 20,
   },
   scrollView: {
     paddingBottom: 20,
