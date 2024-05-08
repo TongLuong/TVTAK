@@ -284,7 +284,7 @@ export default function App({ navigation }) {
             
             <View style={{marginTop: 5, maxHeight: 230}}>
               <Text style={{color: '#3CAF58', fontSize: 14, marginHorizontal: '5%', marginLeft: "8%"}}>
-                {notes[0]}
+                {notes[notes.length - 1]}
               </Text>
             </View>
             <AppButton title={"Xem tất cả"} 
