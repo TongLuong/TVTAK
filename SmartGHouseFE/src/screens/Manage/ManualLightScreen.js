@@ -8,11 +8,7 @@ export default function App() {
   const [checkedItems, setCheckedItems] = useState(Array(8).fill(false));
   const [isStarted, setIsStarted] = useState(true);
   const [user, setUser] = useState({});
-  const data = [
-    { label: "Màu đỏ", value: "1" },
-    { label: "Màu vàng", value: "2" },
-    { label: "Màu xanh", value: "3" },
-  ];
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -90,13 +86,11 @@ export default function App() {
         ))}
       </DataTable>
       <View style={manuallightStyle.actionButton}>
-        {
-          <Button
-            title={isStarted ? "Bắt đầu" : "Kết thúc"}
-            color="#3CAF58"
-            onPress={handleStartStop}
-          />
-        }
+        <Button
+          title={isStarted ? "Bắt đầu" : "Kết thúc"}
+          color="#3CAF58"
+          onPress={handleStartStop}
+        />
       </View>
     </View>
   );
